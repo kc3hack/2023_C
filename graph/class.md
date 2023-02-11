@@ -54,12 +54,11 @@ UnaryOperator <|.. CustomUnaryOperator
 BinaryOperator <|.. NativeBinaryOperator
 BinaryOperator <|.. CustomBinaryOperator
 
-Expression <.. CustomUnaryOperator
-Expression <.. CustomBinaryOperator
-
 class Expression {
     string rawExpression
     Array_Token tokens
+    // 二度目の計算はこちらを返す
+    -Number result
 
     Execute() Number
 }
@@ -92,16 +91,27 @@ class CustomConstant {
     static CustomConstant e
     static CustomConstant pi
     string rawText
-
+    // 係数
+    Number coefficientNumber
+    // 指数
+    int exponents
 }
 
 class UnaryOperator {
     <<protocol>>
-    Execute(Number value) Number
+    Execute(Number value, bool isExponents) Number
 }
 class BinaryOperator {
     <<protocol>>
-    Execute(Number left, Number right) Number
+    Execute(Number left, Number right, bool isExponents) Number
+}
+class CustomUnaryOperator {
+    Array_Token expression
+    init(string expression)
+}
+class CustomBinaryOperator {
+    Array_Token expression
+    init(string expression)
 }
 
 class TokenType {
@@ -123,22 +133,22 @@ class Number {
 
     // 逆ポーランド記法で処理する都合上演算子の右側が先に
     // 見えてくるので、受け取るのは演算子の左として処理する
-    Add(Number left) Number
-    Substrct(Number left) Number
-    Multiply(Number left) Number
-    Divide(Number left) Number
-    Modulus(Number left) Number
-    Pow(Number left) Number
+    Add(Number left, bool isExponents) Number
+    Substrct(Number left, bool isExponents) Number
+    Multiply(Number left, bool isExponents) Number
+    Divide(Number left, bool isExponents) Number
+    Modulus(Number left, bool isExponents) Number
+    Pow(Number left, bool isExponents) Number
 
-    Negate() Number
-    Abs() Number
-    Sqrt() Number
-    Sin() Number
-    Cos() Number
-    Tan() Number
-    ArcSin() Number
-    ArcCos() Number
-    ArcTan() Number
-    Log() Number
-    Ln() Number
+    Negate(bool isExponents) Number
+    Abs(bool isExponents) Number
+    Sqrt(bool isExponents) Number
+    Sin(bool isExponents) Number
+    Cos(bool isExponents) Number
+    Tan(bool isExponents) Number
+    ArcSin(bool isExponents) Number
+    ArcCos(bool isExponents) Number
+    ArcTan(bool isExponents) Number
+    Log(bool isExponents) Number
+    Ln(bool isExponents) Number
 }
