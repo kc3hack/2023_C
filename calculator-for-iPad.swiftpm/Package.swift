@@ -17,7 +17,6 @@ let package = Package(
             name: "calculator-for-iPad",
             targets: ["AppModule"],
             bundleIdentifier: "com.KC3-2023-C.calculator-for-iPad",
-            teamIdentifier: "",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .pencil),
