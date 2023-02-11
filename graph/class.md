@@ -10,6 +10,7 @@ PUserDefaultsService <.. DataService
 
 class PCalculatorService {
     <<protocol>>
+    Calculate(string expression) Number
     Parse(string expressionRawString) Exression
     Execute(Expression expression) Number
 }
@@ -17,6 +18,13 @@ class PDataService {
     <<protocol>>
     LoadExpression() Array_string
     SaveExpression(Expression expression)
+    GetCustomConstant() Array_CustomConstant
+    SaveCustomConstant(string name, Expression expression)
+    GetCustomUnaryOperator() Array_CustomUnaryOperator
+    SaveCustomUnaryOperator(string name, Expression expression)
+    GetCustomBinaryOperator() Array_BinaryOperator
+    SaveCustomBinaryOperator(string name, Expression expression)
+
     LoadConfig() Config
     SaveConfig(Config config)
 }
@@ -90,6 +98,7 @@ class Fraction {
 class CustomConstant {
     static CustomConstant e
     static CustomConstant pi
+    string name
     string rawText
     // 係数
     Number coefficientNumber
@@ -106,12 +115,14 @@ class BinaryOperator {
     Execute(Number left, Number right, bool isExponents) Number
 }
 class CustomUnaryOperator {
+    string name
     Array_Token expression
-    init(string expression)
+    init(string name, Array_Token expression)
 }
 class CustomBinaryOperator {
+    string name
     Array_Token expression
-    init(string expression)
+    init(string name, Array_Token expression)
 }
 
 class TokenType {
