@@ -116,18 +116,7 @@ class BinaryOperator {
 class NativeUnaryOperator {
     UnaryOprType type
     static Array_string OperatorIdentifiers
-    static NativeUnaryOperator Negate
-    static NativeUnaryOperator Abs
-    static NativeUnaryOperator Sqrt
-    static NativeUnaryOperator Sing
-    static NativeUnaryOperator Cos
-    static NativeUnaryOperator Tan
-    static NativeUnaryOperator Arcsin
-    static NativeUnaryOperator Arccos
-    static NativeUnaryOperator Arctan
-    static NativeUnaryOperator Log
-    static NativeUnaryOperator Ln
-    init(string identifier, UnaryOprType type)
+    init(UnaryOprType type)
 }
 class CustomUnaryOperator {
     Array_Token expression
@@ -136,13 +125,7 @@ class CustomUnaryOperator {
 class NativeBinaryOperator {
     BinaryOprType type
     static Array_string OperatorIdentifiers
-    static NativeBinaryOperator Add
-    static NativeBinaryOperator Substract
-    static NativeBinaryOperator Multiply
-    static NativeBinaryOperator Divide
-    static NativeBinaryOperator Modulus
-    static NativeBinaryOperator Pow
-    init(string identifier, BinaryOprType type)
+    init(BinaryOprType type)
 }
 class CustomBinaryOperator {
     Array_Token expression
