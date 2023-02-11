@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  calculator-for-iPad
-//
-//  Created by 紀仁 on 2023/02/11.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -15,12 +8,5 @@ struct ContentView: View {
                 .foregroundColor(.accentColor)
             Text("Hello, world!")
         }
-        .padding()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
