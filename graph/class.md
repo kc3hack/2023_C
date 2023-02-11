@@ -12,7 +12,6 @@ class PCalculatorService {
     <<protocol>>
     Calculate(string expression) Number
     Parse(string expressionRawString) Exression
-    Execute(Expression expression) Number
 }
 class PDataService {
     <<protocol>>
@@ -82,8 +81,6 @@ class Token {
 }
 class Number {
     <<protocol>>
-    static Number e
-    static Number pi
     ToReal() Real
 }
 class Real {
@@ -108,21 +105,48 @@ class CustomConstant {
 
 class UnaryOperator {
     <<protocol>>
+    string identifier
     Execute(Number value, bool isExponents) Number
 }
 class BinaryOperator {
     <<protocol>>
+    string identifier
     Execute(Number left, Number right, bool isExponents) Number
 }
+class NativeUnaryOperator {
+    UnaryOprType type
+    static Array_string OperatorIdentifiers
+    static NativeUnaryOperator Negate
+    static NativeUnaryOperator Abs
+    static NativeUnaryOperator Sqrt
+    static NativeUnaryOperator Sing
+    static NativeUnaryOperator Cos
+    static NativeUnaryOperator Tan
+    static NativeUnaryOperator Arcsin
+    static NativeUnaryOperator Arccos
+    static NativeUnaryOperator Arctan
+    static NativeUnaryOperator Log
+    static NativeUnaryOperator Ln
+    init(string identifier, UnaryOprType type)
+}
 class CustomUnaryOperator {
-    string name
     Array_Token expression
-    init(string name, Array_Token expression)
+    init(string identifier, Array_Token expression)
+}
+class NativeBinaryOperator {
+    BinaryOprType type
+    static Array_string OperatorIdentifiers
+    static NativeBinaryOperator Add
+    static NativeBinaryOperator Substract
+    static NativeBinaryOperator Multiply
+    static NativeBinaryOperator Divide
+    static NativeBinaryOperator Modulus
+    static NativeBinaryOperator Pow
+    init(string identifier, BinaryOprType type)
 }
 class CustomBinaryOperator {
-    string name
     Array_Token expression
-    init(string name, Array_Token expression)
+    init(string identifier, Array_Token expression)
 }
 
 class TokenType {
@@ -131,6 +155,31 @@ class TokenType {
     BinaryOperator
     Number
     CustomArgument
+}
+
+class UnaryOprType {
+    <<enum>>
+    Negate
+    Abs
+    Sqrt
+    Sing
+    Cos
+    Tan
+    Arcsin
+    Arccos
+    Arctan
+    Log
+    Ln
+}
+
+class BinaryOprType {
+    <<enum>>
+    Add
+    Substract
+    Multiply
+    Divide
+    Modulus
+    Pow
 }
 ```
 `Number`がデカくなりすぎたので移動
@@ -145,7 +194,7 @@ class Number {
     // 逆ポーランド記法で処理する都合上演算子の右側が先に
     // 見えてくるので、受け取るのは演算子の左として処理する
     Add(Number left, bool isExponents) Number
-    Substrct(Number left, bool isExponents) Number
+    Substract(Number left, bool isExponents) Number
     Multiply(Number left, bool isExponents) Number
     Divide(Number left, bool isExponents) Number
     Modulus(Number left, bool isExponents) Number
@@ -157,9 +206,9 @@ class Number {
     Sin(bool isExponents) Number
     Cos(bool isExponents) Number
     Tan(bool isExponents) Number
-    ArcSin(bool isExponents) Number
-    ArcCos(bool isExponents) Number
-    ArcTan(bool isExponents) Number
+    Arcsin(bool isExponents) Number
+    Arccos(bool isExponents) Number
+    Arctan(bool isExponents) Number
     Log(bool isExponents) Number
     Ln(bool isExponents) Number
 }
