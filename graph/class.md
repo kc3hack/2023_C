@@ -74,10 +74,10 @@ class Token {
     <<protocol>>
     TokenType tokenType
 
-    TryParse(string source, inout Token token) bool
+    TryParse(string source) Optional_Token
     ToDisplayString() string
     Serialize() string
-    TryDeserialize(string value, inout Token token) bool
+    TryDeserialize(string value) Optional_Token
 }
 class Number {
     <<protocol>>
