@@ -1,5 +1,5 @@
 protocol Number{
-    var isinteger: Bool { get }
+    var isInteger: Bool { get }
 
     func toReal() -> Real
     func add(left: Number ,isExponents: Bool) -> Number
