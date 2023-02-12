@@ -1,5 +1,5 @@
 import XCTest
-@testable import calculator_for_iPad_core
+@testable import CalculatorCore
 
 final class _023_CTests: XCTestCase {
     func testExample() throws {
