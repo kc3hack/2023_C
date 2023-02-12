@@ -7,5 +7,7 @@ final class _023_CTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
         XCTAssertEqual(_023_C().text, "Hello, World!")
+
+        print("test")
     }
 }

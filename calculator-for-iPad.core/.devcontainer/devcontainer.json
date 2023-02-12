@@ -1,0 +1,10 @@
+{
+    "name": "Swift-5.7",
+    "image": "swift:5.7",
+    "extensions": [
+      "sswg.swift-lang"
+    ],
+    "settings": {
+      "lldb.library": "/usr/lib/liblldb.so"
+    }
+}
