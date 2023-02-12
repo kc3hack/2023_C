@@ -8,6 +8,6 @@ final class _023_CTests: XCTestCase {
         // results.
         XCTAssertEqual(_023_C().text, "Hello, World!")
 
-        print("test")
+        
     }
 }
