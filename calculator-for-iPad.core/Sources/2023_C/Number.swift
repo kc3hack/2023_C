@@ -1,22 +1,22 @@
 protocol Number{
-    var IsInteger: Bool { get }
+    var isinteger: Bool { get }
 
-    func ToReal() -> Real
-    func Add(left: Number ,isExponents: Bool) -> Number
-    func Substract(left: Number ,isExponents: Bool) -> Number
-    func Multiply(left: Number ,isExponents: Bool) -> Number
-    func Divide(left: Number ,isExponents: Bool) -> Number
-    func Modulus(left: Number ,isExponents: Bool) -> Number
-    func Pow(left: Number ,isExponents: Bool) -> Number
-    func Negate(isExponents: Bool) -> Number
-    func Abs(isExponents: Bool) -> Number
-    func Sqrt(isExponents: Bool) -> Number
-    func Sin(isExponents: Bool) -> Number
-    func Cos(isExponents: Bool) -> Number
-    func Tan(isExponents: Bool) -> Number
-    func Arcsin(isExponents: Bool) -> Number
-    func Arccos(isExponents: Bool) -> Number
-    func Arctan(isExponents: Bool) -> Number
-    func Log(isExponents: Bool) -> Number
-    func Ln(isExponents: Bool) -> Number
+    func toReal() -> Real
+    func add(left: Number ,isExponents: Bool) -> Number
+    func substract(left: Number ,isExponents: Bool) -> Number
+    func multiply(left: Number ,isExponents: Bool) -> Number
+    func divide(left: Number ,isExponents: Bool) -> Number
+    func modulus(left: Number ,isExponents: Bool) -> Number
+    func pow(left: Number ,isExponents: Bool) -> Number
+    func negate(isExponents: Bool) -> Number
+    func abs(isExponents: Bool) -> Number
+    func sqrt(isExponents: Bool) -> Number
+    func sin(isExponents: Bool) -> Number
+    func cos(isExponents: Bool) -> Number
+    func tan(isExponents: Bool) -> Number
+    func arcsin(isExponents: Bool) -> Number
+    func arccos(isExponents: Bool) -> Number
+    func arctan(isExponents: Bool) -> Number
+    func log(isExponents: Bool) -> Number
+    func ln(isExponents: Bool) -> Number
 }
