@@ -1,12 +1,12 @@
-protocol Number{
+public protocol Number: Token{
     var isInteger: Bool { get }
 
     func toReal() -> Real
-    func add(left: Number ,isExponents: Bool) -> Number
-    func substract(left: Number ,isExponents: Bool) -> Number
-    func multiply(left: Number ,isExponents: Bool) -> Number
-    func divide(left: Number ,isExponents: Bool) -> Number
-    func modulus(left: Number ,isExponents: Bool) -> Number
+    func add(left: Number, isExponents: Bool) -> Number
+    func substract(left: Number, isExponents: Bool) -> Number
+    func multiply(left: Number, isExponents: Bool) -> Number
+    func divide(left: Number, isExponents: Bool) -> Number
+    func modulus(left: Number, isExponents: Bool) -> Number
     func pow(left: Number ,isExponents: Bool) -> Number
     func negate(isExponents: Bool) -> Number
     func abs(isExponents: Bool) -> Number
