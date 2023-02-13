@@ -21,13 +21,26 @@ internal struct NativeBinaryOperator : BinaryOperator {
                 identifier = "/"
             case .modulus:
                 identifier = "%"
-            case .power:
+            case .pow:
                 identifier = "^"
         }
     }
 
     public func execute(left: Number, right: Number, isExponents: Bool) -> Number {
-        return right.add(left: left, isExponents: isExponents)
+        switch operatorType {
+            case .add:
+                return right.add(left: left, isExponents: isExponents)
+            case .substract:
+                return right.substract(left: left, isExponents: isExponents)
+            case .multiply:
+                return right.multiply(left: left, isExponents: isExponents)
+            case .divide:
+                return right.divide(left: left, isExponents: isExponents)
+            case .modulus:
+                return right.modulus(left: left, isExponents: isExponents)
+            case .pow:
+                return right.pow(left: left, isExponents: isExponents)
+        }
     }
 
     public static func Parse(_ source: String) -> Token? {
@@ -43,7 +56,7 @@ internal struct NativeBinaryOperator : BinaryOperator {
             case "%":
                 return NativeBinaryOperator("%", .modulus)
             case "^":
-                return NativeBinaryOperator("^", .power)
+                return NativeBinaryOperator("^", .pow)
             default:
                 return nil
         }

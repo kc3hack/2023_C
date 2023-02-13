@@ -20,11 +20,3 @@ public protocol Token {
     /// シリアライズした文字列を返します
     func Serialize() -> String
 }
-
-/// トークンの型
-public enum TokenType {
-    case Number
-    case UnaryOperator
-    case BinaryOperator
-    case CustomArgument
-}
