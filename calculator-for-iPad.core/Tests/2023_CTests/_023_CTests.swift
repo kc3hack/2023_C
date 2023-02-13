@@ -1,6 +1,12 @@
 import XCTest
 @testable import _023_C
 
+struct aaa{
+    var a: Int
+    var aa: Int
+}
+
+
 final class _023_CTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
