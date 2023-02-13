@@ -1,7 +1,7 @@
 import XCTest
 @testable import CalculatorCore
 
-public final class NativeBinaryOperatorTest : XCTestCase {
+public final class NativeBinaryOperatorTest: XCTestCase {
     func testInit() throws {
         var opr = NativeBinaryOperator(.add)
         XCTAssertEqual(opr.identifier, "+")

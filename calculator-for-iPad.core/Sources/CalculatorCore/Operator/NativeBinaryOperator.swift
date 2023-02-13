@@ -1,4 +1,4 @@
-internal struct NativeBinaryOperator : BinaryOperator {
+internal struct NativeBinaryOperator: BinaryOperator {
     public let tokenType: TokenType = .BinaryOperator
     public let identifier: String
     public let operatorType: BinaryOprType
