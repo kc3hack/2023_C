@@ -1,5 +1,5 @@
 internal struct NativeBinaryOperator: BinaryOperator {
-    public let tokenType: TokenType = .BinaryOperator
+    public let tokenType: TokenType = .binaryOperator
     public let identifier: String
     public let operatorType: BinaryOprType
     public static let identifiers: [String] = ["+", "-", "*", "/", "%", "^"]
@@ -43,7 +43,7 @@ internal struct NativeBinaryOperator: BinaryOperator {
         }
     }
 
-    public static func Parse(_ source: String) -> Token? {
+    public static func parse(_ source: String) -> Token? {
         switch source {
             case "+":
                 return NativeBinaryOperator("+", .add)
@@ -62,15 +62,24 @@ internal struct NativeBinaryOperator: BinaryOperator {
         }
     }
 
-    public func ToDisplayString() -> String {
+    public func toDisplayString() -> String {
         return identifier
     }
 
-    public func Serialize() -> String {
+    public func serialize() -> String {
         return identifier
     }
 
-    public static func Deserialize(_ source: String) -> Token? {
-        return Parse(source)
+    public static func deserialize(_ source: String) -> Token? {
+        return parse(source)
     }
+}
+
+internal enum BinaryOprType {
+    case add
+    case substract
+    case multiply
+    case divide
+    case modulus
+    case pow
 }
