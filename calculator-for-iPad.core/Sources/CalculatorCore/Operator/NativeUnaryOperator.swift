@@ -4,12 +4,12 @@ internal struct NativeUnaryOperator: UnaryOperator {
     public let operatorType: UnaryOprType
     public static let identifiers: [String] = ["abs", "√", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "log", "ln"]
 
-    private init(identifier: String, operatorType: UnaryOprType) {
+    private init(_ identifier: String, _ operatorType: UnaryOprType) {
         self.identifier = identifier
         self.operatorType = operatorType
     }
 
-    internal init(operatorType: UnaryOprType) {
+    internal init(_ operatorType: UnaryOprType) {
         self.operatorType = operatorType
         switch operatorType {
             case .negate:
@@ -67,25 +67,25 @@ internal struct NativeUnaryOperator: UnaryOperator {
     public static func parse(_ source: String) -> Token? {
         switch source {
             case "abs":
-                return NativeUnaryOperator(identifier: "abs", operatorType: .abs)
+                return NativeUnaryOperator("abs", .abs)
             case "√":
-                return NativeUnaryOperator(identifier: "√", operatorType: .sqrt)
+                return NativeUnaryOperator("√", .sqrt)
             case "sin":
-                return NativeUnaryOperator(identifier: "sin", operatorType: .sin)
+                return NativeUnaryOperator("sin", .sin)
             case "cos":
-                return NativeUnaryOperator(identifier: "cos", operatorType: .cos)
+                return NativeUnaryOperator("cos", .cos)
             case "tan":
-                return NativeUnaryOperator(identifier: "tan", operatorType: .tan)
+                return NativeUnaryOperator("tan", .tan)
             case "arcsin":
-                return NativeUnaryOperator(identifier: "arcsin", operatorType: .arcsin)
+                return NativeUnaryOperator("arcsin", .arcsin)
             case "arccos":
-                return NativeUnaryOperator(identifier: "arccos", operatorType: .arccos)
+                return NativeUnaryOperator("arccos", .arccos)
             case "arctan":
-                return NativeUnaryOperator(identifier: "arctan", operatorType: .arctan)
+                return NativeUnaryOperator("arctan", .arctan)
             case "log":
-                return NativeUnaryOperator(identifier: "log", operatorType: .log)
+                return NativeUnaryOperator("log", .log)
             case "ln":
-                return NativeUnaryOperator(identifier: "ln", operatorType: .ln)
+                return NativeUnaryOperator("ln", .ln)
             default:
                 return nil
         }
@@ -98,25 +98,25 @@ internal struct NativeUnaryOperator: UnaryOperator {
     public static func deserialize(_ source: String) -> Token? {
         switch source {
             case "abs":
-                return NativeUnaryOperator(identifier: "abs", operatorType: .abs)
+                return NativeUnaryOperator("abs", .abs)
             case "sqrt":
-                return NativeUnaryOperator(identifier: "√", operatorType: .sqrt)
+                return NativeUnaryOperator("√", .sqrt)
             case "sin":
-                return NativeUnaryOperator(identifier: "sin", operatorType: .sin)
+                return NativeUnaryOperator("sin", .sin)
             case "cos":
-                return NativeUnaryOperator(identifier: "cos", operatorType: .cos)
+                return NativeUnaryOperator("cos", .cos)
             case "tan":
-                return NativeUnaryOperator(identifier: "tan", operatorType: .tan)
+                return NativeUnaryOperator("tan", .tan)
             case "arcsin":
-                return NativeUnaryOperator(identifier: "arcsin", operatorType: .arcsin)
+                return NativeUnaryOperator("arcsin", .arcsin)
             case "arccos":
-                return NativeUnaryOperator(identifier: "arccos", operatorType: .arccos)
+                return NativeUnaryOperator("arccos", .arccos)
             case "arctan":
-                return NativeUnaryOperator(identifier: "arctan", operatorType: .arctan)
+                return NativeUnaryOperator("arctan", .arctan)
             case "log":
-                return NativeUnaryOperator(identifier: "log", operatorType: .log)
+                return NativeUnaryOperator("log", .log)
             case "ln":
-                return NativeUnaryOperator(identifier: "ln", operatorType: .ln)
+                return NativeUnaryOperator("ln", .ln)
             default:
                 return nil
         }
