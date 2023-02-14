@@ -3,83 +3,34 @@ import SwiftUI
 struct ContentView: View {
     @State private var expr = ""
     @State private var expr_pointer: Int = 0
-
-    // keyとactionの対応させたもの
-    private let main_key_array = [
-        [
-            "AC",
-            "◀︎",
-            "▶︎",
-        ],
-        [
-            "7",
-            "8",
-            "9",
-            "+",
-        ],
-        [
-            "4",
-            "5",
-            "6",
-            "-",
-        ],
-        [
-            "1",
-            "2",
-            "3",
-            "×",
-        ],
-        [
-            "0",
-            ".",
-            "=",
-            "/",
-        ],
-    ]
-    
-    
     
     var body: some View {
-        VStack{
-            VStack{
-                Text(expr.prefix(expr_pointer)).font(.system(size: 48))+Text("|").font(.system(size: 48)).foregroundColor(Color.blue)+Text(expr.suffix(expr.unicodeScalars.count - expr_pointer)).font(.system(size: 48))
-            }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            HStack{
-                VStack{
-                    
+        GeometryReader { geometry in
+            //もし横長モードなら右側に計算用テンキー(右利き優位なので設定で左に変えれたら便利)
+            if(geometry.size.width>1000){
+                HStack{
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer)
+                    ControllerView(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                //このVStackをメソッドに分離したい
+            }
+            else{
                 VStack{
-                    ForEach((0...(main_key_array.count-1)),id: \.self){
-                        index_r in
-                        let main_key_array_row = main_key_array[index_r]
-                        HStack {
-                            ForEach((0...(main_key_array_row.count-1)),id: \.self){
-                                index_c in
-                                let key_char = main_key_array_row[index_c]
-                                // ボタンの生成
-                                Button(action: {()->Void in
-                                    ckick(push_char: key_char)
-                                }){
-                                    Text(key_char)
-                                        .font(.system(size: 48))
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                }
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .background(Color.cyan)
-                                    .foregroundColor(Color.black)
-                            }
-                        }
-                    }
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer)
+                    ControllerView(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                
-            }.frame(maxWidth: .infinity, maxHeight: 360)
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
     }
     
-    func ckick(push_char: String)->Void{
+    func get_expr()->String{
+        return expr
+    }
+    
+    func get_expr_pointer()->Int{
+        return expr_pointer
+    }
+    
+    func onckick(push_char: String)->Void{
         let before_pointer = String(expr.prefix(expr_pointer))
         let after_pointer = String(expr.suffix(expr.unicodeScalars.count - expr_pointer))
         
@@ -101,11 +52,11 @@ struct ContentView: View {
         }
         else{
             expr = before_pointer + push_char + after_pointer
-            expr_pointer += 1
+            expr_pointer += push_char.unicodeScalars.count
         }
     }
     
     func call()->Void{
-        //ここに呼び出しを書く
+        //calc(expr)
     }
 }
