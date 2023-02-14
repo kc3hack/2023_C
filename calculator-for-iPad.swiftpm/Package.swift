@@ -31,12 +31,23 @@ let package = Package(
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ]
-        )
+        ),
+        
+    ],
+
+    dependencies : [
+        .package(path: "../calculator-for-iPad.core")
     ],
     targets: [
-        .executableTarget(
-            name: "AppModule",
-            path: "."
-        )
-    ]
+            .executableTarget(
+                name: "AppModule",
+                dependencies: [
+                    .product(
+                        name: "CalculatorCore",
+                        package: "calculator-for-iPad.core"
+                    )
+                ],
+                path: "."
+            )
+        ]
 )
