@@ -39,11 +39,13 @@ public final class NativeBinaryOperatorTest: XCTestCase {
         ]
 
         for arg in arguments {
-            execute(expectedString: arg.0, operatorType: arg.1, isExponents: arg.2)
+            do {
+                try execute(expectedString: arg.0, operatorType: arg.1, isExponents: arg.2)
+            }
         }
     }
 
-    func execute(expectedString: String, operatorType: BinaryOprType, isExponents: Bool) {
+    func execute(expectedString: String, operatorType: BinaryOprType, isExponents: Bool) throws {
         let right = NumberMock(info: "right")
         let left = NumberMock(info: "left")
         let expectedType = String(describing: type(of: right))
