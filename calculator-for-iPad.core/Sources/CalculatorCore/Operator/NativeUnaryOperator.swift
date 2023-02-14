@@ -37,6 +37,33 @@ internal struct NativeUnaryOperator: UnaryOperator {
         }
     }
 
+    public func execute(value: Number, isExponents: Bool) -> Number {
+        switch operatorType {
+            case .negate:
+                return value.negate(isExponents: isExponents)
+            case .abs:
+                return value.abs(isExponents: isExponents)
+            case .sqrt:
+                return value.sqrt(isExponents: isExponents)
+            case .sin:
+                return value.sin(isExponents: isExponents)
+            case .cos:
+                return value.cos(isExponents: isExponents)
+            case .tan:
+                return value.tan(isExponents: isExponents)
+            case .arcsin:
+                return value.arcsin(isExponents: isExponents)
+            case .arccos:
+                return value.arccos(isExponents: isExponents)
+            case .arctan:
+                return value.arctan(isExponents: isExponents)
+            case .log:
+                return value.log(isExponents: isExponents)
+            case .ln:
+                return value.ln(isExponents: isExponents)
+        }
+    }
+
     public static func parse(_ source: String) -> Token? {
         switch source {
             case "abs":
