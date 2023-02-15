@@ -58,9 +58,9 @@ private func toToken(words: String) -> [String] {
             let endIdx = words.index(words.startIndex, offsetBy: end + 1, limitedBy: words.endIndex) ?? words.endIndex
             sub = String(words[startIdx..<endIdx])
 
-            if(isNumeric(sub)) {
+            if(isNumeric(sub)) { //数字が来たら
                 result.append(sub)
-            }else if(sub == "." && (result.firstIndex(of: ".") == nil)) {
+            }else if(sub == "." && (result.firstIndex(of: ".") == nil)) { //小数点が来たら
                 result.append(".")
             }
         }
