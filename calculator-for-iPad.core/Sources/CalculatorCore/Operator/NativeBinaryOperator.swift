@@ -1,33 +1,32 @@
-internal struct NativeBinaryOperator: BinaryOperator {
-    public let tokenType: TokenType = .binaryOperator
-    public let identifier: String
-    public let operatorType: BinaryOprType
-    public static let identifiers: [String] = ["+", "-", "*", "/", "%", "^"]
+internal enum NativeBinaryOperator: BinaryOperator {
+    case add
+    case substract
+    case multiply
+    case divide
+    case modulus
+    case pow
 
-    private init(_ identifier: String, _ operatorType: BinaryOprType) {
-        self.identifier = identifier
-        self.operatorType = operatorType
-    }
-    public init(_ operatorType: BinaryOprType) {
-        self.operatorType = operatorType
-        switch operatorType {
+    public var tokenType: TokenType { return .binaryOperator }
+    public var identifier: String {
+        switch self {
             case .add:
-                identifier = "+"
+                return "+"
             case .substract:
-                identifier = "-"
+                return "-"
             case .multiply:
-                identifier = "*"
+                return "*"
             case .divide:
-                identifier = "/"
+                return "/"
             case .modulus:
-                identifier = "%"
+                return "%"
             case .pow:
-                identifier = "^"
+                return "^"
         }
     }
-
+    public static let identifiers: [String] = ["+", "-", "*", "/", "%", "^"]
+    
     public func execute(left: Number, right: Number, isExponents: Bool) -> Number {
-        switch operatorType {
+        switch self {
             case .add:
                 return right.add(left: left, isExponents: isExponents)
             case .substract:
@@ -42,26 +41,26 @@ internal struct NativeBinaryOperator: BinaryOperator {
                 return right.pow(left: left, isExponents: isExponents)
         }
     }
-
+    
     public static func parse(_ source: String) -> Token? {
         switch source {
             case "+":
-                return NativeBinaryOperator("+", .add)
+                return NativeBinaryOperator.add
             case "-":
-                return NativeBinaryOperator("-", .substract)
+                return NativeBinaryOperator.substract
             case "*":
-                return NativeBinaryOperator("*", .multiply)
+                return NativeBinaryOperator.multiply
             case "/":
-                return NativeBinaryOperator("/", .divide)
+                return NativeBinaryOperator.divide
             case "%":
-                return NativeBinaryOperator("%", .modulus)
+                return NativeBinaryOperator.modulus
             case "^":
-                return NativeBinaryOperator("^", .pow)
+                return NativeBinaryOperator.pow
             default:
                 return nil
         }
     }
-
+    
     public func toDisplayString() -> String {
         return identifier
     }
@@ -73,13 +72,4 @@ internal struct NativeBinaryOperator: BinaryOperator {
     public static func deserialize(_ source: String) -> Token? {
         return parse(source)
     }
-}
-
-internal enum BinaryOprType {
-    case add
-    case substract
-    case multiply
-    case divide
-    case modulus
-    case pow
 }

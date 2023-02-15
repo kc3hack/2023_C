@@ -2,28 +2,28 @@ import XCTest
 @testable import CalculatorCore
 
 public final class NativeBinaryOperatorTest: XCTestCase {
-    func testInit() throws {
-        var opr = NativeBinaryOperator(.add)
+    func testIdentifier() throws {
+        var opr = NativeBinaryOperator.add
         XCTAssertEqual(opr.identifier, "+")
 
-        opr = NativeBinaryOperator(.substract)
+        opr = NativeBinaryOperator.substract
         XCTAssertEqual(opr.identifier, "-")
 
-        opr = NativeBinaryOperator(.multiply)
+        opr = NativeBinaryOperator.multiply
         XCTAssertEqual(opr.identifier, "*")
 
-        opr = NativeBinaryOperator(.divide)
+        opr = NativeBinaryOperator.divide
         XCTAssertEqual(opr.identifier, "/")
 
-        opr = NativeBinaryOperator(.modulus)
+        opr = NativeBinaryOperator.modulus
         XCTAssertEqual(opr.identifier, "%")
 
-        opr = NativeBinaryOperator(.pow)
+        opr = NativeBinaryOperator.pow
         XCTAssertEqual(opr.identifier, "^")
     }
 
     func testExecute() throws {
-        let arguments: [(String, BinaryOprType, Bool)] = [
+        let arguments: [(String, NativeBinaryOperator, Bool)] = [
             ("left add right isExponents:true", .add, true),
             ("left add right isExponents:false", .add, false),
             ("left substract right isExponents:true", .substract, true),
@@ -40,17 +40,17 @@ public final class NativeBinaryOperatorTest: XCTestCase {
 
         for arg in arguments {
             do {
-                try execute(expectedString: arg.0, operatorType: arg.1, isExponents: arg.2)
+                try execute(expectedString: arg.0, opr: arg.1, isExponents: arg.2)
             }
         }
     }
 
-    func execute(expectedString: String, operatorType: BinaryOprType, isExponents: Bool) throws {
+    func execute(expectedString: String, opr: NativeBinaryOperator, isExponents: Bool) throws {
         let right = NumberMock(info: "right")
         let left = NumberMock(info: "left")
         let expectedType = String(describing: type(of: right))
 
-        let result = NativeBinaryOperator(.add).execute(left: left, right: right, isExponents: isExponents)
+        let result = opr.execute(left: left, right: right, isExponents: isExponents)
         XCTAssertEqual(String(describing: type(of: result)), expectedType)
         if let mock = result as? NumberMock {
             XCTAssertEqual(mock.info, expectedString)
@@ -62,42 +62,42 @@ public final class NativeBinaryOperatorTest: XCTestCase {
         XCTAssertNotNil(token)
         if let opr = token! as? NativeBinaryOperator {
             XCTAssertEqual(opr.identifier, "+")
-            XCTAssertEqual(opr.operatorType, .add)
+            XCTAssertEqual(opr, NativeBinaryOperator.add)
         }
 
         token = NativeBinaryOperator.parse("-")
         XCTAssertNotNil(token)
         if let opr = token! as? NativeBinaryOperator {
             XCTAssertEqual(opr.identifier, "-")
-            XCTAssertEqual(opr.operatorType, .substract)
+            XCTAssertEqual(opr, NativeBinaryOperator.substract)
         }
 
         token = NativeBinaryOperator.parse("*")
         XCTAssertNotNil(token)
         if let opr = token! as? NativeBinaryOperator {
             XCTAssertEqual(opr.identifier, "*")
-            XCTAssertEqual(opr.operatorType, .multiply)
+            XCTAssertEqual(opr, NativeBinaryOperator.multiply)
         }
 
         token = NativeBinaryOperator.parse("/")
         XCTAssertNotNil(token)
         if let opr = token! as? NativeBinaryOperator {
             XCTAssertEqual(opr.identifier, "/")
-            XCTAssertEqual(opr.operatorType, .divide)
+            XCTAssertEqual(opr, NativeBinaryOperator.divide)
         }
 
         token = NativeBinaryOperator.parse("%")
         XCTAssertNotNil(token)
         if let opr = token! as? NativeBinaryOperator {
             XCTAssertEqual(opr.identifier, "%")
-            XCTAssertEqual(opr.operatorType, .modulus)
+            XCTAssertEqual(opr, NativeBinaryOperator.modulus)
         }
 
         token = NativeBinaryOperator.parse("^")
         XCTAssertNotNil(token)
         if let opr = token! as? NativeBinaryOperator {
             XCTAssertEqual(opr.identifier, "^")
-            XCTAssertEqual(opr.operatorType, .pow)
+            XCTAssertEqual(opr, NativeBinaryOperator.pow)
         }
 
         token = NativeBinaryOperator.parse("")
