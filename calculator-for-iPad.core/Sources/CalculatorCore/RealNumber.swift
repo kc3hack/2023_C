@@ -6,7 +6,7 @@ public struct RealNumber: Number{
     public var tokenType: TokenType
     public var isInteger: Bool
     private let value: Decimal
-    private static let e: Decimal = Decimal(string: "2.71828182845904523536028747135266249776")!
+    //private static let e: Decimal = Decimal(string: "2.71828182845904523536028747135266249776")!
     private static let two_pi: Decimal = Decimal.pi * 2
     private static let pi_two: Decimal = Decimal.pi / 2
 
@@ -237,7 +237,9 @@ public struct RealNumber: Number{
     }
 
     public func ln(isExponents: Bool) -> Number {
-        var real: RealNumber = RealNumber(val: mylog(base: RealNumber.e, decimal: self.value))
+        let e: Decimal = Decimal(string: "2.71828182845904523536028747135266249776")!
+
+        var real: RealNumber = RealNumber(val: mylog(base: e, decimal: self.value))
         real.isInteger = checkInteger(decimal: real.value)
         return real
     }
@@ -303,6 +305,9 @@ public struct RealNumber: Number{
     }
 
     private func myexp(decimal: Decimal) -> Decimal{
+        let e: Decimal = Decimal(string: "2.71828182845904523536028747135266249776")!
+
+
         if decimal.isNaN { return Decimal.nan }
         else if decimal == 0 { return 1 }
         else if decimal < 0 { return 1 / myexp(decimal: -decimal) }
@@ -314,7 +319,7 @@ public struct RealNumber: Number{
         // Calculate Integer Part
         let intX: Int = (integer as NSNumber).intValue
         if !integer.isZero && intX == 0 { return Decimal.nan }
-        let intRes: Decimal = Foundation.pow(RealNumber.e, intX)
+        let intRes: Decimal = Foundation.pow(e, intX)
 
         // Calculate Decimal Part
         var coef: Decimal = decimal
