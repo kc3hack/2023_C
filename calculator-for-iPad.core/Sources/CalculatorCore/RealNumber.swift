@@ -1,7 +1,5 @@
 import Foundation
 
-// また、nanを表すpublicなstaticプロパティ用意してnanを返す時はそれを利用するようにしてください。
-
 public struct RealNumber: Number{
     public var tokenType: TokenType
     public var isInteger: Bool
@@ -68,7 +66,7 @@ public struct RealNumber: Number{
 
         let exp: Decimal = self.value
 
-        if dec.isNaN || exp.isNaN { return RealNumber(val: Decimal.nan) }
+        if dec.isNaN || exp.isNaN { return NanValue() }
         else if exp == 0 { 
             dec = 1
 
@@ -89,7 +87,7 @@ public struct RealNumber: Number{
 
         // Calculate Integer Part
         let intX: Int = (integer as NSNumber).intValue
-        if !integer.isZero && intX == 0 { return RealNumber(val: Decimal.nan) }
+        if !integer.isZero && intX == 0 { return NanValue() }
         let intRes: Decimal = Foundation.pow(dec, intX)
 
         // Calculate Decimal Part
@@ -127,9 +125,9 @@ public struct RealNumber: Number{
         var dec: Decimal     
         dec = self.value
 
-        if dec.isNaN || dec < 0 { return RealNumber(val: Decimal.nan) }
+        if dec.isNaN || dec < 0 { return NanValue() }
         let dbl: Double = (dec as NSNumber).doubleValue
-        if dbl.isNaN { return RealNumber(val: Decimal.nan) }
+        if dbl.isNaN { return NanValue() }
 
         let temp: Decimal = Decimal(Foundation.sqrt(dbl))
         dec = newton(f_df: {($0 * $0 - dec) / (2 * $0)}, estimate: temp)
@@ -242,7 +240,7 @@ public struct RealNumber: Number{
     public static func parse(_ source: String) -> Token? {
         let dec: Decimal? = Decimal(string: source)
         if dec == Decimal.nan{
-            return nil
+            return NanValue()
         }
         
         return RealNumber(val: dec!)
@@ -251,7 +249,7 @@ public struct RealNumber: Number{
     public static func deserialize(_ source: String) -> Token? {
         let dec: Decimal? = Decimal(string: source)
         if dec == Decimal.nan{
-            return nil
+            return NanValue()
         }
         
         return RealNumber(val: dec!)
