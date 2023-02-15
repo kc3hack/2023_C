@@ -1,94 +1,90 @@
 import Foundation
 
-public struct NumberReal: Number{
+// また、nanを表すpublicなstaticプロパティ用意してnanを返す時はそれを利用するようにしてください。
 
+public struct RealNumber: Number{
+    public var tokenType: TokenType
     public var isInteger: Bool
-    var value: Decimal
+    private let value: Decimal
     private static let e: Decimal = Decimal(string: "2.71828182845904523536028747135266249776")!
     private static let two_pi: Decimal = Decimal.pi * 2
     private static let pi_two: Decimal = Decimal.pi / 2
 
-    init() {
-        self.isInteger = false
-        self.value = 0
-    }
-
-
-    init(isExponents: Bool, val: Decimal) {
-        self.isInteger = isExponents
+    init(val: Decimal) {
         self.value = val
+        self.tokenType = TokenType.number
+
+        let dbl: Double = (val as NSNumber).doubleValue
+        let int: Double = Double(Int(dbl))
+        self.isInteger = dbl == int
     }
 
-
-    public func toReal() -> NumberReal{
+    public func toReal() -> RealNumber{
         return self
     }
 
-
     public func add(left: Number, isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-
-        real.value = self.value + left.toReal().value
+        var real: RealNumber = RealNumber(val: left.toReal().value + self.value )
+        real.isInteger = checkInteger(decimal: real.value)
         return real
     }
 
     public func substract(left: Number, isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-
-        real.value = self.value - left.toReal().value
+        var real: RealNumber = RealNumber(val: left.toReal().value - self.value )
+        real.isInteger = checkInteger(decimal: real.value )
         return real
     }
 
     public func multiply(left: Number, isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-
-        real.value =  mul(decimal: self.value, y: left.toReal().value)
+        var real: RealNumber = RealNumber(val: mul(decimal: left.toReal().value, y: self.value ))
+        real.isInteger = checkInteger(decimal: real.value )
         return real
     }
 
     public func divide(left: Number, isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-
-        real.value = self.value / left.toReal().value
+        var real: RealNumber = RealNumber(val: left.toReal().value / self.value )
+        real.isInteger = checkInteger(decimal: real.value )
         return real
     }
 
     public func modulus(left: Number, isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-
+        var dec: Decimal
+        
         //商の計算
-        real.value = self.value / left.toReal().value
+        dec = left.toReal().value / self.value 
         //real.valueをIntに変換
         var rounded: Decimal = Decimal()
-        NSDecimalRound(&rounded, &real.value, 0, .down)
+        NSDecimalRound(&rounded, &dec, 0, .down)
         let temp: Int = (rounded as NSDecimalNumber).intValue
         //余りの計算
-        real.value = Decimal(temp)
-        real.value = self.value - real.value * left.toReal().value
+        dec = Decimal(temp)
+        dec = left.toReal().value - self.value * dec
         
+        var real: RealNumber = RealNumber(val: dec )
+        real.isInteger = checkInteger(decimal: dec )
         return real
     }
 
     public func pow(left: Number, isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.value = self.value
-        real.isInteger = isExponents
-        let exp: Decimal = left.toReal().value
+        var dec: Decimal
+        dec = left.toReal().value
 
-        if real.value.isNaN || exp.isNaN { return Decimal.nan as! Number }
+        let exp: Decimal = self.value
+
+        if dec.isNaN || exp.isNaN { return Decimal.nan as! Number }
         else if exp == 0 { 
-            real.value = 1
+            dec = 1
+
+            var real: RealNumber = RealNumber(val: dec )
+            real.isInteger = checkInteger(decimal: dec )
             return  real
         }
         else if exp < 0 { 
             
-            let temp: Decimal = 1 / self.pow(left: NumberReal(isExponents: true, val: exp * -1), isExponents: true).toReal().value
-            real.value = temp
+            dec = 1 / left.pow(left: RealNumber(val: exp * -1), isExponents: true).toReal().value
+            
+            var real: RealNumber = RealNumber(val: dec )
+            real.isInteger = checkInteger(decimal: dec )
             return real
         }
 
@@ -99,61 +95,66 @@ public struct NumberReal: Number{
         // Calculate Integer Part
         let intX: Int = (integer as NSNumber).intValue
         if !integer.isZero && intX == 0 { return Decimal.nan as! Number }
-        let intRes: Decimal = Foundation.pow(real.value, intX)
+        let intRes: Decimal = Foundation.pow(dec, intX)
 
         // Calculate Decimal Part
         let temp: Decimal = ln(isExponents: isExponents).toReal().value
         let decRes: Decimal = myexp(decimal: (decimal * temp))
 
         // Merge
-        real.value = intRes * decRes
+        dec = intRes * decRes
+
+        var real: RealNumber = RealNumber(val: dec )
+        real.isInteger = checkInteger(decimal: dec )
         return real
     }
 
     public func negate(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-
-        real.value = self.value * -1
+        var dec: Decimal
         
+        dec = self.value * -1
+
+        var real: RealNumber = RealNumber(val: dec )
+        real.isInteger = checkInteger(decimal: dec )
         return real
     }
 
     public func abs(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
+        var dec: Decimal
+ 
+        dec = self.value
+        dec = dec < 0 ? -dec : dec
 
-        real.value = self.value
-        real.value = real.value < 0 ? -real.value : real.value
-
+        var real: RealNumber = RealNumber(val: dec )
+        real.isInteger = checkInteger(decimal: dec )
         return real
     }
 
     public func sqrt(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
+        var dec: Decimal     
+        dec = self.value
 
-        if real.value.isNaN || real.value < 0 { return Decimal.nan as! Number }
-
-        let dbl: Double = (real.value as NSNumber).doubleValue
-        if dbl.isNaN { return Decimal.nan as! Number }
+        if dec.isNaN || dec < 0 { return RealNumber(val: Decimal.nan) }
+        let dbl: Double = (dec as NSNumber).doubleValue
+        if dbl.isNaN { return RealNumber(val: Decimal.nan) }
 
         let temp: Decimal = Decimal(Foundation.sqrt(dbl))
-        real.value = newton(f_df: {($0 * $0 - real.value) / (2 * $0)}, estimate: temp)
+        dec = newton(f_df: {($0 * $0 - dec) / (2 * $0)}, estimate: temp)
+
+        var real: RealNumber = RealNumber(val: dec )
+        real.isInteger = checkInteger(decimal: dec)
         return real
     }
 
     public func sin(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
+        var dec: Decimal     
+        dec = self.value
 
-        var angle: Decimal = nomalizeRadian(decimal: real.value)
+        var angle: Decimal = nomalizeRadian(decimal: dec)
         var sign: Decimal = 1
-        if NumberReal.pi_two < angle && angle <= .pi { angle = Decimal.pi - angle }
-        else if Decimal.pi < angle && angle <= NumberReal.pi_two * 3 { angle -= Decimal.pi; sign = -1 }
-        else if NumberReal.pi_two * 3 < angle { angle = NumberReal.two_pi - angle; sign = -1 }
+        if RealNumber.pi_two < angle && angle <= .pi { angle = Decimal.pi - angle }
+        else if Decimal.pi < angle && angle <= RealNumber.pi_two * 3 { angle -= Decimal.pi; sign = -1 }
+        else if RealNumber.pi_two * 3 < angle { angle = RealNumber.two_pi - angle; sign = -1 }
 
         let square: Decimal = mul(decimal: angle,y: angle)
         var coef: Decimal = angle
@@ -164,20 +165,22 @@ public struct NumberReal: Number{
             coefs.append(coef)
         }
         let res: Decimal = coefs.reversed().reduce(0, { $0 + $1 })
-        real.value =  res * sign
+        dec =  res * sign
+
+        var real: RealNumber = RealNumber(val: dec)
+        real.isInteger = checkInteger(decimal: dec)
         return real
     }
 
     public func cos(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
+        var dec: Decimal     
+        dec = self.value
 
-        var angle: Decimal = nomalizeRadian(decimal: real.value)
+        var angle: Decimal = nomalizeRadian(decimal: dec)
         var sign: Decimal = 1
-        if NumberReal.pi_two < angle && angle <= Decimal.pi { angle = Decimal.pi - angle; sign = -1 }
-        else if Decimal.pi < angle && angle <= NumberReal.pi_two * 3 { angle -= Decimal.pi; sign = -1 }
-        else if NumberReal.pi_two * 3 < angle { angle = NumberReal.two_pi - angle}
+        if RealNumber.pi_two < angle && angle <= Decimal.pi { angle = Decimal.pi - angle; sign = -1 }
+        else if Decimal.pi < angle && angle <= RealNumber.pi_two * 3 { angle -= Decimal.pi; sign = -1 }
+        else if RealNumber.pi_two * 3 < angle { angle = RealNumber.two_pi - angle}
 
         let square: Decimal = mul(decimal: angle,y: angle)
         var coef: Decimal = 1
@@ -188,66 +191,91 @@ public struct NumberReal: Number{
             coefs.append(coef)
         }
         let res: Decimal = coefs.reversed().reduce(0, { $0 + $1 })
-        real.value =  res * sign
+        dec =  res * sign
+
+        var real: RealNumber = RealNumber(val: dec)
+        real.isInteger = checkInteger(decimal: dec)
         return real
     }
 
     public func tan(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
+        var real: RealNumber = RealNumber(val: self.value)
+        var dec: Decimal
 
-        real.value = real.sin(isExponents: isExponents).toReal().value / real.cos(isExponents: isExponents).toReal().value
+        dec = real.sin(isExponents: isExponents).toReal().value / real.cos(isExponents: isExponents).toReal().value
 
+        real = RealNumber(val: dec)
+        real.isInteger = checkInteger(decimal: real.value)
         return real
     }
 
     public func arcsin(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
-
         let dbl: Double = (self.value as NSNumber).doubleValue
-        real.value = Decimal(Foundation.asin(dbl))
+        var real: RealNumber = RealNumber( val: Decimal(Foundation.asin(dbl)))
+        real.isInteger = checkInteger(decimal: real.value)
         return real
     }
 
     public func arccos(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
-
-        let dbl: Double = (real.value as NSNumber).doubleValue
-        real.value = Decimal(Foundation.acos(dbl))
+        let dbl: Double = (self.value as NSNumber).doubleValue
+        var real: RealNumber = RealNumber( val: Decimal(Foundation.acos(dbl)))
+        real.isInteger = checkInteger(decimal: real.value)
         return real
     }
 
     public func arctan(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
-
         let dbl: Double = (self.value as NSNumber).doubleValue
-        real.value = Decimal(Foundation.atan(dbl))
+        var real: RealNumber = RealNumber( val: Decimal(Foundation.atan(dbl)))
+        real.isInteger = checkInteger(decimal: real.value)
         return real
     }
  
     public func log(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
-
-        real.value = mylog(base: 10, decimal: self.value)
+        var real: RealNumber = RealNumber(val: mylog(base: 10, decimal: self.value))
+        real.isInteger = checkInteger(decimal: real.value)
         return real
     }
 
     public func ln(isExponents: Bool) -> Number {
-        var real: NumberReal = NumberReal()
-        real.isInteger = isExponents
-        real.value = self.value
-
-        real.value = mylog(base: NumberReal.e, decimal: self.value)
+        var real: RealNumber = RealNumber(val: mylog(base: RealNumber.e, decimal: self.value))
+        real.isInteger = checkInteger(decimal: real.value)
         return real
+    }
+
+    public static func parse(_ source: String) -> Token? {
+        let myDouble: Double = (source as NSString).doubleValue
+        if Double(source) == nil{
+            return nil
+        }
+        
+        return RealNumber(val: Decimal( myDouble))
+    }
+
+    public static func deserialize(_ source: String) -> Token? {
+        let myDouble: Double = (source as NSString).doubleValue
+        if Double(source) == nil{
+            return nil
+        }
+        
+        return RealNumber(val: Decimal( myDouble))
+    }
+
+    public func toDisplayString() -> String {
+        let dbl: Double = (self.value as NSNumber).doubleValue
+        let str: String = String(dbl)
+        return str
+    }
+
+    public func serialize() -> String {
+        let dbl: Double = (self.value as NSNumber).doubleValue
+        let str: String = String(dbl)
+        return str
+    }
+
+    private func checkInteger(decimal: Decimal) -> Bool{
+        let dbl: Double = (decimal as NSNumber).doubleValue
+        let int: Double = Double(Int(dbl))
+        return dbl == int
     }
 
     private func abso(decimal: Decimal)-> Decimal{
@@ -286,7 +314,7 @@ public struct NumberReal: Number{
         // Calculate Integer Part
         let intX: Int = (integer as NSNumber).intValue
         if !integer.isZero && intX == 0 { return Decimal.nan }
-        let intRes: Decimal = Foundation.pow(NumberReal.e, intX)
+        let intRes: Decimal = Foundation.pow(RealNumber.e, intX)
 
         // Calculate Decimal Part
         var coef: Decimal = decimal
