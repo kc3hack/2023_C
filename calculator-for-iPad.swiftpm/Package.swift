@@ -17,7 +17,6 @@ let package = Package(
             name: "calculator-for-iPad",
             targets: ["AppModule"],
             bundleIdentifier: "com.KC3-2023-C.calculator-for-iPad",
-            teamIdentifier: "",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .pencil),
@@ -32,12 +31,23 @@ let package = Package(
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ]
-        )
+        ),
+        
+    ],
+
+    dependencies : [
+        .package(path: "../calculator-for-iPad.core")
     ],
     targets: [
-        .executableTarget(
-            name: "AppModule",
-            path: "."
-        )
-    ]
+            .executableTarget(
+                name: "AppModule",
+                dependencies: [
+                    .product(
+                        name: "CalculatorCore",
+                        package: "calculator-for-iPad.core"
+                    )
+                ],
+                path: "."
+            )
+        ]
 )
