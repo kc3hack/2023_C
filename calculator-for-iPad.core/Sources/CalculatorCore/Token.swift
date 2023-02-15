@@ -49,9 +49,8 @@ private func toToken(words: String) -> [String] {
     }
 
     while(words.count > 0) {
-        var sub: String
-
         //文字列の先頭から順番に1文字ずつ数字かどうか調べる
+        var sub: String //着目している文字
         for i: Int in 0 ..< words.count {
             let start: Int = i
             let end: Int = i + 1
@@ -61,6 +60,8 @@ private func toToken(words: String) -> [String] {
 
             if(isNumeric(sub)) {
                 result.append(sub)
+            }else if(sub == "." && (result.firstIndex(of: ".") == nil)) {
+                result.append(".")
             }
         }
     }
@@ -72,7 +73,7 @@ struct hoge: Token {
 
     static func Parse(_ source: String) -> Token? {
         
-            return Token
+            return ""
         
             return nil
     }
