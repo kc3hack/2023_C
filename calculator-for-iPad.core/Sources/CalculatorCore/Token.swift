@@ -37,7 +37,8 @@ extension String {
 
 /*受け取った文字列をトークンに分解して、一つの配列に格納して返す*/
 private func toToken(words: String) -> [String] {
-    var result: [String]
+    var token: String
+    var tokenList: [String]
 
     //文字列に対する数値判定メソッド
     func isNumeric(_ word: String) -> Bool {
@@ -52,6 +53,7 @@ private func toToken(words: String) -> [String] {
         //文字列の先頭から順番に1文字ずつ数字かどうか調べる
         var sub: String //着目している文字
         for i: Int in 0 ..< words.count {
+            token = ""
             //着目する文字を抜き出す
             let start: Int = i
             let end: Int = i + 1
@@ -60,13 +62,23 @@ private func toToken(words: String) -> [String] {
             sub = String(words[startIdx..<endIdx])
 
             if(isNumeric(sub)) { //数字が来たら
-                result.append(sub)
-            }else if(sub == "." && (result.firstIndex(of: ".") == nil)) { //小数点が来たら
-                result.append(".")
+                token += sub
+            }else if(sub == "." && (tokenList.firstIndex(of: ".") == nil)) { //小数点が来たら
+                token += sub
+            }
+            
+            if(token != "") { //Todo: 一旦書き出してトークンをリセットしたい(下コード要修正)
+                tokenList.append(token)
+                continue
+            }
+            
+            if(sub == "+" && sub == "-" && sub == "*" && sub == "/" && sub == "(" && sub == ")") { //演算子系が来たら
+                
             }
         }
+        tokenList.append(token) //ここで一つのトークンとして配列に書き出し
     }
-    return result
+    return tokenList
 }
 
 struct hoge: Token {
