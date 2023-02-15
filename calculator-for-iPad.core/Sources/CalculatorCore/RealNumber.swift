@@ -68,7 +68,7 @@ public struct RealNumber: Number{
 
         let exp: Decimal = self.value
 
-        if dec.isNaN || exp.isNaN { return Decimal.nan as! Number }
+        if dec.isNaN || exp.isNaN { return RealNumber(val: Decimal.nan) }
         else if exp == 0 { 
             dec = 1
 
@@ -89,7 +89,7 @@ public struct RealNumber: Number{
 
         // Calculate Integer Part
         let intX: Int = (integer as NSNumber).intValue
-        if !integer.isZero && intX == 0 { return Decimal.nan as! Number }
+        if !integer.isZero && intX == 0 { return RealNumber(val: Decimal.nan) }
         let intRes: Decimal = Foundation.pow(dec, intX)
 
         // Calculate Decimal Part
