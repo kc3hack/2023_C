@@ -35,9 +35,9 @@ extension String {
     
 }
 
-/*受け取った文字列をトークンに分解する*/
-private func toToken(words: String) -> String {
-    var result: String = ""
+/*受け取った文字列をトークンに分解して、一つの配列に格納して返す*/
+private func toToken(words: String) -> [String] {
+    var result: [String]
 
     //文字列に対する数値判定メソッド
     func isNumeric(_ word: String) -> Bool {
@@ -49,7 +49,7 @@ private func toToken(words: String) -> String {
     }
 
     while(words.count > 0) {
-        var sub: String = ""
+        var sub: String
 
         //文字列の先頭から順番に1文字ずつ数字かどうか調べる
         for i: Int in 0 ..< words.count {
@@ -60,7 +60,7 @@ private func toToken(words: String) -> String {
             sub = String(words[startIdx..<endIdx])
 
             if(isNumeric(sub)) {
-                result += sub
+                result.append(sub)
             }
         }
     }
