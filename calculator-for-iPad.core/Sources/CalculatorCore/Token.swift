@@ -52,6 +52,7 @@ private func toToken(words: String) -> [String] {
         //文字列の先頭から順番に1文字ずつ数字かどうか調べる
         var sub: String //着目している文字
         for i: Int in 0 ..< words.count {
+            //着目する文字を抜き出す
             let start: Int = i
             let end: Int = i + 1
             let startIdx = words.index(words.startIndex, offsetBy: start, limitedBy: words.endIndex) ?? words.endIndex
