@@ -240,21 +240,21 @@ public struct RealNumber: Number{
     }
 
     public static func parse(_ source: String) -> Token? {
-        let myDouble: Double = (source as NSString).doubleValue
-        if Double(source) == nil{
+        let dec: Decimal? = Decimal(string: source)
+        if dec == Decimal.nan{
             return nil
         }
         
-        return RealNumber(val: Decimal( myDouble))
+        return RealNumber(val: dec!)
     }
 
     public static func deserialize(_ source: String) -> Token? {
-        let myDouble: Double = (source as NSString).doubleValue
-        if Double(source) == nil{
+        let dec: Decimal? = Decimal(string: source)
+        if dec == Decimal.nan{
             return nil
         }
         
-        return RealNumber(val: Decimal( myDouble))
+        return RealNumber(val: dec!)
     }
 
     public func toDisplayString() -> String {

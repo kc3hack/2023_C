@@ -12,8 +12,6 @@ final class _023_CTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        var temp: _023_C = _023_C();
-        XCTAssertEqual(temp.text, "Hello, World!")
 
     }
 }
