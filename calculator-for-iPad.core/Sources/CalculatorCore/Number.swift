@@ -1,4 +1,4 @@
-public protocol Number{
+public protocol Number: Token{
     var isInteger: Bool { get }
 
     func toReal() -> NumberReal

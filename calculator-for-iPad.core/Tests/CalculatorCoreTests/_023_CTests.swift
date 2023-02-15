@@ -1,5 +1,5 @@
 import XCTest
-@testable import _023_C
+@testable import CalculatorCore
 
 struct aaa{
     var a: Int
@@ -12,7 +12,7 @@ final class _023_CTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(_023_C().text, "Hello, World!")
-
+        var temp = _023_C();
+        XCTAssertEqual(temp.text, "Hello, World!")
     }
 }
