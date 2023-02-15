@@ -230,35 +230,6 @@ public struct NumberReal: Number{
         let dbl: Double = (self.value as NSNumber).doubleValue
         real.value = Decimal(Foundation.atan(dbl))
         return real
-        // if real.value == 0 { 
-        //     real.value = 0
-        //     return real
-        // }
-        // else if real.value.isNaN { 
-        //     real.value = Decimal.nan
-        //     return real 
-        // }
-
-        // let dbl: Double = (real.value as NSNumber).doubleValue
-        // if dbl.isNaN { 
-        //     real.value = Decimal.nan
-        //     return real 
-        // }
-
-        // let aTan: Decimal = Decimal(Foundation.atan(dbl))
-        // let temp: Decimal = newton(f_df: { 
-        //     (result: Decimal) -> Decimal in
-        //     let cosValue: Decimal = NumberReal(isExponents: true, val: result).cos(isExponents: true).toReal().value
-        //     , sinValue: Decimal = NumberReal(isExponents: true, val: result).sin(isExponents: true).toReal().value
-        //     return (sinValue / cosValue - real.value) * mul(decimal: cosValue, y: cosValue)
-        // }, estimate: aTan)
-
-        // // real.value = temp
-        // print(Foundation.atan(dbl))
-
-        // real.value = myatan()
-       
-        
     }
  
     public func log(isExponents: Bool) -> Number {
@@ -385,74 +356,4 @@ public struct NumberReal: Number{
             result = next
         }
     }
-    // //////////////////////////////////
-    // private func myatan() ->  Decimal {
-    //     // if decimal == 0 { return 0 }
-    //     // else if decimal.isNaN { return .nan }
-
-    //     // let dbl: Double = (decimal as NSNumber).doubleValue
-    //     // if dbl.isNaN { return .nan }
-
-    //     // return newton(f_df: { (result) -> Decimal in
-    //     //     let decimaltemp: NumberReal = NumberReal(isExponents: true, val: result) 
-    //     //     let cosValue: Decimal = decimaltemp.cos(isExponents: true).toReal().value
-    //     //     let sinValue: Decimal = decimaltemp.sin(isExponents: true).toReal().value
-    //     //     return (sinValue / cosValue - decimal) * mul(decimal: cosValue, y: cosValue)
-    //     // }, estimate: Decimal(Foundation.atan(dbl)))
-
-    //     if self.value == 0 { return 0 }
-    //     else if self.value.isNaN { return .nan }
-
-    //     let dbl: Double = (self.value as NSNumber).doubleValue
-    //     if dbl.isNaN { return .nan }
-
-    //     return newton(f_df: { (result) -> Decimal in
-    //         let cosValue = self.cos(isExponents: true).toReal().value, sinValue = self.sin(isExponents: true).toReal().value
-    //         return (sinValue / cosValue - self.value) * mul(decimal: cosValue, y: cosValue)
-    //     }, estimate: Decimal(Foundation.atan(dbl)))
-    // }
-    // //////////////////////////////////
-    // private func mysin(decimal: Decimal) -> Decimal {
-    //     var real: NumberReal = NumberReal()
-    //     real.value = decimal
-
-    //     var angle: Decimal = nomalizeRadian(decimal: real.value)
-    //     var sign: Decimal = 1
-    //     if NumberReal.pi_two < angle && angle <= .pi { angle = Decimal.pi - angle }
-    //     else if Decimal.pi < angle && angle <= NumberReal.pi_two * 3 { angle -= Decimal.pi; sign = -1 }
-    //     else if NumberReal.pi_two * 3 < angle { angle = NumberReal.two_pi - angle; sign = -1 }
-
-    //     let square: Decimal = mul(decimal: angle,y: angle)
-    //     var coef: Decimal = angle
-    //     var coefs: [Decimal] = [coef]
-    //     for i: Int in 1...19 {
-    //         coef = mul(decimal: coef,y: -square / Decimal(2 * i * (2 * i + 1)))
-    //         if coef.isNaN { break }
-    //         coefs.append(coef)
-    //     }
-    //     let res: Decimal = coefs.reversed().reduce(0, { $0 + $1 })
-    //     return res * sign
-    // }
-
-    // private func mycos(decimal: Decimal) -> Decimal {
-    //     var real: NumberReal = NumberReal()
-    //     real.value = decimal
-
-    //     var angle: Decimal = nomalizeRadian(decimal: real.value)
-    //     var sign: Decimal = 1
-    //     if NumberReal.pi_two < angle && angle <= Decimal.pi { angle = Decimal.pi - angle; sign = -1 }
-    //     else if Decimal.pi < angle && angle <= NumberReal.pi_two * 3 { angle -= Decimal.pi; sign = -1 }
-    //     else if NumberReal.pi_two * 3 < angle { angle = NumberReal.two_pi - angle}
-
-    //     let square: Decimal = mul(decimal: angle,y: angle)
-    //     var coef: Decimal = 1
-    //     var coefs: [Decimal] = [coef]
-    //     for i: Int in 1...19 {
-    //         coef = mul(decimal: coef,y: -square / Decimal((2 * i - 1) * 2 * i))
-    //         if coef.isNaN { break }
-    //         coefs.append(coef)
-    //     }
-    //     let res: Decimal = coefs.reversed().reduce(0, { $0 + $1 })
-    //     return res * sign
-    // }
 }
