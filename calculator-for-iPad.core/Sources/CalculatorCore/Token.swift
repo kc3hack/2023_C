@@ -28,3 +28,27 @@ public enum TokenType {
     case binaryOperator
     case customArgument
 }
+
+struct hoge: Token {
+    var tokenType: TokenType
+
+    static func Parse(_ source: String) -> Token? {
+        do {
+            return TokenType(source)
+        }catch {
+            return nil
+        }
+    }
+
+    static func Deserialize(_ source: String) -> Token? {
+
+    }
+
+    func ToDisplayString() -> String {
+    
+    }
+
+    func Serialize() -> String {
+    
+    }
+}
