@@ -9,7 +9,7 @@ public struct Expression {
         result = nil
     }
 
-    public mutating func execute() -> Number? {
+    public mutating func execute() -> Number {
         if let result {
             return result
         }
@@ -20,26 +20,30 @@ public struct Expression {
             let first: Token? = tokens.removeFirst()
             
             guard let first else {
-                return nil
+                result = NanValue()
+                return result
             }
 
             switch first.tokenType {
                 case .number:
                     guard let num = first as? Number else {
-                        return nil
+                        result = NanValue()
+                        return result
                     }
                     tempNumbers.append(num)
                 case .unaryOperator:
                     let value = tempNumbers.popLast()
                     guard let opr = first as? UnaryOperator, let value else {
-                        return nil
+                        result = NanValue()
+                        return result
                     }
                     tempNumbers.append(opr.execute(value: value, isExponents: exponentsRank != 0))
                 case .binaryOperator:
                     let left = tempNumbers.popLast()
                     let right = tempNumbers.popLast()
                     guard let opr = first as? BinaryOperator, let right, let left else {
-                        return nil
+                        result = NanValue()
+                        return result
                     }
                     if let nopr = opr as? NativeBinaryOperator, nopr.operatorType == .pow {
                         tempNumbers.append(nopr.execute(left: left, right: right.toReal(), isExponents: false))
@@ -47,7 +51,8 @@ public struct Expression {
                         tempNumbers.append(opr.execute(left: left, right: right, isExponents: false))
                     }
                 case .customArgument:
-                    return nil
+                    result = NanValue()
+                    return result
             }
         }
 
@@ -55,7 +60,8 @@ public struct Expression {
             result = tempNumbers[0]
             return result
         } else {
-            return nil
+            result = NanValue()
+            return result
         }
     }
 }
