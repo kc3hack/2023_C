@@ -1,3 +1,5 @@
+import Foundation
+
 public protocol Token {
     /// トークンの型
     var tokenType: TokenType { get }
@@ -29,15 +31,50 @@ public enum TokenType {
     case customArgument
 }
 
+extension String {
+    
+}
+
+/*受け取った文字列をトークンに分解する*/
+private func toToken(words: String) -> String {
+    var result: String = ""
+
+    //文字列に対する数値判定メソッド
+    func isNumeric(_ word: String) -> Bool {
+        if(Int(word) == nil) {
+            return true
+        }else {
+            return false
+        }
+    }
+
+    while(words.count > 0) {
+        var sub: String = ""
+
+        //文字列の先頭から順番に1文字ずつ数字かどうか調べる
+        for i: Int in 0 ..< words.count {
+            let start: Int = i
+            let end: Int = i + 1
+            let startIdx = words.index(words.startIndex, offsetBy: start, limitedBy: words.endIndex) ?? words.endIndex
+            let endIdx = words.index(words.startIndex, offsetBy: end + 1, limitedBy: words.endIndex) ?? words.endIndex
+            sub = String(words[startIdx..<endIdx])
+
+            if(isNumeric(sub)) {
+                result += sub
+            }
+        }
+    }
+    return result
+}
+
 struct hoge: Token {
     var tokenType: TokenType
 
     static func Parse(_ source: String) -> Token? {
-        do {
-            return TokenType(source)
-        }catch {
+        
+            return Token
+        
             return nil
-        }
     }
 
     static func Deserialize(_ source: String) -> Token? {
@@ -45,10 +82,14 @@ struct hoge: Token {
     }
 
     func ToDisplayString() -> String {
-    
+        var displayString: String
+
+        return displayString
     }
 
     func Serialize() -> String {
-    
+        var serializedString: String
+
+        return serializedString
     }
 }
