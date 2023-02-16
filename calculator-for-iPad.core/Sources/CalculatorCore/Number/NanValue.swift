@@ -1,9 +1,10 @@
 public struct NanValue: Number {
+    
     public let tokenType: TokenType = .number
     public var isInteger: Bool = false
 
-    public func toReal() -> Number {
-        return self
+    public func toReal() -> RealNumber {
+        return RealNumber(val: .nan)
     }
 
     public func add(left: Number, isExponents: Bool) -> Number {
