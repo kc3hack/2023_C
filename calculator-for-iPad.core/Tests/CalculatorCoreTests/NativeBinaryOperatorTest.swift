@@ -16,7 +16,7 @@ public final class NativeBinaryOperatorTest: XCTestCase {
         XCTAssertEqual(opr.identifier, "/")
 
         opr = NativeBinaryOperator.modulus
-        XCTAssertEqual(opr.identifier, "%")
+        XCTAssertEqual(opr.identifier, "mod")
 
         opr = NativeBinaryOperator.pow
         XCTAssertEqual(opr.identifier, "^")
@@ -86,10 +86,10 @@ public final class NativeBinaryOperatorTest: XCTestCase {
             XCTAssertEqual(opr, NativeBinaryOperator.divide)
         }
 
-        token = NativeBinaryOperator.parse("%")
+        token = NativeBinaryOperator.parse("mod")
         XCTAssertNotNil(token)
         if let opr = token! as? NativeBinaryOperator {
-            XCTAssertEqual(opr.identifier, "%")
+            XCTAssertEqual(opr.identifier, "mod")
             XCTAssertEqual(opr, NativeBinaryOperator.modulus)
         }
 
