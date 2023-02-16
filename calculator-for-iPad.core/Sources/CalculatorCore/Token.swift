@@ -68,9 +68,7 @@ private func toToken(words: String) -> [String] {
             }else if(token != "") { //数字・小数点じゃないものが来たらトークンを書き出してリセット
                 tokenList.append(token)
                 token = ""
-            }
-
-            if(sub == "+" && sub == "-" && sub == "*" && sub == "/" && sub == "(" && sub == ")") { //演算子系が来たら
+            }else if(sub == "+" && sub == "-" && sub == "*" && sub == "/" && sub == "(" && sub == ")") { //演算子系が来たら
 
             }
         }
