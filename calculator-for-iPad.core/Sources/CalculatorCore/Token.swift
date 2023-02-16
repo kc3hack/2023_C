@@ -75,7 +75,7 @@ private func toToken(words: String) -> [String] {
                 }
             }
         }
-        /*tokenList.append(token) //ここで一つのトークンとして配列に書き出し*/
+        tokenList.append(token) //一つのトークンとして配列に書き出し
     }
     if(tokenList.count > 0) {
         return tokenList
