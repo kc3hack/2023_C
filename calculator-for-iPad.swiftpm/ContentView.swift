@@ -4,28 +4,30 @@ import CalculatorCore
 struct ContentView: View {
     @State private var expr = ""
     @State private var expr_pointer: Int = 0
+    @State private var results: [String] = []
     
     var body: some View {
         GeometryReader { geometry in
             //もし横長モードなら右側に計算用テンキー(右利き優位なので設定で左に変えれたら便利)
             if(1000<geometry.size.width){
                 HStack{
-                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer)
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_results: get_results)
                     ControllerView(onclick_closure: onckick)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
             }
             else if(geometry.size.width < 400){
                 VStack{
-                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer)
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_results: get_results)
                     OtherKeys(onclick_closure: onckick)
                     MainKeys(onclick_closure: onckick)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
             }
             else{
                 VStack{
-                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer)
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_results: get_results)
                     ControllerView(onclick_closure: onckick)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
+                
             }
         }
     }
@@ -45,8 +47,6 @@ struct ContentView: View {
         var to_be_added: String
         
         switch push_char {
-        case "÷":
-            to_be_added="/"
         case "mod":
             fallthrough
         case "sin":
@@ -94,7 +94,15 @@ struct ContentView: View {
         }
     }
     
+    func get_results()->[String]{
+        return results
+    }
+    
     func call()->Void{
+        let expr_raw = expr
+        
+        print(expr.replacingOccurrences(of: "÷", with: "/"))
         //PCalculatorService.calculate(expr)
+        results.append(expr_raw+"="+"result")
     }
 }

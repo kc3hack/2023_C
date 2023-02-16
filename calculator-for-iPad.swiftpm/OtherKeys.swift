@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OtherKeys: View {
     let onclick_closure: (String)->Void
+    let font_size: CGFloat = 36
     // keyとactionの対応させたもの
     private let key_array = [
         ["()",",","^"],
@@ -33,7 +34,7 @@ struct OtherKeys: View {
                             onckick(push_char: key_char)
                         }){
                             Text(key_char)
-                                .font(.system(size: 48))
+                                .font(.system(size: font_size))
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
