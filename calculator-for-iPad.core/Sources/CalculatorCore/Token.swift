@@ -65,16 +65,25 @@ private func toToken(words: String) -> [String] {
                 token += sub
             }else if(sub == "." && (tokenList.firstIndex(of: ".") == nil)) { //小数点が来たら
                 token += sub
-            }else if(token != "") { //数字・小数点じゃないものが来たらトークンを書き出してリセット
-                tokenList.append(token)
-                token = ""
-            }else if(sub == "+" && sub == "-" && sub == "*" && sub == "/" && sub == "(" && sub == ")") { //演算子系が来たら
-
+            }else {
+                if(token != "") { //数字・小数点じゃないものが来たらトークンを書き出してリセット
+                    tokenList.append(token)
+                    token = ""
+                }else if(sub == "+" && sub == "-" && sub == "*" && sub == "/" && sub == "^" && sub == "√" && sub == ")" && sub == ")") { //演算子系が来たら
+                    tokenList.append(token)
+                    token = ""
+                }
             }
         }
-        tokenList.append(token) //ここで一つのトークンとして配列に書き出し
+        /*tokenList.append(token) //ここで一つのトークンとして配列に書き出し*/
     }
-    return tokenList
+    if(tokenList.count > 0) {
+        return tokenList
+    /*
+    }else {
+        return nil
+    */
+    }
 }
 
 struct hoge: Token {
