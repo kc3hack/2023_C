@@ -42,6 +42,29 @@ struct ContentView: View {
         let before_pointer = String(expr.prefix(expr_pointer))
         let after_pointer = String(expr.suffix(expr.unicodeScalars.count - expr_pointer))
         
+        var to_be_added: String
+        
+        switch push_char {
+        case "÷":
+            to_be_added="/"
+        case "mod":
+            fallthrough
+        case "sin":
+            fallthrough
+        case "cos":
+            fallthrough
+        case "tan":
+            fallthrough
+        case "logE":
+            fallthrough
+        case "log2":
+            fallthrough
+        case "log10":
+            to_be_added = push_char + "()"
+        default:
+            to_be_added = push_char
+        }
+        
         // =が押されたら式を評価するけど、ちょっと記憶をどうするかを考える
         if(push_char=="="){
             call()
@@ -66,12 +89,12 @@ struct ContentView: View {
             expr_pointer = expr_pointer==expr.unicodeScalars.count ? expr_pointer : expr_pointer+1
         }
         else{
-            expr = before_pointer + push_char + after_pointer
-            expr_pointer += push_char.unicodeScalars.count
+            expr = before_pointer + to_be_added + after_pointer
+            expr_pointer += to_be_added.unicodeScalars.count
         }
     }
     
     func call()->Void{
-        //Token.parse(expr)
+        //PCalculatorService.calculate(expr)
     }
 }

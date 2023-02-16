@@ -18,10 +18,13 @@ struct DisplayView: View {
                 let expr = get_expr_closure()
                 let expr_pointer = get_expr_pointer_closure()
                 ZStack(alignment: .leading){
-
-                    Text(expr).font(.system(size: 48, design: .monospaced))
-                    Text(expr.prefix(expr_pointer)).font(.system(size: 48, design: .monospaced)).foregroundColor(Color.clear)+Text("|").font(.system(size: 48)).foregroundColor(Color.blue)
-                    
+                    Text(" ").font(.system(size: 12,design: .monospaced))+Text(expr).font(.system(size: 48, design: .monospaced))+Text("|").font(.system(size: 48)).foregroundColor(Color.clear)
+                    if(expr_pointer==0){
+                        Text("|").font(.system(size: 48)).foregroundColor(Color.blue)
+                    }
+                    else{
+                        Text(" ").font(.system(size: 12,design: .monospaced))+Text(expr.prefix(expr_pointer-1)).font(.system(size: 48, design: .monospaced)).foregroundColor(Color.clear)+Text(" ").font(.system(size: 42,design: .monospaced))+Text("|").font(.system(size: 48)).foregroundColor(Color.blue)
+                    }
                 }.padding(.all,20)
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
         }

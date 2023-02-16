@@ -11,15 +11,12 @@ struct OtherKeys: View {
     let onclick_closure: (String)->Void
     // keyとactionの対応させたもの
     private let key_array = [
-        ["()"],
-        [",","^","e","π"],
-        ["mod()"],
-        ["sin()"],
-        ["cos()"],
-        ["tan()"],
-        ["logE()"],
-        ["log2()"],
-        ["log10()"],
+        ["()",",","^"],
+        ["e","π"],
+        ["mod","sin"],
+        ["cos","tan"],
+        ["logE","log2"],
+        ["log10"],
     ]
     
     var body: some View {
