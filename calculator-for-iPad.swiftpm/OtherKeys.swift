@@ -11,11 +11,19 @@ struct OtherKeys: View {
     let onclick_closure: (String)->Void
     // keyとactionの対応させたもの
     private let key_array = [
-        ["sin()","cos()","tan()"],
+        ["()"],
+        [",","^","e","π"],
+        ["mod()"],
+        ["sin()"],
+        ["cos()"],
+        ["tan()"],
+        ["logE()"],
+        ["log2()"],
+        ["log10()"],
     ]
     
     var body: some View {
-        VStack{
+        ScrollView() {
             ForEach((0...(key_array.count-1)),id: \.self){
                 index_r in
                 let main_key_array_row = key_array[index_r]
@@ -32,10 +40,13 @@ struct OtherKeys: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.cyan)
+                            .background(Color(red:0.8, green:0.8, blue:0.8))
                             .foregroundColor(Color.black)
+                            .cornerRadius(10)
+                            .shadow(radius: 2)
                     }
                 }
+                
             }
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }

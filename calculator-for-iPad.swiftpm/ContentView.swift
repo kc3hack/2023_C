@@ -1,4 +1,5 @@
 import SwiftUI
+import CalculatorCore
 
 struct ContentView: View {
     @State private var expr = ""
@@ -7,10 +8,17 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             //もし横長モードなら右側に計算用テンキー(右利き優位なので設定で左に変えれたら便利)
-            if(geometry.size.width>1000){
+            if(1000<geometry.size.width){
                 HStack{
                     DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer)
                     ControllerView(onclick_closure: onckick)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            else if(geometry.size.width < 400){
+                VStack{
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer)
+                    OtherKeys(onclick_closure: onckick)
+                    MainKeys(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             else{
@@ -44,6 +52,13 @@ struct ContentView: View {
             expr = ""
             expr_pointer = 0
         }
+        else if(push_char=="BS"){
+            //BSが文字として追加されないようにBSは問答無用でここに入る
+            if(0<expr_pointer){
+                expr = expr.prefix(expr_pointer-1) + after_pointer
+                expr_pointer -= 1
+            }
+        }
         else if(push_char=="◀︎"){
             expr_pointer = expr_pointer==0 ? 0 : expr_pointer-1
         }
@@ -57,6 +72,6 @@ struct ContentView: View {
     }
     
     func call()->Void{
-        //calc(expr)
+        //Token.parse(expr)
     }
 }

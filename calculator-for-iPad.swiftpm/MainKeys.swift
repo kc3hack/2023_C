@@ -11,7 +11,7 @@ struct MainKeys: View {
     let onclick_closure: (String)->Void
     // keyとactionの対応させたもの
     private let key_array = [
-        ["AC","◀︎","▶︎",],
+        ["AC","BS","◀︎","▶︎",],
         ["7","8","9","+",],
         ["4","5","6","-",],
         ["1","2","3","×",],
@@ -36,8 +36,10 @@ struct MainKeys: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.cyan)
+                            .background(Color(red:0.8, green:0.8, blue:0.8))
                             .foregroundColor(Color.black)
+                            .cornerRadius(10)
+                            .shadow(radius: 2)
                     }
                 }
             }

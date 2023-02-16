@@ -12,7 +12,8 @@ struct ControllerView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            if(geometry.size.width<360||1000<geometry.size.width){
+            //ここら辺の数字がマジックナンバーになてしまってる。
+            if(geometry.size.width < 600){
                 VStack
                 {
                     OtherKeys(onclick_closure: onclick_closure)
