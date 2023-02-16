@@ -4,28 +4,18 @@
 
 ## チーム名
 
-<!-- チームIDとチーム名を入力 -->
-
-チーム○_XXXX
-
+チームC アモルファス
 
 ## プロダクト名
 
-<!-- プロダクト名を入力 -->
-
+Calculator for iPad
 
 ## プロダクト説明
 
-<!-- プロダクトの説明を入力 -->
-
+iPadに最適化された電卓です。
 
 ## 使用技術
 
-<!-- 使用技術を入力 -->
-
-
-
-<!--
-markdownの記法はこちらを参照してください！
-https://docs.github.com/ja/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
--->
+- Swift
+  - SwiftUI
+  - Swinject
