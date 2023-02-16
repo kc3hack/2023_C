@@ -18,12 +18,12 @@ internal enum NativeBinaryOperator: BinaryOperator {
             case .divide:
                 return "/"
             case .modulus:
-                return "%"
+                return "mod"
             case .pow:
                 return "^"
         }
     }
-    public static let identifiers: [String] = ["+", "-", "*", "/", "%", "^"]
+    public static let identifiers: [String] = ["+", "-", "*", "/", "mod", "^"]
     
     public func execute(left: Number, right: Number, isExponents: Bool) -> Number {
         switch self {
@@ -52,7 +52,7 @@ internal enum NativeBinaryOperator: BinaryOperator {
                 return NativeBinaryOperator.multiply
             case "/":
                 return NativeBinaryOperator.divide
-            case "%":
+            case "mod":
                 return NativeBinaryOperator.modulus
             case "^":
                 return NativeBinaryOperator.pow
