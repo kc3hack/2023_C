@@ -1,44 +1,47 @@
-internal struct NativeUnaryOperator: UnaryOperator {
-    public let tokenType: TokenType = .unaryOperator
-    public let identifier: String
-    public let operatorType: UnaryOprType
-    public static let identifiers: [String] = ["abs", "√", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "log", "ln"]
+internal enum NativeUnaryOperator: UnaryOperator {
+    case negate
+    case abs
+    case sqrt
+    case sin
+    case cos
+    case tan
+    case arcsin
+    case arccos
+    case arctan
+    case log
+    case ln
 
-    private init(_ identifier: String, _ operatorType: UnaryOprType) {
-        self.identifier = identifier
-        self.operatorType = operatorType
-    }
-
-    internal init(_ operatorType: UnaryOprType) {
-        self.operatorType = operatorType
-        switch operatorType {
+    public var tokenType: TokenType { return .unaryOperator }
+    public var identifier: String {
+        switch self {
             case .negate:
-                identifier = "-"
+                return "-"
             case .abs:
-                identifier = "abs"
+                return "abs"
             case .sqrt:
-                identifier = "√"
+                return "√"
             case .sin:
-                identifier = "sin"
+                return "sin"
             case .cos:
-                identifier = "cos"
+                return "cos"
             case .tan:
-                identifier = "tan"
+                return "tan"
             case .arcsin:
-                identifier = "arcsin"
+                return "arcsin"
             case .arccos:
-                identifier = "arccos"
+                return "arccos"
             case .arctan:
-                identifier = "arctan"
+                return "arctan"
             case .log:
-                identifier = "log"
+                return "log"
             case .ln:
-                identifier = "ln"
+                return "ln"
         }
     }
-
+    public static let identifiers: [String] = ["abs", "√", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "log", "ln"]
+    
     public func execute(value: Number, isExponents: Bool) -> Number {
-        switch operatorType {
+        switch self {
             case .negate:
                 return value.negate(isExponents: isExponents)
             case .abs:
@@ -67,25 +70,25 @@ internal struct NativeUnaryOperator: UnaryOperator {
     public static func parse(_ source: String) -> Token? {
         switch source {
             case "abs":
-                return NativeUnaryOperator("abs", .abs)
+                return NativeUnaryOperator.abs
             case "√":
-                return NativeUnaryOperator("√", .sqrt)
+                return NativeUnaryOperator.sqrt
             case "sin":
-                return NativeUnaryOperator("sin", .sin)
+                return NativeUnaryOperator.sin
             case "cos":
-                return NativeUnaryOperator("cos", .cos)
+                return NativeUnaryOperator.cos
             case "tan":
-                return NativeUnaryOperator("tan", .tan)
+                return NativeUnaryOperator.tan
             case "arcsin":
-                return NativeUnaryOperator("arcsin", .arcsin)
+                return NativeUnaryOperator.arcsin
             case "arccos":
-                return NativeUnaryOperator("arccos", .arccos)
+                return NativeUnaryOperator.arccos
             case "arctan":
-                return NativeUnaryOperator("arctan", .arctan)
+                return NativeUnaryOperator.arctan
             case "log":
-                return NativeUnaryOperator("log", .log)
+                return NativeUnaryOperator.log
             case "ln":
-                return NativeUnaryOperator("ln", .ln)
+                return NativeUnaryOperator.ln
             default:
                 return nil
         }
@@ -98,48 +101,34 @@ internal struct NativeUnaryOperator: UnaryOperator {
     public static func deserialize(_ source: String) -> Token? {
         switch source {
             case "abs":
-                return NativeUnaryOperator("abs", .abs)
+                return NativeUnaryOperator.abs
             case "sqrt":
-                return NativeUnaryOperator("√", .sqrt)
+                return NativeUnaryOperator.sqrt
             case "sin":
-                return NativeUnaryOperator("sin", .sin)
+                return NativeUnaryOperator.sin
             case "cos":
-                return NativeUnaryOperator("cos", .cos)
+                return NativeUnaryOperator.cos
             case "tan":
-                return NativeUnaryOperator("tan", .tan)
+                return NativeUnaryOperator.tan
             case "arcsin":
-                return NativeUnaryOperator("arcsin", .arcsin)
+                return NativeUnaryOperator.arcsin
             case "arccos":
-                return NativeUnaryOperator("arccos", .arccos)
+                return NativeUnaryOperator.arccos
             case "arctan":
-                return NativeUnaryOperator("arctan", .arctan)
+                return NativeUnaryOperator.arctan
             case "log":
-                return NativeUnaryOperator("log", .log)
+                return NativeUnaryOperator.log
             case "ln":
-                return NativeUnaryOperator("ln", .ln)
+                return NativeUnaryOperator.ln
             default:
                 return nil
         }
     }
 
     public func serialize() -> String {
-        if operatorType == .sqrt {
+        if self == .sqrt {
             return "sqrt"
         }
         return identifier
     }
-}
-
-internal enum UnaryOprType {
-    case negate
-    case abs
-    case sqrt
-    case sin
-    case cos
-    case tan
-    case arcsin
-    case arccos
-    case arctan
-    case log
-    case ln
 }
