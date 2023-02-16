@@ -1,10 +1,12 @@
 public struct Expression {
+    public let rawExpression: [String]
     private var tokens: [Token]
     private var result: Number?
 
     /// 式を作成します
     /// - Parameter tokens: 1+2*3 は [1 2 3 * +] のように並べてください
-    public init(tokens: [Token]) {
+    public init(rawExpression: [String], tokens: [Token]) {
+        self.rawExpression = rawExpression
         self.tokens = tokens
         result = nil
     }
@@ -15,53 +17,48 @@ public struct Expression {
         }
 
         var tempNumbers: [Number] = []
-        var exponentsRank = 0
         while !tokens.isEmpty {
             let first: Token? = tokens.removeFirst()
             
             guard let first else {
                 result = NanValue()
-                return result
+                return result!
             }
 
             switch first.tokenType {
                 case .number:
                     guard let num = first as? Number else {
                         result = NanValue()
-                        return result
+                        return result!
                     }
                     tempNumbers.append(num)
                 case .unaryOperator:
                     let value = tempNumbers.popLast()
                     guard let opr = first as? UnaryOperator, let value else {
                         result = NanValue()
-                        return result
+                        return result!
                     }
-                    tempNumbers.append(opr.execute(value: value, isExponents: exponentsRank != 0))
+                    tempNumbers.append(opr.execute(value: value, isExponents: false))
                 case .binaryOperator:
                     let left = tempNumbers.popLast()
                     let right = tempNumbers.popLast()
                     guard let opr = first as? BinaryOperator, let right, let left else {
                         result = NanValue()
-                        return result
+                        return result!
                     }
-                    if let nopr = opr as? NativeBinaryOperator, nopr.operatorType == .pow {
-                        tempNumbers.append(nopr.execute(left: left, right: right.toReal(), isExponents: false))
-                    }else {
-                        tempNumbers.append(opr.execute(left: left, right: right, isExponents: false))
-                    }
+                    tempNumbers.append(opr.execute(left: left, right: right, isExponents: false))
                 case .customArgument:
                     result = NanValue()
-                    return result
+                    return result!
             }
         }
 
         if tempNumbers.count == 1 {
             result = tempNumbers[0]
-            return result
+            return result!
         } else {
             result = NanValue()
-            return result
+            return result!
         }
     }
 }
