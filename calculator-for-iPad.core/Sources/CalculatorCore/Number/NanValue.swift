@@ -4,7 +4,7 @@ public struct NanValue: Number {
     public var isInteger: Bool = false
 
     public func toReal() -> RealNumber {
-        return self.toReal()
+        return RealNumber(val: .nan)
     }
 
     public func add(left: Number, isExponents: Bool) -> Number {
