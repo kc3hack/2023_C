@@ -28,10 +28,7 @@ public class CalculatorService: PCalculatorService {
 
                     // その演算子より優先度の高いものをすべて全てresultに積む
                     while !stack.isEmpty {
-                        let last = stack.last
-                        guard let last else {
-                            return nil
-                        }
+                        let last = stack.last!
 
                         if last.priority > opr.priority {
                             result.append(stack.popLast()!)
@@ -51,10 +48,7 @@ public class CalculatorService: PCalculatorService {
                         stack.append(bracket)
                     } else {
                         while !stack.isEmpty {
-                            let last = stack.popLast()
-                            guard let last else {
-                                return nil
-                            }
+                            let last = stack.popLast()!
                             if let b = last as? Bracket, b == .left {
                                 break
                             } else {
@@ -64,6 +58,16 @@ public class CalculatorService: PCalculatorService {
                     }
                 case .customArgument:
                     return nil
+            }
+        }
+
+        while !stack.isEmpty {
+            let last = stack.popLast()!
+            // この時点でbracketが残っているのはおかしい
+            if last.tokenType == .bracket {
+                return nil
+            } else {
+                result.append(last)
             }
         }
 
