@@ -32,7 +32,7 @@ public enum TokenType {
 }
 
 extension String {
-    
+
 }
 
 /*受け取った文字列をトークンに分解して、一つの配列に格納して返す*/
@@ -65,15 +65,13 @@ private func toToken(words: String) -> [String] {
                 token += sub
             }else if(sub == "." && (tokenList.firstIndex(of: ".") == nil)) { //小数点が来たら
                 token += sub
-            }
-            
-            if(token != "") { //Todo: 一旦書き出してトークンをリセットしたい(下コード要修正)
+            }else if(token != "") { //数字・小数点じゃないものが来たらトークンを書き出してリセット
                 tokenList.append(token)
-                continue
+                token = ""
             }
-            
+
             if(sub == "+" && sub == "-" && sub == "*" && sub == "/" && sub == "(" && sub == ")") { //演算子系が来たら
-                
+
             }
         }
         tokenList.append(token) //ここで一つのトークンとして配列に書き出し
@@ -85,9 +83,9 @@ struct hoge: Token {
     var tokenType: TokenType
 
     static func Parse(_ source: String) -> Token? {
-        
+
             return ""
-        
+
             return nil
     }
 
