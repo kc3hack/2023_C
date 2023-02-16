@@ -69,8 +69,8 @@ internal struct Fraction: Number {
         }
     }
 
-    public func toReal() -> Number {
-        return NanValue()
+    public func toReal() -> RealNumber {
+        return RealNumber(val: Decimal(numerator) / Decimal(denominator))
     }
 
     func add(left: Number, isExponents: Bool) -> Number {
@@ -165,10 +165,10 @@ internal struct Fraction: Number {
         if isOverflow {
             return (Fraction.zero, true)
         }
-        guard let result = Fraction(numerator: n, denominator: lcm) else {
-            return NanValue()
+        guard let result = Fraction(numerator: n, denominator: d) else {
+            return (Fraction.zero, true)
         }
-        return result
+        return (result, false)
     }
 
     func divide(left: Number, isExponents: Bool) -> Number {
@@ -190,7 +190,7 @@ internal struct Fraction: Number {
         if isOverflow {
             return NanValue()
         }
-        guard let result = Fraction(numerator: n, denominator: lcm) else {
+        guard let result = Fraction(numerator: n, denominator: d) else {
             return NanValue()
         }
         return result
@@ -232,72 +232,121 @@ internal struct Fraction: Number {
                 }
                 y >>= 1
             }
+            return x
         } else {
-            // TODO うまく整数にできるときはする
+            return toReal().pow(left: left, isExponents: isExponents)
         }
     }
 
     func negate(isExponents: Bool) -> Number {
-        
+        return Fraction(numerator: -numerator, denominator: denominator) ?? NanValue()
     }
 
     func abs(isExponents: Bool) -> Number {
-        
+        return Fraction(numerator: numerator < 0 ? -numerator : numerator, denominator: denominator) ?? NanValue()
     }
 
     func sqrt(isExponents: Bool) -> Number {
-        
+        let num = Foundation.sqrt(Double(numerator))
+        let deno = Foundation.sqrt(Double(denominator))
+        if num * num == Double(numerator) && deno * deno == Double(denominator) {
+            return Fraction(numerator: Int(num), denominator: Int(deno)) ?? NanValue()
+        } else {
+            return toReal().sqrt(isExponents: isExponents)
+        }
     }
 
     func sin(isExponents: Bool) -> Number {
-        
+        return toReal().sin(isExponents: isExponents)
     }
 
     func cos(isExponents: Bool) -> Number {
-        
+        return toReal().cos(isExponents: isExponents)
     }
 
     func tan(isExponents: Bool) -> Number {
-        
+        return toReal().tan(isExponents: isExponents)
     }
 
     func arcsin(isExponents: Bool) -> Number {
-        
+        return toReal().arcsin(isExponents: isExponents)
     }
 
     func arccos(isExponents: Bool) -> Number {
-        
+        return toReal().arccos(isExponents: isExponents)
     }
 
     func arctan(isExponents: Bool) -> Number {
-        
+        return toReal().arctan(isExponents: isExponents)
     }
 
     func log(isExponents: Bool) -> Number {
-        
+        return toReal().log(isExponents: isExponents)
     }
 
     func ln(isExponents: Bool) -> Number {
-        
+        return toReal().ln(isExponents: isExponents)
     }
 
     static func parse(_ source: String) -> Token? {
-        
+        let integer = Int(source)
+        if let integer {
+            return Fraction(numerator: integer, denominator: 1) ?? NanValue()
+        }
+
+        let decimal = Decimal(string: source)
+        if let decimal {
+            let isNegativeExponent = decimal < 0
+            var exponent = isNegativeExponent ? -decimal.exponent : decimal.exponent
+
+            // 10^exponent の導出
+            var ans = 1
+            var base = 10
+            while exponent > 0 {
+                if (exponent & 1) != 0 {
+                    let isOverflow: Bool
+                    (ans, isOverflow) = ans.multiply(by: base)
+                    if isOverflow {
+                        return nil
+                    }
+                }
+
+                let isOverflow: Bool
+                (base, isOverflow) = base.multiply(by: base)
+                if isOverflow {
+                    return nil
+                }
+                exponent >>= 1
+            }
+
+            if isNegativeExponent {
+                // decimal.significand / ans
+                let numerator = NSDecimalNumber(decimal: decimal < 0 ? -decimal.significand : decimal.significand).intValue
+                return Fraction(numerator: numerator, denominator: ans)
+            } else {
+                let significand = NSDecimalNumber(decimal: decimal.significand).intValue
+                let (numerator, isOverflow) = significand.multiply(by: ans)
+                if isOverflow {
+                    return nil
+                }
+                return Fraction(numerator: numerator, denominator: 1)
+            }
+        }
+
+        return nil
     }
 
     static func deserialize(_ source: String) -> Token? {
-        
+        return parse(source)
     }
 
     func toDisplayString() -> String {
-        
+        return isInteger ? "\(numerator)" : "\(numerator)/\(denominator)"
     }
 
     func serialize() -> String {
-
+        return toDisplayString()
     }
-
-    
 }
 
 fileprivate extension Int {
