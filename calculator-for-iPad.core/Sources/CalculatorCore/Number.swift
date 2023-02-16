@@ -1,7 +1,7 @@
 public protocol Number: Token{
     var isInteger: Bool { get }
 
-    func toReal() -> Real
+    func toReal() -> RealNumber
     func add(left: Number, isExponents: Bool) -> Number
     func substract(left: Number, isExponents: Bool) -> Number
     func multiply(left: Number, isExponents: Bool) -> Number

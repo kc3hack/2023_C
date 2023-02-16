@@ -100,4 +100,8 @@ public class NumberMock: Number {
     public func serialize() -> String {
         return ""
     }
+
+    public func toReal() -> RealNumber {
+        return RealNumber(val: .nan)
+    }
 }
