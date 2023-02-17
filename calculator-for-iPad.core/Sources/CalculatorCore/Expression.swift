@@ -1,11 +1,11 @@
 public struct Expression {
-    public let rawExpression: [String]
+    public let rawExpression: String
     private let tokens: [Token]
     private var result: Number?
 
     /// 式を作成します
     /// - Parameter tokens: 1+2*3 は [1 2 3 * +] のように並べてください
-    public init(rawExpression: [String], tokens: [Token]) {
+    public init(rawExpression: String, tokens: [Token]) {
         self.rawExpression = rawExpression
         self.tokens = tokens
         result = nil
@@ -56,5 +56,15 @@ public struct Expression {
             result = NanValue()
             return result!
         }
+    }
+
+    /// シリアライズする
+    /// - Returns: (expression: 式, result: 結果) 計算に失敗していたらnil
+    public mutating func serialize() -> (expression: String, result: String)? {
+        let result = execute()
+        if result.toDisplayString() == "" {
+            return nil
+        }
+        return (expression: rawExpression, result: result.toReal().toDisplayString())
     }
 }
