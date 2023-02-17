@@ -1,5 +1,6 @@
 import Foundation
 
+/*
 public protocol Token {
     /// トークンの型
     var tokenType: TokenType { get }
@@ -34,11 +35,12 @@ public enum TokenType {
 extension String {
 
 }
+*/
 
 /*受け取った文字列をトークンに分解して、一つの配列に格納して返す*/
-private func toToken(words: String) -> [String] {
-    var token: String
-    var tokenList: [String]
+private func toToken(_ words: String) -> [String] {
+    var token: String = ""
+    var tokenList: [String] = []
 
     //文字列に対する数値判定メソッド
     func isNumeric(_ word: String) -> Bool {
@@ -77,27 +79,31 @@ private func toToken(words: String) -> [String] {
         }
         tokenList.append(token) //一つのトークンとして配列に書き出し
     }
-    if(tokenList.count > 0) {
+    //if(tokenList.count > 0) {
+        for j: Int in 0 ..< 3 {
+            print(tokenList[j] + "\n")
+        }
         return tokenList
     /*
     }else {
         return nil
     */
-    }
+    //}
 }
 
+/*
 struct hoge: Token {
     var tokenType: TokenType
 
     static func Parse(_ source: String) -> Token? {
 
-            return ""
+            //return ""
 
             return nil
     }
 
     static func Deserialize(_ source: String) -> Token? {
-
+        return nil
     }
 
     func ToDisplayString() -> String {
@@ -112,3 +118,4 @@ struct hoge: Token {
         return serializedString
     }
 }
+*/
