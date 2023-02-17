@@ -38,43 +38,32 @@ public final class NativeUnaryOperatorTest: XCTestCase {
     }
 
     func testExecute() throws {
-        let arguments: [(String, NativeUnaryOperator, Bool)] = [
-            ("negate value isExponents:true", .negate, true),
-            ("negate value isExponents:false", .negate, false),
-            ("abs value isExponents:true", .abs, true),
-            ("abs value isExponents:false", .abs, false),
-            ("sqrt value isExponents:true", .sqrt, true),
-            ("sqrt value isExponents:false", .sqrt, false),
-            ("sin value isExponents:true", .sin, true),
-            ("sin value isExponents:false", .sin, false),
-            ("cos value isExponents:true", .cos, true),
-            ("cos value isExponents:false", .cos, false),
-            ("tan value isExponents:true", .tan, true),
-            ("tan value isExponents:false", .tan, false),
-            ("arcsin value isExponents:true", .arcsin, true),
-            ("arcsin value isExponents:false", .arcsin, false),
-            ("arccos value isExponents:true", .arccos, true),
-            ("arccos value isExponents:false", .arccos, false),
-            ("arctan value isExponents:true", .arctan, true),
-            ("arctan value isExponents:false", .arctan, false),
-            ("log value isExponents:true", .log, true),
-            ("log value isExponents:false", .log, false),
-            ("ln value isExponents:true", .ln, true),
-            ("ln value isExponents:false", .ln, false),
+        let arguments: [(String, NativeUnaryOperator)] = [
+            ("negate value", .negate),
+            ("abs value", .abs),
+            ("sqrt value", .sqrt),
+            ("sin value", .sin),
+            ("cos value", .cos),
+            ("tan value", .tan),
+            ("arcsin value", .arcsin),
+            ("arccos value", .arccos),
+            ("arctan value", .arctan),
+            ("log value", .log),
+            ("ln value", .ln),
         ]
         
         for arg in arguments {
             do {
-                try execute(expectedString: arg.0, opr: arg.1, isExponents: arg.2)
+                try execute(expectedString: arg.0, opr: arg.1)
             }
         }
     }
 
-    func execute(expectedString: String, opr: NativeUnaryOperator, isExponents: Bool) throws {
+    func execute(expectedString: String, opr: NativeUnaryOperator) throws {
         let value = NumberMock(info: "value")
         let expectedType = String(describing: type(of: value))
 
-        let result = opr.execute(value: value, isExponents: isExponents)
+        let result = opr.execute(value: value)
         XCTAssertEqual(String(describing: type(of: result)), expectedType)
         if let mock = result as? NumberMock {
             XCTAssertEqual(mock.info, expectedString)

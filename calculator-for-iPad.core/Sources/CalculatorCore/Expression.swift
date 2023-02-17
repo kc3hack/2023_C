@@ -38,7 +38,7 @@ public struct Expression {
                         result = NanValue()
                         return result!
                     }
-                    tempNumbers.append(opr.execute(value: value, isExponents: false))
+                    tempNumbers.append(opr.execute(value: value))
                 case .binaryOperator:
                     let left = tempNumbers.popLast()
                     let right = tempNumbers.popLast()
@@ -46,8 +46,11 @@ public struct Expression {
                         result = NanValue()
                         return result!
                     }
-                    tempNumbers.append(opr.execute(left: left, right: right, isExponents: false))
+                    tempNumbers.append(opr.execute(left: left, right: right))
                 case .customArgument:
+                    result = NanValue()
+                    return result!
+                case .bracket:
                     result = NanValue()
                     return result!
             }
