@@ -5,7 +5,7 @@ public class CalculatorService: PCalculatorService {
     }
 
     public func parse(rawExpression: String) -> Expression {
-        return Expression(rawExpression: ["[String]"], tokens: [NanValue()])
+        return Expression(rawExpression: "[String]", tokens: [NanValue()])
     }
 
     private func parseString(rawExpression: String) -> [Token]? {

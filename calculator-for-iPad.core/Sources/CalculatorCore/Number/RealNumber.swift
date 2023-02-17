@@ -219,7 +219,11 @@ public struct RealNumber: Number{
     }
 
     public func toDisplayString() -> String {
-        return "\(value)"
+        if value.isNaN {
+            return ""
+        } else {
+            return "\(value)"
+        }
     }
 
     public func serialize() -> String {
