@@ -1,6 +1,6 @@
 public struct Expression {
     public let rawExpression: [String]
-    private var tokens: [Token]
+    private let tokens: [Token]
     private var result: Number?
 
     /// 式を作成します
@@ -17,32 +17,25 @@ public struct Expression {
         }
 
         var tempNumbers: [Number] = []
-        while !tokens.isEmpty {
-            let first: Token? = tokens.removeFirst()
-            
-            guard let first else {
-                result = NanValue()
-                return result!
-            }
-
-            switch first.tokenType {
+        for token in tokens {
+            switch token.tokenType {
                 case .number:
-                    guard let num = first as? Number else {
+                    guard let num = token as? Number else {
                         result = NanValue()
                         return result!
                     }
                     tempNumbers.append(num)
                 case .unaryOperator:
                     let value = tempNumbers.popLast()
-                    guard let opr = first as? UnaryOperator, let value else {
+                    guard let opr = token as? UnaryOperator, let value else {
                         result = NanValue()
                         return result!
                     }
                     tempNumbers.append(opr.execute(value: value))
                 case .binaryOperator:
-                    let left = tempNumbers.popLast()
                     let right = tempNumbers.popLast()
-                    guard let opr = first as? BinaryOperator, let right, let left else {
+                    let left = tempNumbers.popLast()
+                    guard let opr = token as? BinaryOperator, let right, let left else {
                         result = NanValue()
                         return result!
                     }
