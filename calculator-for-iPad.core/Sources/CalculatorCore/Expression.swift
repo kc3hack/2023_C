@@ -64,4 +64,12 @@ public struct Expression {
             return result!
         }
     }
+
+    public func serialize() -> (expression: String, result: String)? {
+        let result = execute()
+        if result.toDisplayString() == "" {
+            return nil
+        }
+        return (rawExpression.joined(), result)
+    }
 }
