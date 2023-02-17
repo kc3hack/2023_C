@@ -73,12 +73,12 @@ internal struct Fraction: Number {
         return RealNumber(val: Decimal(numerator) / Decimal(denominator))
     }
 
-    func add(left: Number, isExponents: Bool) -> Number {
+    func add(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().add(left: left, isExponents: isExponents)
+            return toReal().add(left: left)
         }
 
         let (lcm, xMultiply, yMultiply) = lcm(x: denominator, y: leftFrac.denominator)
@@ -107,12 +107,12 @@ internal struct Fraction: Number {
         return result
     }
 
-    func substract(left: Number, isExponents: Bool) -> Number {
+    func substract(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().substract(left: left, isExponents: isExponents)
+            return toReal().substract(left: left)
         }
 
         let (lcm, xMultiply, yMultiply) = lcm(x: denominator, y: leftFrac.denominator)
@@ -141,12 +141,12 @@ internal struct Fraction: Number {
         return result
     }
 
-    func multiply(left: Number, isExponents: Bool) -> Number {
+    func multiply(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().multiply(left: left, isExponents: isExponents)
+            return toReal().multiply(left: left)
         }
 
         let (result, isOverflow) = multiply(leftFrac)
@@ -171,12 +171,12 @@ internal struct Fraction: Number {
         return (result, false)
     }
 
-    func divide(left: Number, isExponents: Bool) -> Number {
+    func divide(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().multiply(left: left, isExponents: isExponents)
+            return toReal().multiply(left: left)
         }
 
         var isOverflow: Bool
@@ -196,16 +196,16 @@ internal struct Fraction: Number {
         return result
     }
 
-    func modulus(left: Number, isExponents: Bool) -> Number {
-        return toReal().modulus(left: left, isExponents: isExponents)
+    func modulus(left: Number) -> Number {
+        return toReal().modulus(left: left)
     }
 
-    func pow(left: Number, isExponents: Bool) -> Number {
+    func pow(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().pow(left: left, isExponents: isExponents)
+            return toReal().pow(left: left)
         }
 
         if numerator == 0 {
@@ -234,58 +234,58 @@ internal struct Fraction: Number {
             }
             return x
         } else {
-            return toReal().pow(left: left, isExponents: isExponents)
+            return toReal().pow(left: left)
         }
     }
 
-    func negate(isExponents: Bool) -> Number {
+    func negate() -> Number {
         return Fraction(numerator: -numerator, denominator: denominator) ?? NanValue()
     }
 
-    func abs(isExponents: Bool) -> Number {
+    func abs() -> Number {
         return Fraction(numerator: numerator < 0 ? -numerator : numerator, denominator: denominator) ?? NanValue()
     }
 
-    func sqrt(isExponents: Bool) -> Number {
+    func sqrt() -> Number {
         let num = Foundation.sqrt(Double(numerator))
         let deno = Foundation.sqrt(Double(denominator))
         if num * num == Double(numerator) && deno * deno == Double(denominator) {
             return Fraction(numerator: Int(num), denominator: Int(deno)) ?? NanValue()
         } else {
-            return toReal().sqrt(isExponents: isExponents)
+            return toReal().sqrt()
         }
     }
 
-    func sin(isExponents: Bool) -> Number {
-        return toReal().sin(isExponents: isExponents)
+    func sin() -> Number {
+        return toReal().sin()
     }
 
-    func cos(isExponents: Bool) -> Number {
-        return toReal().cos(isExponents: isExponents)
+    func cos() -> Number {
+        return toReal().cos()
     }
 
-    func tan(isExponents: Bool) -> Number {
-        return toReal().tan(isExponents: isExponents)
+    func tan() -> Number {
+        return toReal().tan()
     }
 
-    func arcsin(isExponents: Bool) -> Number {
-        return toReal().arcsin(isExponents: isExponents)
+    func arcsin() -> Number {
+        return toReal().arcsin()
     }
 
-    func arccos(isExponents: Bool) -> Number {
-        return toReal().arccos(isExponents: isExponents)
+    func arccos() -> Number {
+        return toReal().arccos()
     }
 
-    func arctan(isExponents: Bool) -> Number {
-        return toReal().arctan(isExponents: isExponents)
+    func arctan() -> Number {
+        return toReal().arctan()
     }
 
-    func log(isExponents: Bool) -> Number {
-        return toReal().log(isExponents: isExponents)
+    func log() -> Number {
+        return toReal().log()
     }
 
-    func ln(isExponents: Bool) -> Number {
-        return toReal().ln(isExponents: isExponents)
+    func ln() -> Number {
+        return toReal().ln()
     }
 
     static func parse(_ source: String) -> Token? {
