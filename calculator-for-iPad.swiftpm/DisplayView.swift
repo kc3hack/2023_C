@@ -6,23 +6,25 @@
 //
 
 import SwiftUI
+import CalculatorCore
 
 struct DisplayView: View {
     let get_expr_closure: ()->String
     let get_expr_pointer_closure: ()->Int
-    let get_results: ()->[String]
+    let get_userDefaultsService: ()->PUserDefaultsService
     let font_size: CGFloat = 36
     @State var exp: String = ""
     
     var body: some View {
         ScrollView{
-            let results = get_results()
-            if(results.count>0){
-                ForEach((0...(results.count-1)),id:\.self){
-                    res in
-                    Text(results[res])
+            /*
+             let userDefaultsService = get_userDefaultsService()
+            if(userDefaultsService.count>0){
+                userDefaultsService.forEach{
+                    Text(userDefaultsService.getString(forKey: $0.key))
                 }
             }
+             */
             VStack{
                 let expr = get_expr_closure()
                 let expr_pointer = get_expr_pointer_closure()

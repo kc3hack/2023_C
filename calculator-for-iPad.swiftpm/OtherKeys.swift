@@ -11,13 +11,13 @@ struct OtherKeys: View {
     let onclick_closure: (String)->Void
     let font_size: CGFloat = 36
     // keyとactionの対応させたもの
+    // ContentViewも変更
     private let key_array = [
         ["()",",","^"],
         ["e","π"],
         ["mod","sin"],
         ["cos","tan"],
-        ["logE","log2"],
-        ["log10"],
+        ["ln","log"],
     ]
     
     var body: some View {

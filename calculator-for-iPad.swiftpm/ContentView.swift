@@ -4,27 +4,30 @@ import CalculatorCore
 struct ContentView: View {
     @State private var expr = ""
     @State private var expr_pointer: Int = 0
-    @State private var results: [String] = []
+    @State private var result_keys: [String] = []
+    private let date: Date = Date()
+    private let calculatorService: PCalculatorService = CalculatorService()
+    private let userDefaultsService: PUserDefaultsService = UserDefaultsService()
     
     var body: some View {
         GeometryReader { geometry in
             //もし横長モードなら右側に計算用テンキー(右利き優位なので設定で左に変えれたら便利)
             if(1000<geometry.size.width){
                 HStack{
-                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_results: get_results)
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_userDefaultsService: get_userDefaultsService)
                     ControllerView(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
             }
             else if(geometry.size.width < 400){
                 VStack{
-                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_results: get_results)
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_userDefaultsService: get_userDefaultsService)
                     OtherKeys(onclick_closure: onckick)
                     MainKeys(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
             }
             else{
                 VStack{
-                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_results: get_results)
+                    DisplayView(get_expr_closure: get_expr, get_expr_pointer_closure: get_expr_pointer, get_userDefaultsService: get_userDefaultsService)
                     ControllerView(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
                 
@@ -39,6 +42,13 @@ struct ContentView: View {
     func get_expr_pointer()->Int{
         return expr_pointer
     }
+    
+    func get_userDefaultsService()->PUserDefaultsService{
+        return userDefaultsService
+    }
+    
+    /*func result_keys()->{
+    }*/
     
     func onckick(push_char: String)->Void{
         let before_pointer = String(expr.prefix(expr_pointer))
@@ -55,11 +65,9 @@ struct ContentView: View {
             fallthrough
         case "tan":
             fallthrough
-        case "logE":
+        case "ln":
             fallthrough
-        case "log2":
-            fallthrough
-        case "log10":
+        case "log":
             to_be_added = push_char + "()"
         default:
             to_be_added = push_char
@@ -94,15 +102,13 @@ struct ContentView: View {
         }
     }
     
-    func get_results()->[String]{
-        return results
-    }
-    
     func call()->Void{
-        let expr_raw = expr
-        
-        print(expr.replacingOccurrences(of: "÷", with: "/"))
-        //PCalculatorService.calculate(expr)
-        results.append(expr_raw+"="+"result")
+        //let calc_result: Number = calculatorService.calculate(rawExpression: expr.replacingOccurrences(of: "÷", with: "/"))
+        //let value_expr: String = expr+"="+calc_result.toDisplayString()
+                //print(calc_result.toDisplayString())
+        //let result_key = String(date.timeIntervalSince1970)
+        //result_keys.append(result_key)
+        //userDefaultsService.set(value: value_expr, forKey: result_key)
+        //Expression
     }
 }
