@@ -12,6 +12,7 @@ internal enum NativeUnaryOperator: UnaryOperator {
     case ln
 
     public var tokenType: TokenType { return .unaryOperator }
+    public static let identifiers: [String] = ["abs", "√", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "log", "ln"]
     public var identifier: String {
         switch self {
             case .negate:
@@ -38,7 +39,9 @@ internal enum NativeUnaryOperator: UnaryOperator {
                 return "ln"
         }
     }
-    public static let identifiers: [String] = ["abs", "√", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "log", "ln"]
+    public var priority: Int {
+        return Int.max
+    }
     
     public func execute(value: Number) -> Number {
         switch self {

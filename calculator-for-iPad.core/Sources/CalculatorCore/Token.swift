@@ -24,6 +24,7 @@ public protocol Token {
 /// トークンの型
 public enum TokenType {
     case number
+    case bracket
     case unaryOperator
     case binaryOperator
     case customArgument

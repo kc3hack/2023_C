@@ -7,6 +7,7 @@ internal enum NativeBinaryOperator: BinaryOperator {
     case pow
 
     public var tokenType: TokenType { return .binaryOperator }
+    public static let identifiers: [String] = ["+", "-", "*", "/", "mod", "^"]
     public var identifier: String {
         switch self {
             case .add:
@@ -23,7 +24,22 @@ internal enum NativeBinaryOperator: BinaryOperator {
                 return "^"
         }
     }
-    public static let identifiers: [String] = ["+", "-", "*", "/", "mod", "^"]
+    public var priority: Int {
+        switch self {
+            case .add:
+                return 0
+            case .substract:
+                return 0
+            case .multiply:
+                return 1
+            case .divide:
+                return 1
+            case .modulus:
+                return 1
+            case .pow:
+                return 2
+        }
+    }
     
     public func execute(left: Number, right: Number) -> Number {
         switch self {
