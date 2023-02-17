@@ -41,6 +41,7 @@ public class CalculatorService: PCalculatorService {
                         return nil
                     }
                 }else if(state == 0) {
+                    token += String(c)
                     let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorChara {
                         tokenList.append(operatorChara)
