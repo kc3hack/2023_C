@@ -11,7 +11,7 @@ public final class ExpressionTest: XCTestCase {
             NativeBinaryOperator.add,
         ]
 
-        var expression = Expression(rawExpression: [""], tokens: tokens)
+        var expression = Expression(rawExpression: "", tokens: tokens)
         var result = expression.execute()
 
         XCTAssertEqual(result.toDisplayString(), "1")
@@ -22,7 +22,7 @@ public final class ExpressionTest: XCTestCase {
             NativeBinaryOperator.divide
         ]
 
-        expression = Expression(rawExpression: [""], tokens: tokens)
+        expression = Expression(rawExpression: "", tokens: tokens)
         result = expression.execute()
 
         XCTAssertEqual(result.toDisplayString(), "")
@@ -33,7 +33,7 @@ public final class ExpressionTest: XCTestCase {
             NativeBinaryOperator.divide
         ]
 
-        expression = Expression(rawExpression: [""], tokens: tokens)
+        expression = Expression(rawExpression: "", tokens: tokens)
         result = expression.execute()
 
         XCTAssertEqual(result.toDisplayString(), "")
@@ -44,7 +44,7 @@ public final class ExpressionTest: XCTestCase {
             NativeBinaryOperator.pow
         ]
         
-        expression = Expression(rawExpression: [""], tokens: tokens)
+        expression = Expression(rawExpression: "", tokens: tokens)
         result = expression.execute()
 
         XCTAssertEqual(result.toDisplayString(), "2/3")
@@ -54,7 +54,7 @@ public final class ExpressionTest: XCTestCase {
             NativeUnaryOperator.sqrt
         ]
         
-        expression = Expression(rawExpression: [""], tokens: tokens)
+        expression = Expression(rawExpression: "", tokens: tokens)
         result = expression.execute()
 
         XCTAssertEqual(result.toDisplayString(), "2/3")
