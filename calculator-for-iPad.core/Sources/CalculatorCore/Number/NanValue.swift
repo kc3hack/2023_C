@@ -7,71 +7,71 @@ public struct NanValue: Number {
         return RealNumber(val: .nan)
     }
 
-    public func add(left: Number, isExponents: Bool) -> Number {
+    public func add(left: Number) -> Number {
         return self
     }
 
-    public func substract(left: Number, isExponents: Bool) -> Number {
+    public func substract(left: Number) -> Number {
         return self
     }
 
-    public func multiply(left: Number, isExponents: Bool) -> Number {
+    public func multiply(left: Number) -> Number {
         return self
     }
 
-    public func divide(left: Number, isExponents: Bool) -> Number {
+    public func divide(left: Number) -> Number {
         return self
     }
 
-    public func modulus(left: Number, isExponents: Bool) -> Number {
+    public func modulus(left: Number) -> Number {
         return self
     }
 
-    public func pow(left: Number, isExponents: Bool) -> Number {
+    public func pow(left: Number) -> Number {
         return self
     }
 
-    public func negate(isExponents: Bool) -> Number {
+    public func negate() -> Number {
         return self
     }
 
-    public func abs(isExponents: Bool) -> Number {
+    public func abs() -> Number {
         return self
     }
 
-    public func sqrt(isExponents: Bool) -> Number {
+    public func sqrt() -> Number {
         return self
     }
 
-    public func sin(isExponents: Bool) -> Number {
+    public func sin() -> Number {
         return self
     }
 
-    public func cos(isExponents: Bool) -> Number {
+    public func cos() -> Number {
         return self
     }
 
-    public func tan(isExponents: Bool) -> Number {
+    public func tan() -> Number {
         return self
     }
 
-    public func arcsin(isExponents: Bool) -> Number {
+    public func arcsin() -> Number {
         return self
     }
 
-    public func arccos(isExponents: Bool) -> Number {
+    public func arccos() -> Number {
         return self
     }
 
-    public func arctan(isExponents: Bool) -> Number {
+    public func arctan() -> Number {
         return self
     }
 
-    public func log(isExponents: Bool) -> Number {
+    public func log() -> Number {
         return self
     }
 
-    public func ln(isExponents: Bool) -> Number {
+    public func ln() -> Number {
         return self
     }
 

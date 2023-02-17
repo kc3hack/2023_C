@@ -23,34 +23,28 @@ public final class NativeBinaryOperatorTest: XCTestCase {
     }
 
     func testExecute() throws {
-        let arguments: [(String, NativeBinaryOperator, Bool)] = [
-            ("left add right isExponents:true", .add, true),
-            ("left add right isExponents:false", .add, false),
-            ("left substract right isExponents:true", .substract, true),
-            ("left substract right isExponents:false", .substract, false),
-            ("left multiply right isExponents:true", .multiply, true),
-            ("left multiply right isExponents:false", .multiply, false),
-            ("left divide right isExponents:true", .divide, true),
-            ("left divide right isExponents:false", .divide, false),
-            ("left modulus right isExponents:true", .modulus, true),
-            ("left modulus right isExponents:false", .modulus, false),
-            ("left pow right isExponents:true", .pow, true),
-            ("left pow right isExponents:false", .pow, false),
+        let arguments: [(String, NativeBinaryOperator)] = [
+            ("left add right", .add),
+            ("left substract right", .substract),
+            ("left multiply right", .multiply),
+            ("left divide right", .divide),
+            ("left modulus right", .modulus),
+            ("left pow right", .pow),
         ]
 
         for arg in arguments {
             do {
-                try execute(expectedString: arg.0, opr: arg.1, isExponents: arg.2)
+                try execute(expectedString: arg.0, opr: arg.1)
             }
         }
     }
 
-    func execute(expectedString: String, opr: NativeBinaryOperator, isExponents: Bool) throws {
+    func execute(expectedString: String, opr: NativeBinaryOperator) throws {
         let right = NumberMock(info: "right")
         let left = NumberMock(info: "left")
         let expectedType = String(describing: type(of: right))
 
-        let result = opr.execute(left: left, right: right, isExponents: isExponents)
+        let result = opr.execute(left: left, right: right)
         XCTAssertEqual(String(describing: type(of: result)), expectedType)
         if let mock = result as? NumberMock {
             XCTAssertEqual(mock.info, expectedString)

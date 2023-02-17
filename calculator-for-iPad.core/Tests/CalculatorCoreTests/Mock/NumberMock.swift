@@ -9,80 +9,80 @@ public class NumberMock: Number {
         self.info = info
     }
 
-    public func add(left: Number, isExponents: Bool) -> Number {
+    public func add(left: Number) -> Number {
         if let mock = left as? NumberMock {
-            return NumberMock(info: "\(mock.info) add \(info) isExponents:\(isExponents)")
+            return NumberMock(info: "\(mock.info) add \(info)")
         } else {
             return NumberMock(info: "not supported")
         }
     }
-    public func substract(left: Number, isExponents: Bool) -> Number {
+    public func substract(left: Number) -> Number {
         if let mock = left as? NumberMock {
-            return NumberMock(info: "\(mock.info) substract \(info) isExponents:\(isExponents)")
+            return NumberMock(info: "\(mock.info) substract \(info)")
         } else {
             return NumberMock(info: "not supported")
         }
     }
-    public func multiply(left: Number, isExponents: Bool) -> Number {
+    public func multiply(left: Number) -> Number {
         if let mock = left as? NumberMock {
-            return NumberMock(info: "\(mock.info) multiply \(info) isExponents:\(isExponents)")
+            return NumberMock(info: "\(mock.info) multiply \(info)")
         } else {
             return NumberMock(info: "not supported")
         }
     }
-    public func divide(left: Number, isExponents: Bool) -> Number {
+    public func divide(left: Number) -> Number {
         if let mock = left as? NumberMock {
-            return NumberMock(info: "\(mock.info) divide \(info) isExponents:\(isExponents)")
+            return NumberMock(info: "\(mock.info) divide \(info)")
         } else {
             return NumberMock(info: "not supported")
         }
     }
-    public func modulus(left: Number, isExponents: Bool) -> Number {
+    public func modulus(left: Number) -> Number {
         if let mock = left as? NumberMock {
-            return NumberMock(info: "\(mock.info) modulus \(info) isExponents:\(isExponents)")
+            return NumberMock(info: "\(mock.info) modulus \(info)")
         } else {
             return NumberMock(info: "not supported")
         }
     }
-    public func pow(left: Number, isExponents: Bool) -> Number {
+    public func pow(left: Number) -> Number {
         if let mock = left as? NumberMock {
-            return NumberMock(info: "\(mock.info) pow \(info) isExponents:\(isExponents)")
+            return NumberMock(info: "\(mock.info) pow \(info)")
         } else {
             return NumberMock(info: "not supported")
         }
     }
-    public func negate(isExponents: Bool) -> Number {
-        return NumberMock(info: "negate \(info) isExponents:\(isExponents)")
+    public func negate() -> Number {
+        return NumberMock(info: "negate \(info)")
     }
-    public func abs(isExponents: Bool) -> Number {
-        return NumberMock(info: "abs \(info) isExponents:\(isExponents)")
+    public func abs() -> Number {
+        return NumberMock(info: "abs \(info)")
     }
-    public func sqrt(isExponents: Bool) -> Number {
-        return NumberMock(info: "sqrt \(info) isExponents:\(isExponents)")
+    public func sqrt() -> Number {
+        return NumberMock(info: "sqrt \(info)")
     }
-    public func sin(isExponents: Bool) -> Number {
-        return NumberMock(info: "sin \(info) isExponents:\(isExponents)")
+    public func sin() -> Number {
+        return NumberMock(info: "sin \(info)")
     }
-    public func cos(isExponents: Bool) -> Number {
-        return NumberMock(info: "cos \(info) isExponents:\(isExponents)")
+    public func cos() -> Number {
+        return NumberMock(info: "cos \(info)")
     }
-    public func tan(isExponents: Bool) -> Number {
-        return NumberMock(info: "tan \(info) isExponents:\(isExponents)")
+    public func tan() -> Number {
+        return NumberMock(info: "tan \(info)")
     }
-    public func arcsin(isExponents: Bool) -> Number {
-        return NumberMock(info: "arcsin \(info) isExponents:\(isExponents)")
+    public func arcsin() -> Number {
+        return NumberMock(info: "arcsin \(info)")
     }
-    public func arccos(isExponents: Bool) -> Number {
-        return NumberMock(info: "arccos \(info) isExponents:\(isExponents)")
+    public func arccos() -> Number {
+        return NumberMock(info: "arccos \(info)")
     }
-    public func arctan(isExponents: Bool) -> Number {
-        return NumberMock(info: "arctan \(info) isExponents:\(isExponents)")
+    public func arctan() -> Number {
+        return NumberMock(info: "arctan \(info)")
     }
-    public func log(isExponents: Bool) -> Number {
-        return NumberMock(info: "log \(info) isExponents:\(isExponents)")
+    public func log() -> Number {
+        return NumberMock(info: "log \(info)")
     }
-    public func ln(isExponents: Bool) -> Number {
-        return NumberMock(info: "ln \(info) isExponents:\(isExponents)")
+    public func ln() -> Number {
+        return NumberMock(info: "ln \(info)")
     }
 
     public static func parse(_ source: String) -> Token? {
