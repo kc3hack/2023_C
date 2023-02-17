@@ -5,7 +5,7 @@ public protocol PUserDefaultsService {
     func set(value: Float, forKey: String)
     func set(value: Double, forKey: String)
 
-    func getString(forKey: String) -> String
+    func getString(forKey: String) -> String?
     func getBool(forKey: String) -> Bool
     func getInteger(forKey: String) -> Int
     func getFloat(forKey: String) -> Float
