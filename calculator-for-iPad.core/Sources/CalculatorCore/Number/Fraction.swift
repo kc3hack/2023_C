@@ -234,7 +234,23 @@ internal struct Fraction: Number {
             }
             return x
         } else {
-            return toReal().pow(left: left)
+            var num = Foundation.pow(Double(leftFrac.numerator), Double(1) / Double(denominator))
+            var deno = Foundation.pow(Double(leftFrac.denominator), Double(1) / Double(denominator))
+
+            guard Double(Int(num)) == num && Double(Int(deno)) == deno else {
+                return toReal().pow(left: left)
+            }
+            
+            let absedNumerator = numerator < 0 ? -numerator: numerator
+            num = Foundation.pow(num, Double(absedNumerator))
+            deno = Foundation.pow(deno, Double(absedNumerator))
+            if let numInteger = Int(exactly: num), let denoInteger = Int(exactly: deno) {
+                return numerator < 0 
+                    ? Fraction(numerator: denoInteger, denominator: numInteger) ?? toReal().pow(left: left)
+                    : Fraction(numerator: numInteger, denominator: denoInteger) ?? toReal().pow(left: left)
+            } else {
+                return toReal().pow(left: left)
+            }
         }
     }
 
@@ -249,7 +265,7 @@ internal struct Fraction: Number {
     func sqrt() -> Number {
         let num = Foundation.sqrt(Double(numerator))
         let deno = Foundation.sqrt(Double(denominator))
-        if num * num == Double(numerator) && deno * deno == Double(denominator) {
+        if Double(Int(num)) == num && Double(Int(deno)) == deno {
             return Fraction(numerator: Int(num), denominator: Int(deno)) ?? NanValue()
         } else {
             return toReal().sqrt()
