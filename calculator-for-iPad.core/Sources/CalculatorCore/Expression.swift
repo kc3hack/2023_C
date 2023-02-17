@@ -1,11 +1,11 @@
 public struct Expression {
-    public let rawExpression: [String]
-    private var tokens: [Token]
+    public let rawExpression: String
+    private let tokens: [Token]
     private var result: Number?
 
     /// 式を作成します
     /// - Parameter tokens: 1+2*3 は [1 2 3 * +] のように並べてください
-    public init(rawExpression: [String], tokens: [Token]) {
+    public init(rawExpression: String, tokens: [Token]) {
         self.rawExpression = rawExpression
         self.tokens = tokens
         result = nil
@@ -17,32 +17,25 @@ public struct Expression {
         }
 
         var tempNumbers: [Number] = []
-        while !tokens.isEmpty {
-            let first: Token? = tokens.removeFirst()
-            
-            guard let first else {
-                result = NanValue()
-                return result!
-            }
-
-            switch first.tokenType {
+        for token in tokens {
+            switch token.tokenType {
                 case .number:
-                    guard let num = first as? Number else {
+                    guard let num = token as? Number else {
                         result = NanValue()
                         return result!
                     }
                     tempNumbers.append(num)
                 case .unaryOperator:
                     let value = tempNumbers.popLast()
-                    guard let opr = first as? UnaryOperator, let value else {
+                    guard let opr = token as? UnaryOperator, let value else {
                         result = NanValue()
                         return result!
                     }
                     tempNumbers.append(opr.execute(value: value))
                 case .binaryOperator:
-                    let left = tempNumbers.popLast()
                     let right = tempNumbers.popLast()
-                    guard let opr = first as? BinaryOperator, let right, let left else {
+                    let left = tempNumbers.popLast()
+                    guard let opr = token as? BinaryOperator, let right, let left else {
                         result = NanValue()
                         return result!
                     }
@@ -63,5 +56,15 @@ public struct Expression {
             result = NanValue()
             return result!
         }
+    }
+
+    /// シリアライズする
+    /// - Returns: (expression: 式, result: 結果) 計算に失敗していたらnil
+    public mutating func serialize() -> (expression: String, result: String)? {
+        let result = execute()
+        if result.toDisplayString() == "" {
+            return nil
+        }
+        return (expression: rawExpression, result: result.toReal().toDisplayString())
     }
 }
