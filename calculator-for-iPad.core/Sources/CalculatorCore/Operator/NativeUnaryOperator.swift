@@ -40,30 +40,30 @@ internal enum NativeUnaryOperator: UnaryOperator {
     }
     public static let identifiers: [String] = ["abs", "√", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "log", "ln"]
     
-    public func execute(value: Number, isExponents: Bool) -> Number {
+    public func execute(value: Number) -> Number {
         switch self {
             case .negate:
-                return value.negate(isExponents: isExponents)
+                return value.negate()
             case .abs:
-                return value.abs(isExponents: isExponents)
+                return value.abs()
             case .sqrt:
-                return value.sqrt(isExponents: isExponents)
+                return value.sqrt()
             case .sin:
-                return value.sin(isExponents: isExponents)
+                return value.sin()
             case .cos:
-                return value.cos(isExponents: isExponents)
+                return value.cos()
             case .tan:
-                return value.tan(isExponents: isExponents)
+                return value.tan()
             case .arcsin:
-                return value.arcsin(isExponents: isExponents)
+                return value.arcsin()
             case .arccos:
-                return value.arccos(isExponents: isExponents)
+                return value.arccos()
             case .arctan:
-                return value.arctan(isExponents: isExponents)
+                return value.arctan()
             case .log:
-                return value.log(isExponents: isExponents)
+                return value.log()
             case .ln:
-                return value.ln(isExponents: isExponents)
+                return value.ln()
         }
     }
 

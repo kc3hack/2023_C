@@ -2,21 +2,21 @@ public protocol Number: Token{
     var isInteger: Bool { get }
 
     func toReal() -> RealNumber
-    func add(left: Number, isExponents: Bool) -> Number
-    func substract(left: Number, isExponents: Bool) -> Number
-    func multiply(left: Number, isExponents: Bool) -> Number
-    func divide(left: Number, isExponents: Bool) -> Number
-    func modulus(left: Number, isExponents: Bool) -> Number
-    func pow(left: Number ,isExponents: Bool) -> Number
-    func negate(isExponents: Bool) -> Number
-    func abs(isExponents: Bool) -> Number
-    func sqrt(isExponents: Bool) -> Number
-    func sin(isExponents: Bool) -> Number
-    func cos(isExponents: Bool) -> Number
-    func tan(isExponents: Bool) -> Number
-    func arcsin(isExponents: Bool) -> Number
-    func arccos(isExponents: Bool) -> Number
-    func arctan(isExponents: Bool) -> Number
-    func log(isExponents: Bool) -> Number
-    func ln(isExponents: Bool) -> Number
+    func add(left: Number) -> Number
+    func substract(left: Number) -> Number
+    func multiply(left: Number) -> Number
+    func divide(left: Number) -> Number
+    func modulus(left: Number) -> Number
+    func pow(left: Number) -> Number
+    func negate() -> Number
+    func abs() -> Number
+    func sqrt() -> Number
+    func sin() -> Number
+    func cos() -> Number
+    func tan() -> Number
+    func arcsin() -> Number
+    func arccos() -> Number
+    func arctan() -> Number
+    func log() -> Number
+    func ln() -> Number
 }

@@ -25,20 +25,20 @@ internal enum NativeBinaryOperator: BinaryOperator {
     }
     public static let identifiers: [String] = ["+", "-", "*", "/", "mod", "^"]
     
-    public func execute(left: Number, right: Number, isExponents: Bool) -> Number {
+    public func execute(left: Number, right: Number) -> Number {
         switch self {
             case .add:
-                return right.add(left: left, isExponents: isExponents)
+                return right.add(left: left)
             case .substract:
-                return right.substract(left: left, isExponents: isExponents)
+                return right.substract(left: left)
             case .multiply:
-                return right.multiply(left: left, isExponents: isExponents)
+                return right.multiply(left: left)
             case .divide:
-                return right.divide(left: left, isExponents: isExponents)
+                return right.divide(left: left)
             case .modulus:
-                return right.modulus(left: left, isExponents: isExponents)
+                return right.modulus(left: left)
             case .pow:
-                return right.pow(left: left, isExponents: isExponents)
+                return right.pow(left: left)
         }
     }
     
