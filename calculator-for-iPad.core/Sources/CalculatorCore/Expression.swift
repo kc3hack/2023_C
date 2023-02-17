@@ -67,11 +67,11 @@ public struct Expression {
 
     /// シリアライズする
     /// - Returns: (expression: 式, result: 結果) 計算に失敗していたらnil
-    public func serialize() -> (expression: String, result: String)? {
+    public mutating func serialize() -> (expression: String, result: String)? {
         let result = execute()
         if result.toDisplayString() == "" {
             return nil
         }
-        return (rawExpression, result)
+        return (expression: rawExpression, result: result.toReal().toDisplayString())
     }
 }
