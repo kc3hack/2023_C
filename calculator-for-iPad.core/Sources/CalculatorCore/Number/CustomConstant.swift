@@ -22,7 +22,7 @@ public struct CustomConstant: Number{
     }
 
     public func toReal() -> RealNumber {
-        return RealNumber(val: Decimal(10)).pow(left: RealNumber(val: Decimal(exponents))).multiply(left: coefficientNumber.toReal()).toReal()
+        return RealNumber(val:Decimal(exponents)).pow(left: RealNumber(val: Decimal(10))).multiply(left: coefficientNumber.toReal()).toReal()
     }
 
     public func add(left: Number) -> Number {
@@ -32,10 +32,9 @@ public struct CustomConstant: Number{
         guard let leftConst: CustomConstant = left as? CustomConstant else {
             return toReal().add(left: left)
         }
-
-        //指数をleftに合わせる
-        let coefTemp: Number = RealNumber(val: 10).pow(left: RealNumber(val: Decimal(self.exponents - leftConst.exponents))).multiply(left: self.coefficientNumber)
-        return RealNumber(val: 10).pow(left: RealNumber(val: Decimal(leftConst.exponents))).multiply(left: coefTemp.add(left: leftConst.coefficientNumber))
+        let coefTemp: Number = RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).toReal().multiply(left: leftConst.coefficientNumber)
+      
+        return RealNumber(val: Decimal(self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: coefTemp.add(left: self.coefficientNumber))
     }
 
     public func substract(left: Number) -> Number {
@@ -43,12 +42,11 @@ public struct CustomConstant: Number{
             return NanValue()
         }
         guard let leftConst: CustomConstant = left as? CustomConstant else {
-            return toReal().substract(left: left)
+            return toReal().add(left: left)
         }
-
-        //指数をleftに合わせる
-        let coefTemp: Number = RealNumber(val: 10).pow(left: RealNumber(val: Decimal(self.exponents - leftConst.exponents))).multiply(left: self.coefficientNumber)
-        return RealNumber(val: 10).pow(left: RealNumber(val: Decimal(leftConst.exponents))).multiply(left: coefTemp.substract(left: leftConst.coefficientNumber))
+        let coefTemp: Number = RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).toReal().multiply(left: leftConst.coefficientNumber)  
+      
+        return RealNumber(val: Decimal(self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: self.coefficientNumber.toReal().substract(left: coefTemp))//coefTemp.substract(left: self.coefficientNumber))
     }
 
     public func multiply(left: Number) -> Number {
@@ -58,7 +56,8 @@ public struct CustomConstant: Number{
         guard let leftConst: CustomConstant = left as? CustomConstant else {
             return toReal().multiply(left: left)
         }
-        return RealNumber(val: 10).pow(left: RealNumber(val: Decimal(leftConst.exponents + self.exponents))).multiply(left: self.coefficientNumber.substract(left: leftConst.coefficientNumber))
+    
+        return RealNumber(val: Decimal(leftConst.exponents + self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: leftConst.coefficientNumber.toReal().multiply(left: self.coefficientNumber))
     }
 
     public func divide(left: Number) -> Number {
@@ -68,7 +67,7 @@ public struct CustomConstant: Number{
         guard let leftConst: CustomConstant = left as? CustomConstant else {
             return toReal().add(left: left)
         }
-        return RealNumber(val: 10).pow(left: RealNumber(val: Decimal(leftConst.exponents - self.exponents))).divide(left: self.coefficientNumber.substract(left: leftConst.coefficientNumber))
+        return RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: leftConst.coefficientNumber.toReal().multiply(left: self.coefficientNumber))  
     }
 
     public func modulus(left: Number) -> Number {
@@ -76,7 +75,7 @@ public struct CustomConstant: Number{
             return NanValue()
         }
         
-        return toReal().modulus(left: left)
+        return toReal().modulus(left: left.toReal())
     }
 
     public func pow(left: Number) -> Number {
@@ -84,7 +83,7 @@ public struct CustomConstant: Number{
             return NanValue()
         }
 
-        return toReal().pow(left: left)
+        return self.toReal().pow(left: left.toReal())
     }
 
     public func negate() -> Number {

@@ -8,7 +8,7 @@ public struct RealNumber: Number{
     init(val: Decimal) {
         self.value = val
         
-        let integer = NSDecimalNumber(decimal: val).intValue
+        let integer: Int = NSDecimalNumber(decimal: val).intValue
         self.isInteger = Decimal(integerLiteral: integer) == val
     }
 
@@ -51,41 +51,48 @@ public struct RealNumber: Number{
     public func pow(left: Number) -> Number {
         var dec: Decimal
         dec = left.toReal().value
+            if dec  <= 0{
+            let exp: Decimal = value
 
-        let exp: Decimal = value
+            if dec.isNaN || exp.isNaN { return NanValue() }
+            else if exp == 0 { 
+                dec = 1
 
-        if dec.isNaN || exp.isNaN { return NanValue() }
-        else if exp == 0 { 
-            dec = 1
+                let real: RealNumber = RealNumber(val: dec)
+                return  real
+            }
+            else if exp < 0 { 
 
-            let real: RealNumber = RealNumber(val: dec)
-            return  real
+                dec = 1 / left.pow(left: RealNumber(val: exp * -1)).toReal().value
+
+                let real: RealNumber = RealNumber(val: dec)
+                return real
+            }
+
+            // Separate Integer and Decimal
+            let integer: Decimal = floor(decimal: exp)
+            let decimal: Decimal = exp - integer
+
+            // Calculate Integer Part
+            let intX: Int = (integer as NSNumber).intValue
+            if !integer.isZero && intX == 0 { return NanValue() }
+            let intRes: Decimal = Foundation.pow(dec, intX)
+
+            // Calculate Decimal Part
+            let temp: Decimal = ln().toReal().value
+            let decRes: Decimal = myexp(decimal: (decimal * temp))
+
+            // Merge
+            dec = intRes * decRes
+
+            return RealNumber(val: dec)
+        }else{
+            let dbl: Double = (self.value as NSNumber).doubleValue
+            let leftDbl: Double = (dec as NSNumber).doubleValue
+            let result: Double = Foundation.pow(leftDbl, dbl)
+
+            return RealNumber(val: Decimal(result))
         }
-        else if exp < 0 { 
-            
-            dec = 1 / left.pow(left: RealNumber(val: exp * -1)).toReal().value
-            
-            let real: RealNumber = RealNumber(val: dec)
-            return real
-        }
-
-        // Separate Integer and Decimal
-        let integer: Decimal = floor(decimal: exp)
-        let decimal: Decimal = exp - integer
-
-        // Calculate Integer Part
-        let intX: Int = (integer as NSNumber).intValue
-        if !integer.isZero && intX == 0 { return NanValue() }
-        let intRes: Decimal = Foundation.pow(dec, intX)
-
-        // Calculate Decimal Part
-        let temp: Decimal = ln().toReal().value
-        let decRes: Decimal = myexp(decimal: (decimal * temp))
-
-        // Merge
-        dec = intRes * decRes
-
-        return RealNumber(val: dec)
     }
 
     public func negate() -> Number {
@@ -164,7 +171,7 @@ public struct RealNumber: Number{
     }
 
     public func tan() -> Number {
-        let result = sin().toReal().value / cos().toReal().value
+        let result: Decimal = sin().toReal().value / cos().toReal().value
 
         return RealNumber(val: result)
     }
@@ -196,7 +203,7 @@ public struct RealNumber: Number{
 
     public static func parse(_ source: String) -> Token? {
         let dec: Decimal? = Decimal(string: source)
-        guard let dec else {
+        guard let dec: Decimal else {
             return nil
         }
         if dec == Decimal.nan {
@@ -208,7 +215,7 @@ public struct RealNumber: Number{
 
     public static func deserialize(_ source: String) -> Token? {
         let dec: Decimal? = Decimal(string: source)
-        guard let dec else {
+        guard let dec: Decimal else {
             return nil
         }
         if dec == Decimal.nan {
