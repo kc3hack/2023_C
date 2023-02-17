@@ -10,7 +10,7 @@ public class CalculatorService: PCalculatorService {
 
     private func parseString(rawExpression: String) -> [Token]? {
         var token: String = ""
-        var tokenList: [String] = []
+        var tokenList: [Token] = []
         // 0: 受付中
         // 1: 数字を認識中
         // 2: 演算子を認識中
@@ -26,24 +26,40 @@ public class CalculatorService: PCalculatorService {
                     token += String(c)
                     state = 1
                 }
-            }else {
+            }else { //数字と小数点以外が来たら
                 // state 1 => 数字に変換 失敗 nil
                 // 受け取った文字列 => 演算子に変換できるか  => 変換できたらstate 0 tokenを""
                 // state2 => tokenと合わせて変換
                 // 変換できなかったらtokenに入れてstate2にする
                 if(state == 1) { //トークンに数字が入っていたらここで吐き出し
-                    guard (Double(token)!.truncatingRemainder(dividingBy: 1) >= 0) else { //数値であるか調べる
+                    let number = Fraction.parse(token) ?? RealNumber.parse(token)
+                    if let number {
+                        tokenList.append(number)
+                        token = ""
+                        state = 0
+                    }else {
                         return nil
                     }
-                    tokenList.append(token)
-                    token = ""
-                    state = 0
-                }
-
-                if(c == "+" && c == "-" && c == "*" && c == "/" && c == "^" && c == "√"/* && c == "(" && c == ")"*/) { //単項演算子(と括弧)用
-                    tokenList.append(token)
-                    token = ""
-                    state = 0
+                }else if(state == 0) {
+                    let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
+                    if let operatorChara {
+                        tokenList.append(operatorChara)
+                        token = ""
+                        state = 0
+                    }else {
+                        token += String(c)
+                        state = 2
+                    }
+                }else if(state == 2) {
+                    token += String(c)
+                    let operatorWord = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
+                    if let operatorWord {
+                        tokenList.append(operatorWord)
+                        token = ""
+                        state = 0
+                    }else {
+                        //
+                    }
                 }
             }
         }
@@ -52,6 +68,7 @@ public class CalculatorService: PCalculatorService {
             token = ""
             state = 0
         }
+        return tokenList
     }
 
     private func infix2polish(expression: [Token]) -> [Token]? {
