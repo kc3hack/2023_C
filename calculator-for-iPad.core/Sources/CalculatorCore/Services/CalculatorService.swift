@@ -65,9 +65,13 @@ public class CalculatorService: PCalculatorService {
             }
         }
         if(token != "") { //末尾のトークンを吐き出し
-            tokenList.append(token)
-            token = ""
-            state = 0
+            let temp = NativeBinaryOperator.parse(token)
+                ?? NativeUnaryOperator.parse(token)
+                ?? Bracket.parse(token)
+            guard let temp else {
+                return nil
+            }
+            tokenList.append(temp)
         }
         return tokenList
     }
