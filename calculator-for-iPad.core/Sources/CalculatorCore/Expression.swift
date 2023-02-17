@@ -50,6 +50,9 @@ public struct Expression {
                 case .customArgument:
                     result = NanValue()
                     return result!
+                case .bracket:
+                    result = NanValue()
+                    return result!
             }
         }
 
