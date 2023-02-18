@@ -53,19 +53,26 @@ struct DisplayView: View {
                         let results_index = calc_results.count - 1 - ridx
                         let calc_result = calc_results[results_index];
                         HStack{
-                            let split_calc = calc_result.components(separatedBy: "=")
-                            Button(action: {()->Void in
-                                set_expr(split_calc[0])
-                            }){
-                                Text(" "+split_calc[0]).font(.system(size:font_size*2/3))
+                            VStack{
+                                let split_calc = calc_result.components(separatedBy: "=")
+                                HStack{
+                                    Button(action: {()->Void in
+                                        set_expr(split_calc[0])
+                                    }){
+                                        Text(" "+split_calc[0]).font(.system(size:font_size*2/3))
+                                    }
+                                    Spacer()
+                                }
+                                HStack{
+                                    Text("  =").font(.system(size:font_size*2/3))
+                                    Button(action: {()->Void in
+                                        set_expr(split_calc[1])
+                                    }){
+                                        Text(""+split_calc[1]).font(.system(size:font_size*2/3))
+                                    }
+                                    Spacer()
+                                }
                             }
-                            Text("=").font(.system(size:font_size*2/3))
-                            Button(action: {()->Void in
-                                set_expr(split_calc[1])
-                            }){
-                                Text(""+split_calc[1]).font(.system(size:font_size*2/3))
-                            }
-                            
                             Spacer()
                         }.padding(font_size*1/8)
                     }

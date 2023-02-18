@@ -12,7 +12,7 @@ struct MainKeys: View {
     let font_size: CGFloat = 36
     // keyとactionの対応させたもの
     private let key_array = [
-        ["AC","BS","◀︎","▶︎",],
+        ["AC","◀︎","▶︎","⌫",],
         ["7","8","9","+",],
         ["4","5","6","-",],
         ["1","2","3","×",],

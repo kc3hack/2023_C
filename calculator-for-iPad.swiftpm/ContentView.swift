@@ -101,7 +101,7 @@ struct ContentView: View {
             expr = ""
             expr_pointer = 0
         }
-        else if(push_char=="BS"){
+        else if(push_char=="⌫"){
             //BSが文字として追加されないようにBSは問答無用でここに入る
             if(0<expr_pointer){
                 expr = expr.prefix(expr_pointer-1) + after_pointer
