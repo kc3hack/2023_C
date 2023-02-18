@@ -214,7 +214,7 @@ public struct Constant: Number{
     }
 
     public func abs() -> Number {
-        return toReal().abs()
+        return Constant(base: self, coefficient.abs(), exponents)
     }
 
     public func sqrt() -> Number {
@@ -222,71 +222,82 @@ public struct Constant: Number{
             return Fraction(numerator: 1, denominator: 1)!
         } else if isZero {
             return Fraction.zero
+        } else if exponents % 2 == 0 {
+            return Constant(base: self, coefficient.sqrt(), exponents / 2)
+        } else {
+            return toNumber().sqrt()
         }
-        return toReal().sqrt()
     }
 
     public func sin() -> Number {
-        return toReal().sin()
+        if isZero {
+            return Fraction.zero
+        } else if identifier == "π" {
+            if exponents == 1 && coefficient.isInteger {
+                return Fraction.zero
+            }
+        }
+        return toNumber().sin()
     }
 
     public func cos() -> Number {
-        return toReal().sin()
+        return toNumber().sin()
     }
 
     public func tan() -> Number {
-        return toReal().tan()
+        return toNumber().tan()
     }
 
     public func arcsin() -> Number {
-        return toReal().arcsin()
+        return toNumber().arcsin()
     }
 
     public func arccos() -> Number {
-        return toReal().arccos()
+        return toNumber().arccos()
     }
 
     public func arctan() -> Number {
-        return toReal().arctan()
+        return toNumber().arctan()
     }
 
     public func log() -> Number {
-        return toReal().log()
+        return toNumber().log()
     }
 
     public func ln() -> Number {
-        return toReal().ln()
+        if identifier == "e" {
+            return coefficient.ln().add(Fraction(numerator: exponents, denominator: 1) ?? NanValue())
+        }
+        return toNumber().ln()
     }
 
     public static func parse(_ source: String) -> Token? {
-        let dec: Decimal? = Decimal(string: source)
-        guard let dec: Decimal else {
+        if source == "π" {
+            return Constant.pi
+        } else if source == "e" {
+            return Constant.e
+        } else {
             return nil
         }
-        if dec == Decimal.nan {
-            return NanValue()
-        }
-        
-        return RealNumber(val: dec)
     }
 
     public static func deserialize(_ source: String) -> Token? {
-        let dec: Decimal? = Decimal(string: source)
-        guard let dec: Decimal else {
-            return nil
-        }
-        if dec == Decimal.nan {
-            return NanValue()
-        }
-        
-        return RealNumber(val: dec)
+        return parse(source)
     }
 
     public func toDisplayString() -> String {
-        return identifier
+        if coefficient.toDisplayString() == "" {
+            return ""
+        } else if exponents == 0 {
+            return coefficient.toDisplayString()
+        } else if exponents == 1 {
+            return "\(coefficient.toDisplayString()) \(identifier)"
+        } else {
+            return "\(coefficient.toDisplayString()) \(identifier)^\(exponents)"
+        }
     }
 
     public func serialize() -> String {
-        return identifier
+        return toDisplayString()
     }
 }
