@@ -21,11 +21,11 @@ struct MainKeys: View {
     
     var body: some View {
         VStack{
-            ForEach((0...(key_array.count-1)),id: \.self){
+            ForEach((0..<key_array.count),id: \.self){
                 index_r in
                 let main_key_array_row = key_array[index_r]
                 HStack {
-                    ForEach((0...(main_key_array_row.count-1)),id: \.self){
+                    ForEach((0..<main_key_array_row.count),id: \.self){
                         index_c in
                         let key_char = main_key_array_row[index_c]
                         // ボタンの生成

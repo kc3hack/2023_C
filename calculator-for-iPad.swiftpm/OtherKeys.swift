@@ -9,24 +9,23 @@ import SwiftUI
 
 struct OtherKeys: View {
     let onclick_closure: (String)->Void
-    let font_size: CGFloat = 36
+    let font_size: CGFloat = 32
     // keyとactionの対応させたもの
+    // ContentViewも変更
     private let key_array = [
-        ["()",",","^"],
-        ["e","π"],
-        ["mod","sin"],
-        ["cos","tan"],
-        ["logE","log2"],
-        ["log10"],
+        ["()","e","π","^","√"],
+        ["sin","cos","tan"],
+        ["mod","abs","ln","log"],
+        ["arcsin","arccos","arctan"],
     ]
     
     var body: some View {
         ScrollView() {
-            ForEach((0...(key_array.count-1)),id: \.self){
+            ForEach((0..<key_array.count),id: \.self){
                 index_r in
                 let main_key_array_row = key_array[index_r]
                 HStack {
-                    ForEach((0...(main_key_array_row.count-1)),id: \.self){
+                    ForEach((0..<main_key_array_row.count),id: \.self){
                         index_c in
                         let key_char = main_key_array_row[index_c]
                         // ボタンの生成

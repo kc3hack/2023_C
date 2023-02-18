@@ -1,4 +1,6 @@
 public class CalculatorService: PCalculatorService {
+    public init(){}
+    
     public func calculate(rawExpression: String) -> Number {
         var e = parse(rawExpression: rawExpression)
         return e.execute()
