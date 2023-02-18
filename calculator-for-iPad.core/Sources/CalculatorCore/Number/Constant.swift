@@ -78,8 +78,10 @@ public struct Constant: Number{
             return toNumber().substract(left: left)
         }
 
+        let a = leftConst.coefficient as? RealNumber
+
         if leftConst.exponents == exponents && leftConst.identifier == identifier {
-            return Constant(base: self, coefficient.substract(left: leftConst), exponents)
+            return Constant(base: self, coefficient.substract(left: leftConst.coefficient), exponents)
         } else {
             return toNumber().substract(left: leftConst.toNumber())
         }
@@ -288,6 +290,8 @@ public struct Constant: Number{
     public func toDisplayString() -> String {
         if coefficient.toDisplayString() == "" {
             return ""
+        } else if coefficient is RealNumber {
+            return toReal().toDisplayString()
         } else if exponents == 0 {
             return coefficient.toDisplayString()
         } else if exponents == 1 {
