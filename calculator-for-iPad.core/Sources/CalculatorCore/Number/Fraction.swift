@@ -3,10 +3,12 @@ import Foundation
 internal struct Fraction: Number {
     public let tokenType: TokenType = .number
     public var isInteger: Bool { return denominator == 1}
+    public var isZero: Bool { return numerator == 0 }
+    public var isOne: Bool { return numerator == 1 && denominator == 1}
+    public var isNegativeOne: Bool { return numerator == -1 && denominator == 1}
     
     private let numerator: Int
     private let denominator: Int
-    private var isZero: Bool { return numerator == 0 }
     private static var zero: Fraction { return Fraction(numerator: 0, denominator: 1)! }
 
     init?(numerator: Int, denominator: Int) {

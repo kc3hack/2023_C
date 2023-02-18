@@ -3,6 +3,9 @@ import Foundation
 public struct RealNumber: Number{
     public let tokenType: TokenType = .number
     public let isInteger: Bool
+    public var isZero: Bool { return value.isZero }
+    public var isOne: Bool { return value == Decimal(1) }
+    public var isNegativeOne: Bool { return value == Decimal(-1) }
     private let value: Decimal
     
     init(val: Decimal) {
@@ -66,7 +69,7 @@ public struct RealNumber: Number{
         } else if let leftConst = left as? Constant, isInteger {
             return leftConst.pow(right: NSDecimalNumber(decimal: value).intValue)
         }
-        
+
         var dec: Decimal
         dec = left.toReal().value
             if dec  <= 0{

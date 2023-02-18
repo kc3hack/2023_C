@@ -5,6 +5,9 @@ public struct Constant: Number{
     public let isInteger: Bool
     public let tokenType: TokenType = .number
     public let identifier: String
+    public var isZero: Bool { return coefficient.isZero }
+    public var isOne: Bool { return exponents == 0 && coefficient.isOne }
+    public var isNegativeOne: Bool { return exponents == 0 && coefficient.isNegativeOne }
     public static let e: Constant = Constant(identifier: "e", realNumber: Decimal(string: "2.71828182845904523536028747135266249776")!)
     public static let pi: Constant = Constant(identifier: "π", realNumber: Decimal.pi)
     
@@ -149,13 +152,11 @@ public struct Constant: Number{
     public func pow(left: Number) -> Number {
         if left is NanValue{
             return NanValue()
+        } else if exponents == 0 {
+            return coefficient.pow(left: left)
         }
 
-        if let leftConst = left as? Constant {
-            return toNumber().pow(left: leftConst.toNumber())
-        } else {
-            return toNumber().pow(left: left)
-        }
+        return toNumber().pow(left: left)
     }
 
     public func pow(right: Int) -> Number {

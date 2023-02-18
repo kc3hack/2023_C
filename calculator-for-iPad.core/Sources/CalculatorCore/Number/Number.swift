@@ -1,5 +1,8 @@
 public protocol Number: Token{
     var isInteger: Bool { get }
+    var isZero: Bool { get }
+    var isOne: Bool { get }
+    var isNegativeOne: Bool { get }
 
     func toReal() -> RealNumber
     func add(left: Number) -> Number
