@@ -3,6 +3,9 @@ import Foundation
 public struct RealNumber: Number{
     public let tokenType: TokenType = .number
     public let isInteger: Bool
+    public var isZero: Bool { return value.isZero }
+    public var isOne: Bool { return value == Decimal(1) }
+    public var isNegativeOne: Bool { return value == Decimal(-1) }
     private let value: Decimal
     
     init(val: Decimal) {
@@ -17,19 +20,56 @@ public struct RealNumber: Number{
     }
 
     public func add(left: Number) -> Number {
-        return RealNumber(val: left.toReal().value + value )
+        if left is NanValue {
+            return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self
+        } else {
+            return RealNumber(val: left.toReal().value + value )
+        }
     }
 
     public func substract(left: Number) -> Number {
+        if left is NanValue {
+            return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self.negate()
+        }
         return RealNumber(val: left.toReal().value - value )
     }
 
     public func multiply(left: Number) -> Number {
-        return RealNumber(val: mul(x: left.toReal().value, y: value ))
+        if left is NanValue {
+            return NanValue()
+        } else if isZero || left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
+        } else if left.isOne {
+            return self
+        } else if let leftConst = left as? Constant {
+            return leftConst.multiply(right: self)
+        } else {
+            return RealNumber(val: mul(x: left.toReal().value, y: value ))
+        }
     }
 
     public func divide(left: Number) -> Number {
-        return RealNumber(val: left.toReal().value / value )
+        if left is NanValue || isZero {
+            return NanValue()
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
+        } else if let leftConst = left as? Constant {
+            return leftConst.divide(right: self)
+        } else {
+            return RealNumber(val: left.toReal().value / value )
+        }
     }
 
     public func modulus(left: Number) -> Number {
@@ -49,43 +89,62 @@ public struct RealNumber: Number{
     }
 
     public func pow(left: Number) -> Number {
+        if left is NanValue {
+            return NanValue()
+        } else if isZero || left.isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
+        } else if let leftConst = left as? Constant, isInteger {
+            return leftConst.pow(right: NSDecimalNumber(decimal: value).intValue)
+        }
+
         var dec: Decimal
         dec = left.toReal().value
+            if dec  <= 0{
+            let exp: Decimal = value
 
-        let exp: Decimal = value
+            if dec.isNaN || exp.isNaN { return NanValue() }
+            else if exp == 0 { 
+                dec = 1
 
-        if dec.isNaN || exp.isNaN { return NanValue() }
-        else if exp == 0 { 
-            dec = 1
+                let real: RealNumber = RealNumber(val: dec)
+                return  real
+            }
+            else if exp < 0 { 
 
-            let real: RealNumber = RealNumber(val: dec)
-            return  real
+                dec = 1 / left.pow(left: RealNumber(val: exp * -1)).toReal().value
+
+                let real: RealNumber = RealNumber(val: dec)
+                return real
+            }
+
+            // Separate Integer and Decimal
+            let integer: Decimal = floor(decimal: exp)
+            let decimal: Decimal = exp - integer
+
+            // Calculate Integer Part
+            let intX: Int = (integer as NSNumber).intValue
+            if !integer.isZero && intX == 0 { return NanValue() }
+            let intRes: Decimal = Foundation.pow(dec, intX)
+
+            // Calculate Decimal Part
+            let temp: Decimal = ln().toReal().value
+            let decRes: Decimal = myexp(decimal: (decimal * temp))
+
+            // Merge
+            dec = intRes * decRes
+
+            return RealNumber(val: dec)
+        }else{
+            let dbl: Double = (self.value as NSNumber).doubleValue
+            let leftDbl: Double = (dec as NSNumber).doubleValue
+            let result: Double = Foundation.pow(leftDbl, dbl)
+
+            return RealNumber(val: Decimal(result))
         }
-        else if exp < 0 { 
-            
-            dec = 1 / left.pow(left: RealNumber(val: exp * -1)).toReal().value
-            
-            let real: RealNumber = RealNumber(val: dec)
-            return real
-        }
-
-        // Separate Integer and Decimal
-        let integer: Decimal = floor(decimal: exp)
-        let decimal: Decimal = exp - integer
-
-        // Calculate Integer Part
-        let intX: Int = (integer as NSNumber).intValue
-        if !integer.isZero && intX == 0 { return NanValue() }
-        let intRes: Decimal = Foundation.pow(dec, intX)
-
-        // Calculate Decimal Part
-        let temp: Decimal = ln().toReal().value
-        let decRes: Decimal = myexp(decimal: (decimal * temp))
-
-        // Merge
-        dec = intRes * decRes
-
-        return RealNumber(val: dec)
     }
 
     public func negate() -> Number {
@@ -97,6 +156,11 @@ public struct RealNumber: Number{
     }
 
     public func sqrt() -> Number {
+        if isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if isZero {
+            return Fraction.zero
+        }
         var dec: Decimal     
         dec = self.value
 

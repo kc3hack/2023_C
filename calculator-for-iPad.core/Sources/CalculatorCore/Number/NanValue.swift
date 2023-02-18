@@ -1,7 +1,9 @@
 public struct NanValue: Number {
-    
     public let tokenType: TokenType = .number
-    public var isInteger: Bool = false
+    public let isInteger: Bool = false
+    public let isZero: Bool = false
+    public let isOne: Bool = false
+    public let isNegativeOne: Bool = false
 
     public func toReal() -> RealNumber {
         return RealNumber(val: .nan)

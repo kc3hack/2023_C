@@ -3,11 +3,13 @@ import Foundation
 internal struct Fraction: Number {
     public let tokenType: TokenType = .number
     public var isInteger: Bool { return denominator == 1}
+    public var isZero: Bool { return numerator == 0 }
+    public var isOne: Bool { return numerator == 1 && denominator == 1}
+    public var isNegativeOne: Bool { return numerator == -1 && denominator == 1}
     
     private let numerator: Int
     private let denominator: Int
-    private var isZero: Bool { return numerator == 0 }
-    private static var zero: Fraction { return Fraction(numerator: 0, denominator: 1)! }
+    public static var zero: Fraction { return Fraction(numerator: 0, denominator: 1)! }
 
     init?(numerator: Int, denominator: Int) {
         guard let t = Fraction.normalize(numerator: numerator, denominator: denominator) else {
@@ -76,6 +78,10 @@ internal struct Fraction: Number {
     func add(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self
         }
         guard let leftFrac = left as? Fraction else {
             return toReal().add(left: left)
@@ -110,6 +116,10 @@ internal struct Fraction: Number {
     func substract(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self.negate()
         }
         guard let leftFrac = left as? Fraction else {
             return toReal().substract(left: left)
@@ -144,9 +154,19 @@ internal struct Fraction: Number {
     func multiply(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
+        } else if isZero || left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
+        } else if left.isOne {
+            return self
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().multiply(left: left)
+            if let leftConst = left as? Constant {
+                return leftConst.multiply(right: self)
+            } else {
+                return toReal().multiply(left: left)
+            }
         }
 
         let (result, isOverflow) = multiply(leftFrac)
@@ -174,9 +194,17 @@ internal struct Fraction: Number {
     func divide(left: Number) -> Number {
         if left is NanValue || isZero {
             return NanValue()
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().multiply(left: left)
+            if let leftConst = left as? Constant {
+                return leftConst.divide(right: self)
+            } else {
+                return toReal().divide(left: left)
+            }
         }
 
         var isOverflow: Bool
@@ -203,9 +231,19 @@ internal struct Fraction: Number {
     func pow(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
+        } else if isZero || left.isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().pow(left: left)
+            if let leftConst = left as? Constant, isInteger {
+                return leftConst.pow(right: numerator)
+            } else {
+                return toReal().pow(left: left)
+            }
         }
 
         if numerator == 0 {
@@ -263,6 +301,11 @@ internal struct Fraction: Number {
     }
 
     func sqrt() -> Number {
+        if isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if isZero {
+            return Fraction.zero
+        }
         let num = Foundation.sqrt(Double(numerator))
         let deno = Foundation.sqrt(Double(denominator))
         if Double(Int(num)) == num && Double(Int(deno)) == deno {

@@ -2,6 +2,9 @@
 
 public class NumberMock: Number {
     public let isInteger: Bool = true
+    public let isZero: Bool = false
+    public let isOne: Bool = false
+    public let isNegativeOne: Bool = false
     public let tokenType: TokenType = .number
     public let info: String
 
