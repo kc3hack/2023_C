@@ -55,11 +55,11 @@ public class CalculatorService: PCalculatorService {
                         token = ""
                         state = 0
                     }else {
-                        token += String(c)
+                        //token += String(c)
                         state = 2
                     }
                 }else if(state == 2) {
-                    print("state = 2")
+                    print(String(token) + " ←state = 2")
                     token += String(c)
                     let operatorWord = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorWord {
