@@ -232,7 +232,7 @@ internal struct Fraction: Number {
                 }
                 y >>= 1
             }
-            return x
+            return ans
         } else {
             var num = Foundation.pow(Double(leftFrac.numerator), Double(1) / Double(denominator))
             var deno = Foundation.pow(Double(leftFrac.denominator), Double(1) / Double(denominator))
