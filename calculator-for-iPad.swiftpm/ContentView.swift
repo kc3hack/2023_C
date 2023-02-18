@@ -37,6 +37,7 @@ struct ContentView: View {
     
     func set_expr(value: String)->Void{
         expr = value
+        expr_pointer = value.unicodeScalars.count
     }
     
     func get_expr()->String{
@@ -90,12 +91,10 @@ struct ContentView: View {
         
         // =が押されたら式を評価するけど、ちょっと記憶をどうするかを考える
         if(push_char=="="){
-            if(call()){
-                expr = ""
-                expr_pointer = 0
-            }
-            else{
-                //エラー処理
+            let result_str=call()
+            if(result_str != ""){
+                expr = result_str
+                expr_pointer = result_str.unicodeScalars.count
             }
         }
         else if(push_char=="AC"){
@@ -121,15 +120,14 @@ struct ContentView: View {
         }
     }
     
-    func call()->Bool{
+    func call()->String{
         let calc_result: Number = calculatorService.calculate(rawExpression: expr.replacingOccurrences(of: "÷", with: "/").replacingOccurrences(of: "×", with: "*"))
         let calc_result_string = calc_result.toDisplayString()
         let value_expr: String = expr+"="+calc_result_string
-        if(calc_result_string==""){
-            return false
+        if(calc_result_string != ""){
+            calc_results.append(value_expr)
+
         }
-        
-        calc_results.append(value_expr)
-        return true
+        return calc_result.toReal().toDisplayString()
     }
 }
