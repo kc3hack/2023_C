@@ -2,18 +2,25 @@ import XCTest
 @testable import CalculatorCore
 
 public final class CalculatorServiceTest: XCTestCase {
-    func testCalculate() {
+    func testCalculate() throws {
+        let arguments: [(String, String)] = [
+            ("1+1*(6/2)", "4"),
+            ("(3+1/3)*2", "20/3"),
+            ("12/10+13/10", "5/2"),
+            ("1.2+1.3", "5/2"),
+        ]
+        
+        do {
+            for arg in arguments {
+                try calculate(expected: arg.1, rawExpression: arg.0)
+            }
+        }
+    }
+
+    func calculate(expected: String, rawExpression: String) throws {
         let calculator = CalculatorService()
-        var result = calculator.calculate(rawExpression: "1+1*(6/2)")
-        XCTAssertEqual(result.toDisplayString(), "4")
+        let result = calculator.calculate(rawExpression: rawExpression)
 
-        result = calculator.calculate(rawExpression: "(3+1/3)*2")
-        XCTAssertEqual(result.toDisplayString(), "20/3")
-
-        result = calculator.calculate(rawExpression: "12/10+13/10")
-        XCTAssertEqual(result.toDisplayString(), "5/2")
-
-        result = calculator.calculate(rawExpression: "1.2+1.3")
-        XCTAssertEqual(result.toDisplayString(), "5/2")
+        XCTAssertEqual(result.toDisplayString(), expected)
     }
 }
