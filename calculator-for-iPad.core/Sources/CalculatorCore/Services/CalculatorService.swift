@@ -5,7 +5,15 @@ public class CalculatorService: PCalculatorService {
     }
 
     public func parse(rawExpression: String) -> Expression {
-        return Expression(rawExpression: "[String]", tokens: [NanValue()])
+        let tokens = parseString(rawExpression: rawExpression)
+        guard let tokens else {
+            return Expression(rawExpression: rawExpression, tokens: [NanValue()])
+        }
+        let polishedTokens = infix2polish(expression: tokens)
+        guard let polishedTokens else {
+            return Expression(rawExpression: rawExpression, tokens: [NanValue()])
+        }
+        return Expression(rawExpression: rawExpression, tokens: polishedTokens)
     }
 
     public func parseString(rawExpression: String) -> [Token]? {
