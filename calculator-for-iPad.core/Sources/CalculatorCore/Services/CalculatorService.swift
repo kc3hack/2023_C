@@ -8,7 +8,7 @@ public class CalculatorService: PCalculatorService {
         return Expression(rawExpression: "[String]", tokens: [NanValue()])
     }
 
-    private func parseString(rawExpression: String) -> [Token]? {
+    public func parseString(rawExpression: String) -> [Token]? {
         var token: String = ""
         var tokenList: [Token] = []
         // 0: 受付中
@@ -16,7 +16,9 @@ public class CalculatorService: PCalculatorService {
         // 2: 演算子を認識中
         var state = 0
         for c: Character in rawExpression {
+            print("c = " + String(c))
             if c.isNumber || c == "." {
+                print(String(c) + " is num")
                 // state 2 ならパース失敗
                 // それ以外ならtokenに突っ込む
                 // stateを1にする
@@ -32,19 +34,24 @@ public class CalculatorService: PCalculatorService {
                 // state2 => tokenと合わせて変換
                 // 変換できなかったらtokenに入れてstate2にする
                 if(state == 1) { //トークンに数字が入っていたらここで吐き出し
+                    print("state = 1")
                     let number = Fraction.parse(token) ?? RealNumber.parse(token)
                     if let number {
                         tokenList.append(number)
+                        print(token + "(state 1)\n")
                         token = ""
                         state = 0
                     }else {
                         return nil
                     }
-                }else if(state == 0) {
+                }
+                if(state == 0) {
+                    print("state = 0")
                     token += String(c)
                     let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorChara {
                         tokenList.append(operatorChara)
+                        print(token + "(state 0)\n")
                         token = ""
                         state = 0
                     }else {
@@ -52,10 +59,12 @@ public class CalculatorService: PCalculatorService {
                         state = 2
                     }
                 }else if(state == 2) {
+                    print("state = 2")
                     token += String(c)
                     let operatorWord = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorWord {
                         tokenList.append(operatorWord)
+                        print(token + "(state 2)\n")
                         token = ""
                         state = 0
                     }else {
@@ -72,7 +81,14 @@ public class CalculatorService: PCalculatorService {
                 return nil
             }
             tokenList.append(temp)
+            print(token + "(last)\n\n")
         }
+
+        for token in tokenList {
+            print(tokenList)
+        }
+        print(tokenList)
+
         return tokenList
     }
 
@@ -111,7 +127,7 @@ public class CalculatorService: PCalculatorService {
                     guard let bracket = token as? Bracket else {
                         return nil
                     }
-                    
+
                     if bracket == .left {
                         stack.append(bracket)
                     } else {
