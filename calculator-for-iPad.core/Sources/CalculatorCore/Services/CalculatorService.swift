@@ -63,13 +63,22 @@ public class CalculatorService: PCalculatorService {
             }
         }
         if(token != "") { //残っていたら末尾のトークンを吐き出し(出来なかったらnilを返す)
-            let temp = NativeBinaryOperator.parse(token)
-                ?? NativeUnaryOperator.parse(token)
-                ?? Bracket.parse(token)
-            guard let temp else {
-                return nil
+            if(state == 1) { //数字
+                let number = Fraction.parse(token) ?? RealNumber.parse(token)
+                if let number {
+                    tokenList.append(number)
+                }else {
+                    return nil
+                }
+            }else { //文字
+                let temp = NativeBinaryOperator.parse(token)
+                    ?? NativeUnaryOperator.parse(token)
+                    ?? Bracket.parse(token)
+                guard let temp else { //最後の文字が不正なものならnilを返して終了
+                    return nil
+                }
+                tokenList.append(temp) //正常ならリストに追加
             }
-            tokenList.append(temp)
         }
 
         return tokenList
