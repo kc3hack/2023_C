@@ -20,9 +20,9 @@ struct DisplayView: View {
     var body: some View {
         VStack{
             Button(action: reset_calc_results){
-                Text("reset calculator data").font(.system(size: font_size*2/3)).foregroundColor(Color.red)
+                Text("↻RESET ").font(.system(size: font_size*2/3)).foregroundColor(Color.red)
             }
-            VStack{
+            ScrollView (.horizontal) {
                 let expr = get_expr_closure()
                 let expr_pointer = get_expr_pointer_closure()
                 

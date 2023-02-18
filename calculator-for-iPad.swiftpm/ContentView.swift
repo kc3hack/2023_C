@@ -62,7 +62,9 @@ struct ContentView: View {
         var to_be_added: String
         
         switch push_char {
-        case "mod":
+        case "√":
+            fallthrough
+        case "abs":
             fallthrough
         case "sin":
             fallthrough
@@ -70,9 +72,17 @@ struct ContentView: View {
             fallthrough
         case "tan":
             fallthrough
+        case "arcsin":
+            fallthrough
+        case "arccos":
+            fallthrough
+        case "arctan":
+            fallthrough
         case "ln":
             fallthrough
         case "log":
+            //カーソルがカッコの中に来るようにする。
+            expr_pointer -= 1
             to_be_added = push_char + "()"
         default:
             to_be_added = push_char

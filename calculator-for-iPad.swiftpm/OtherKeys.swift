@@ -9,15 +9,14 @@ import SwiftUI
 
 struct OtherKeys: View {
     let onclick_closure: (String)->Void
-    let font_size: CGFloat = 36
+    let font_size: CGFloat = 32
     // keyとactionの対応させたもの
     // ContentViewも変更
     private let key_array = [
-        ["()",",","^"],
-        ["e","π"],
-        ["mod","sin"],
-        ["cos","tan"],
-        ["ln","log"],
+        ["()","e","π","^","√"],
+        ["sin","cos","tan"],
+        ["mod","abs","ln","log"],
+        ["arcsin","arccos","arctan"],
     ]
     
     var body: some View {
