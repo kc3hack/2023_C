@@ -11,7 +11,7 @@ public struct RealNumber: Number{
     init(val: Decimal) {
         self.value = val
         
-        let integer: Int = NSDecimalNumber(decimal: val).intValue
+        let integer = NSDecimalNumber(decimal: val).intValue
         self.isInteger = Decimal(integerLiteral: integer) == val
     }
 

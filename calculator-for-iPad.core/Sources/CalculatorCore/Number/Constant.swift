@@ -78,8 +78,6 @@ public struct Constant: Number{
             return toNumber().substract(left: left)
         }
 
-        let a = leftConst.coefficient as? RealNumber
-
         if leftConst.exponents == exponents && leftConst.identifier == identifier {
             return Constant(base: self, coefficient.substract(left: leftConst.coefficient), exponents)
         } else {
