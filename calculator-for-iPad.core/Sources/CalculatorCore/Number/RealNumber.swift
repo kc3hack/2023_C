@@ -228,7 +228,7 @@ public struct RealNumber: Number{
     }
 
     public func tan() -> Number {
-        let result: Decimal = sin().toReal().value / cos().toReal().value
+        let result = sin().toReal().value / cos().toReal().value
 
         return RealNumber(val: result)
     }
@@ -260,7 +260,7 @@ public struct RealNumber: Number{
 
     public static func parse(_ source: String) -> Token? {
         let dec: Decimal? = Decimal(string: source)
-        guard let dec: Decimal else {
+        guard let dec else {
             return nil
         }
         if dec == Decimal.nan {
@@ -272,7 +272,7 @@ public struct RealNumber: Number{
 
     public static func deserialize(_ source: String) -> Token? {
         let dec: Decimal? = Decimal(string: source)
-        guard let dec: Decimal else {
+        guard let dec else {
             return nil
         }
         if dec == Decimal.nan {
