@@ -28,6 +28,7 @@ struct MainKeys: View {
                     ForEach((0..<main_key_array_row.count),id: \.self){
                         index_c in
                         let key_char = main_key_array_row[index_c]
+                        let is_number = Int(key_char) != nil
                         // ボタンの生成
                         Button(action: {()->Void in
                             onckick(push_char: key_char)
@@ -36,15 +37,13 @@ struct MainKeys: View {
                                 .font(.system(size: font_size))
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color(red:0.8, green:0.8, blue:0.8))
+                        .background(is_number ? Color(red:0.8, green:0.8, blue:0.8) : Color(red:0.8, green:0.9, blue:0.95))
                             .foregroundColor(Color.black)
                             .cornerRadius(10)
-                            .shadow(radius: 2)
                     }
                 }
             }
-        }//.frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
     
     func onckick(push_char: String)->Void{

@@ -16,13 +16,13 @@ struct ContentView: View {
             //もし横長モードなら右側に計算用テンキー(右利き優位なので設定で左に変えれたら便利)
             if(1000<geometry.size.width){
                 HStack{
-                    DisplayView(get_expr_closure: get_expr,set_expr:  set_expr,get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols).frame(maxWidth: .infinity, maxHeight: .infinity)
+                    DisplayView(get_expr_closure: get_expr,set_expr:  set_expr,get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols)
                     ControllerView(onclick_closure: onckick)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
+                }.padding()
             }
             else if(geometry.size.width < 400){
                 VStack{
-                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols).frame(maxWidth: .infinity, maxHeight: .infinity)
+                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols)
                     Toggle(isOn: $is_main_mode) {
                         Text(is_main_mode ? "Func" : "Num").font(.system(size:24))
                     }.toggleStyle(.button)
@@ -32,13 +32,13 @@ struct ContentView: View {
                     else{
                         MainKeys(onclick_closure: onckick)
                     }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
+                }.padding()
             }
             else{
                 VStack{
-                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols).frame(maxWidth: .infinity, maxHeight: .infinity)
+                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols)
                     ControllerView(onclick_closure: onckick)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
+                }.padding()
                 
             }
         }
@@ -69,43 +69,21 @@ struct ContentView: View {
         let before_pointer = String(expr.prefix(expr_pointer))
         let after_pointer = String(expr.suffix(expr.unicodeScalars.count - expr_pointer))
         
-        var to_be_added: String = push_char
+        var to_be_added: String
         
-        /*
-        let parentheses_list = ["√","abs","sin","cos",""]
-         */
+        // 括弧をつけるリスト
+        let parentheses_list = ["√","abs","sin","cos","tan","arcsin","arccos","arctan","ln","log","sin⁻¹","cos⁻¹","tan⁻¹"]
         
-        switch push_char {
-        case "√":
-            fallthrough
-        case "abs":
-            fallthrough
-        case "sin":
-            fallthrough
-        case "cos":
-            fallthrough
-        case "tan":
-            fallthrough
-        case "arcsin":
-            fallthrough
-        case "arccos":
-            fallthrough
-        case "arctan":
-            fallthrough
-        case "ln":
-            fallthrough
-        case "log":
-            fallthrough
-        case "sin⁻¹":
-            fallthrough
-        case "cos⁻¹":
-            fallthrough
-        case "tan⁻¹":
-            //カーソルがカッコの中に来るようにする。
+        if parentheses_list.contains(push_char) {
             expr_pointer -= 1
             to_be_added = push_char + "()"
-        default:
+        }
+        else{
             to_be_added = push_char
+            //もしこれが括弧ならポインターを移動する
+            if(push_char=="()"){
+                expr_pointer -= 1
+            }
         }
         
         // =が押されたら式を評価するけど、ちょっと記憶をどうするかを考える
