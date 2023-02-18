@@ -25,11 +25,23 @@ public struct RealNumber: Number{
     }
 
     public func multiply(left: Number) -> Number {
-        return RealNumber(val: mul(x: left.toReal().value, y: value ))
+        if left is NanValue {
+            return NanValue()
+        } else if let leftConst = left as? Constant {
+            return leftConst.multiply(right: self)
+        } else {
+            return RealNumber(val: mul(x: left.toReal().value, y: value ))
+        }
     }
 
     public func divide(left: Number) -> Number {
-        return RealNumber(val: left.toReal().value / value )
+        if left is NanValue {
+            return NanValue()
+        } else if let leftConst = left as? Constant {
+            return leftConst.divide(right: self)
+        } else {
+            return RealNumber(val: left.toReal().value / value )
+        }
     }
 
     public func modulus(left: Number) -> Number {
@@ -49,6 +61,12 @@ public struct RealNumber: Number{
     }
 
     public func pow(left: Number) -> Number {
+        if left is NanValue {
+            return NanValue()
+        } else if let leftConst = left as? Constant, isInteger {
+            return leftConst.pow(right: NSDecimalNumber(decimal: value).intValue)
+        }
+        
         var dec: Decimal
         dec = left.toReal().value
             if dec  <= 0{

@@ -64,7 +64,7 @@ public struct Constant: Number{
             return NanValue()
         }
         guard let leftConst: Constant = left as? Constant else {
-            return toNumber().add(left: left)
+            return toNumber().substract(left: left)
         }
 
         if leftConst.exponents == exponents && leftConst.identifier == identifier {
@@ -79,7 +79,7 @@ public struct Constant: Number{
             return NanValue()
         }
         guard let leftConst: Constant = left as? Constant else {
-            return toNumber().multiply(left: left)
+            return Constant(base: self, coefficient.multiply(left: left), exponents)
         }
 
         if leftConst.identifier == identifier {
@@ -89,18 +89,48 @@ public struct Constant: Number{
         }
     }
 
+    public func multiply(right: Number) -> Number {
+        if right is NanValue{
+            return NanValue()
+        }
+        guard let rightConst: Constant = right as? Constant else {
+            return Constant(base: self, right.multiply(left: coefficient), exponents)
+        }
+
+        if rightConst.identifier == identifier {
+            return Constant(base: self, coefficient.multiply(left: rightConst.coefficient), exponents + rightConst.exponents)
+        } else {
+            return toNumber().multiply(left: rightConst.toNumber())
+        }
+    }
+
     public func divide(left: Number) -> Number {
         if left is NanValue{
             return NanValue()
         }
         guard let leftConst: Constant = left as? Constant else {
-            return toNumber().add(left: left)
+            return Constant(base: self, coefficient.divide(left: left), exponents)
         }
 
         if leftConst.identifier == identifier {
             return Constant(base: self, coefficient.divide(left: leftConst.coefficient), leftConst.exponents - exponents)
         } else {
             return toNumber().divide(left: leftConst.toNumber())
+        }
+    }
+
+    public func divide(right: Number) -> Number {
+        if right is NanValue{
+            return NanValue()
+        }
+        guard let rightConst: Constant = right as? Constant else {
+            return Constant(base: self, right.divide(left: coefficient), exponents)
+        }
+
+        if rightConst.identifier == identifier {
+            return Constant(base: self, coefficient.divide(left: rightConst.coefficient), exponents - rightConst.exponents)
+        } else {
+            return toNumber().divide(left: rightConst.toNumber())
         }
     }
 
@@ -134,7 +164,7 @@ public struct Constant: Number{
         if let rightFrac {
             coef = rightFrac.pow(left: coefficient)
         } else {
-            coef = NanValue()
+            return NanValue()
         }
         return Constant(base: self, coef, exponents + right)
     }
@@ -208,10 +238,10 @@ public struct Constant: Number{
     }
 
     public func toDisplayString() -> String {
-        return name
+        return identifier
     }
 
     public func serialize() -> String {
-        return rawText
+        return identifier
     }
 }

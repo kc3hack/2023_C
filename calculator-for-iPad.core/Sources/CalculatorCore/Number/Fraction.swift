@@ -146,7 +146,11 @@ internal struct Fraction: Number {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().multiply(left: left)
+            if let leftConst = left as? Constant {
+                return leftConst.multiply(right: self)
+            } else {
+                return toReal().multiply(left: left)
+            }
         }
 
         let (result, isOverflow) = multiply(leftFrac)
@@ -176,7 +180,11 @@ internal struct Fraction: Number {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().multiply(left: left)
+            if let leftConst = left as? Constant {
+                return leftConst.divide(right: self)
+            } else {
+                return toReal().divide(left: left)
+            }
         }
 
         var isOverflow: Bool
@@ -205,7 +213,11 @@ internal struct Fraction: Number {
             return NanValue()
         }
         guard let leftFrac = left as? Fraction else {
-            return toReal().pow(left: left)
+            if let leftConst = left as? Constant, isInteger {
+                return leftConst.pow(right: numerator)
+            } else {
+                return toReal().pow(left: left)
+            }
         }
 
         if numerator == 0 {
