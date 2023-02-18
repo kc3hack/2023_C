@@ -43,7 +43,7 @@ public class CalculatorService: PCalculatorService {
                 }
                 if(state == 0) { //一文字の状態でチェック
                     token.append(c)
-                    let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
+                    let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token) ?? Bracket.parse(token)
                     if let operatorChara {
                         tokenList.append(operatorChara)
                         token = ""
