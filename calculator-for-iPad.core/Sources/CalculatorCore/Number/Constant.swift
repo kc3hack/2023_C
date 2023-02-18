@@ -1,35 +1,46 @@
 import Foundation
-public struct CustomConstant: Number{
-    public var isInteger: Bool
-    public var tokenType: TokenType
-    let name: String
-    let rawText: String
-    static let e: CustomConstant = CustomConstant(nameString: "e", rawString: "e", coefficientVal: RealNumber(val: Decimal(string: "2.71828182845904523536028747135266249776")!), exponentsVal: 0)
-    static let pi: CustomConstant = CustomConstant(nameString: "pi", rawString: "pi", coefficientVal: RealNumber(val: Decimal.pi), exponentsVal: 0)
-    
-    // 係数
-    let coefficientNumber: Number
-    // 指数
-    let exponents: Int
 
-    init(nameString: String, rawString: String, coefficientVal: Number, exponentsVal: Int){
-        name = nameString
-        rawText = rawString
-        coefficientNumber = coefficientVal
-        exponents = exponentsVal
-        isInteger = false
-        tokenType = TokenType.number
+// coefficient * (realNumber ^ exponents) で表される数
+public struct Constant: Number{
+    public let isInteger: Bool
+    public let tokenType: TokenType = .number
+    public let identifier: String
+    public static let e: Constant = Constant(identifier: "e", realNumber: Decimal(string: "2.71828182845904523536028747135266249776")!)
+    public static let pi: Constant = Constant(identifier: "π", realNumber: Decimal.pi)
+    
+    private let realNumber: Decimal
+    // 係数
+    private let coefficientNumber: Number
+    // 指数
+    private let exponents: Int
+
+    init(identifier: String, realNumber: Decimal) {
+        self.identifier = identifier
+        self.realNumber = realNumber
+        // 実際に使うのはeとpiだけだからこの処理のほうが楽
+        self.isInteger = false
+        coefficientNumber = Fraction(numerator: 1, denominator: 1)!
+        exponents = 1
+    }
+
+    /// 係数と指数を上書きした定数を作ります
+    private init(baseConstant: Constant, coefficientNumber: Number, exponents: Int) {
+        self.identifier = baseConstant.identifier
+        self.isInteger = baseConstant.isInteger
+        self.realNumber = baseConstant.realNumber
+        self.coefficientNumber = coefficientNumber
+        self.exponents = exponents
     }
 
     public func toReal() -> RealNumber {
-        return RealNumber(val:Decimal(exponents)).pow(left: RealNumber(val: Decimal(10))).multiply(left: coefficientNumber.toReal()).toReal()
+        return coefficientNumber.multiply(left: RealNumber(val: Foundation.pow(realNumber, exponents))).toReal()
     }
 
     public func add(left: Number) -> Number {
         if left is NanValue{
             return NanValue()
         }
-        guard let leftConst: CustomConstant = left as? CustomConstant else {
+        guard let leftConst: Constant = left as? Constant else {
             return toReal().add(left: left)
         }
         let coefTemp: Number = RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).toReal().multiply(left: leftConst.coefficientNumber)
@@ -41,7 +52,7 @@ public struct CustomConstant: Number{
         if left is NanValue{
             return NanValue()
         }
-        guard let leftConst: CustomConstant = left as? CustomConstant else {
+        guard let leftConst: Constant = left as? Constant else {
             return toReal().add(left: left)
         }
         let coefTemp: Number = RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).toReal().multiply(left: leftConst.coefficientNumber)  
@@ -53,7 +64,7 @@ public struct CustomConstant: Number{
         if left is NanValue{
             return NanValue()
         }
-        guard let leftConst: CustomConstant = left as? CustomConstant else {
+        guard let leftConst: Constant = left as? Constant else {
             return toReal().multiply(left: left)
         }
     
@@ -64,7 +75,7 @@ public struct CustomConstant: Number{
         if left is NanValue{
             return NanValue()
         }
-        guard let leftConst: CustomConstant = left as? CustomConstant else {
+        guard let leftConst: Constant = left as? Constant else {
             return toReal().add(left: left)
         }
         return RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: leftConst.coefficientNumber.toReal().multiply(left: self.coefficientNumber))  
