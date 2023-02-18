@@ -40,4 +40,24 @@ public final class FractionTest: XCTestCase {
 
         XCTAssertEqual(result.toDisplayString(), expected.toDisplayString())
     }
+
+    public func testParse() throws {
+        let arguments: [(String?, String)] = [
+            ("3", "3"),
+            ("1/2", "0.5"),
+            ("6/5", "1.2")
+        ]
+
+        do {
+            for arg in arguments {
+                try parse(expected: arg.0, source: arg.1)
+            }
+        }
+    }
+
+    public func parse(expected: String?, source: String) throws {
+        let result = Fraction.parse(source)
+
+        XCTAssertEqual(result?.toDisplayString(), expected)
+    }
 }
