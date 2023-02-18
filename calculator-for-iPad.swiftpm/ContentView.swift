@@ -14,20 +14,20 @@ struct ContentView: View {
             //もし横長モードなら右側に計算用テンキー(右利き優位なので設定で左に変えれたら便利)
             if(1000<geometry.size.width){
                 HStack{
-                    DisplayView(get_expr_closure: get_expr,set_expr:  set_expr,get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results)
+                    DisplayView(get_expr_closure: get_expr,set_expr:  set_expr,get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results)
                     ControllerView(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
             }
             else if(geometry.size.width < 400){
                 VStack{
-                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results)
+                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results)
                     OtherKeys(onclick_closure: onckick)
                     MainKeys(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
             }
             else{
                 VStack{
-                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results)
+                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results)
                     ControllerView(onclick_closure: onckick)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity).padding()
                 
@@ -49,6 +49,10 @@ struct ContentView: View {
     
     func get_calc_results()->[String]{
         return calc_results
+    }
+    
+    func reset_calc_results(){
+        calc_results.removeAll()
     }
     
     func onckick(push_char: String)->Void{
