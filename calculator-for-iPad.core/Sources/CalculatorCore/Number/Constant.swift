@@ -10,7 +10,7 @@ public struct Constant: Number{
     
     private let realNumber: Decimal
     // 係数
-    private let coefficientNumber: Number
+    private let coefficient: Number
     // 指数
     private let exponents: Int
 
@@ -19,21 +19,29 @@ public struct Constant: Number{
         self.realNumber = realNumber
         // 実際に使うのはeとpiだけだからこの処理のほうが楽
         self.isInteger = false
-        coefficientNumber = Fraction(numerator: 1, denominator: 1)!
+        coefficient = Fraction(numerator: 1, denominator: 1)!
         exponents = 1
     }
 
     /// 係数と指数を上書きした定数を作ります
-    private init(baseConstant: Constant, coefficientNumber: Number, exponents: Int) {
+    private init(base baseConstant: Constant, _ coefficient: Number, _ exponents: Int) {
         self.identifier = baseConstant.identifier
         self.isInteger = baseConstant.isInteger
         self.realNumber = baseConstant.realNumber
-        self.coefficientNumber = coefficientNumber
+        self.coefficient = coefficient
         self.exponents = exponents
     }
 
     public func toReal() -> RealNumber {
-        return coefficientNumber.multiply(left: RealNumber(val: Foundation.pow(realNumber, exponents))).toReal()
+        return coefficient.multiply(left: RealNumber(val: Foundation.pow(realNumber, exponents))).toReal()
+    }
+
+    private func toNumber() -> Number {
+        if exponents == 0 {
+            return coefficient
+        } else {
+            return toReal()
+        }
     }
 
     public func add(left: Number) -> Number {
@@ -41,11 +49,14 @@ public struct Constant: Number{
             return NanValue()
         }
         guard let leftConst: Constant = left as? Constant else {
-            return toReal().add(left: left)
+            return toNumber().add(left: left)
         }
-        let coefTemp: Number = RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).toReal().multiply(left: leftConst.coefficientNumber)
-      
-        return RealNumber(val: Decimal(self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: coefTemp.add(left: self.coefficientNumber))
+
+        if leftConst.exponents == exponents && leftConst.identifier == identifier {
+            return Constant(base: self, coefficient.add(left: leftConst.coefficient), exponents)
+        } else {    
+            return toNumber().add(left: leftConst.toNumber())
+        }
     }
 
     public func substract(left: Number) -> Number {
@@ -53,11 +64,14 @@ public struct Constant: Number{
             return NanValue()
         }
         guard let leftConst: Constant = left as? Constant else {
-            return toReal().add(left: left)
+            return toNumber().add(left: left)
         }
-        let coefTemp: Number = RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).toReal().multiply(left: leftConst.coefficientNumber)  
-      
-        return RealNumber(val: Decimal(self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: self.coefficientNumber.toReal().substract(left: coefTemp))//coefTemp.substract(left: self.coefficientNumber))
+
+        if leftConst.exponents == exponents && leftConst.identifier == identifier {
+            return Constant(base: self, coefficient.substract(left: leftConst), exponents)
+        } else {
+            return toNumber().substract(left: leftConst.toNumber())
+        }
     }
 
     public func multiply(left: Number) -> Number {
@@ -65,10 +79,14 @@ public struct Constant: Number{
             return NanValue()
         }
         guard let leftConst: Constant = left as? Constant else {
-            return toReal().multiply(left: left)
+            return toNumber().multiply(left: left)
         }
-    
-        return RealNumber(val: Decimal(leftConst.exponents + self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: leftConst.coefficientNumber.toReal().multiply(left: self.coefficientNumber))
+
+        if leftConst.identifier == identifier {
+            return Constant(base: self, coefficient.multiply(left: leftConst.coefficient), exponents + leftConst.exponents)
+        } else {
+            return toNumber().multiply(left: leftConst.toNumber())
+        }
     }
 
     public func divide(left: Number) -> Number {
@@ -76,9 +94,14 @@ public struct Constant: Number{
             return NanValue()
         }
         guard let leftConst: Constant = left as? Constant else {
-            return toReal().add(left: left)
+            return toNumber().add(left: left)
         }
-        return RealNumber(val: Decimal(leftConst.exponents - self.exponents)).pow(left: RealNumber(val: 10)).multiply(left: leftConst.coefficientNumber.toReal().multiply(left: self.coefficientNumber))  
+
+        if leftConst.identifier == identifier {
+            return Constant(base: self, coefficient.divide(left: leftConst.coefficient), leftConst.exponents - exponents)
+        } else {
+            return toNumber().divide(left: leftConst.toNumber())
+        }
     }
 
     public func modulus(left: Number) -> Number {
@@ -86,7 +109,11 @@ public struct Constant: Number{
             return NanValue()
         }
         
-        return toReal().modulus(left: left.toReal())
+        if let leftConst = left as? Constant {
+            return toNumber().modulus(left: leftConst.toNumber())
+        } else {
+            return toNumber().modulus(left: left)
+        }
     }
 
     public func pow(left: Number) -> Number {
@@ -94,11 +121,26 @@ public struct Constant: Number{
             return NanValue()
         }
 
-        return self.toReal().pow(left: left.toReal())
+        if let leftConst = left as? Constant {
+            return toNumber().pow(left: leftConst.toNumber())
+        } else {
+            return toNumber().pow(left: left)
+        }
+    }
+
+    public func pow(right: Int) -> Number {
+        let rightFrac = Fraction(numerator: right, denominator: 1)
+        let coef: Number
+        if let rightFrac {
+            coef = rightFrac.pow(left: coefficient)
+        } else {
+            coef = NanValue()
+        }
+        return Constant(base: self, coef, exponents + right)
     }
 
     public func negate() -> Number {
-        return toReal().negate()
+        return Constant(base: self, coefficient.negate(), exponents)
     }
 
     public func abs() -> Number {
