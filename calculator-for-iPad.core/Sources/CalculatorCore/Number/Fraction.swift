@@ -232,7 +232,7 @@ internal struct Fraction: Number {
                 }
                 y >>= 1
             }
-            return x
+            return ans
         } else {
             var num = Foundation.pow(Double(leftFrac.numerator), Double(1) / Double(denominator))
             var deno = Foundation.pow(Double(leftFrac.denominator), Double(1) / Double(denominator))
@@ -312,7 +312,7 @@ internal struct Fraction: Number {
 
         let decimal = Decimal(string: source)
         if let decimal {
-            let isNegativeExponent = decimal < 0
+            let isNegativeExponent = decimal.exponent < 0
             var exponent = isNegativeExponent ? -decimal.exponent : decimal.exponent
 
             // 10^exponent の導出
