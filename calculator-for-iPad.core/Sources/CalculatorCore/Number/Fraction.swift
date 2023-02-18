@@ -312,7 +312,7 @@ internal struct Fraction: Number {
 
         let decimal = Decimal(string: source)
         if let decimal {
-            let isNegativeExponent = decimal < 0
+            let isNegativeExponent = decimal.exponent < 0
             var exponent = isNegativeExponent ? -decimal.exponent : decimal.exponent
 
             // 10^exponent の導出
