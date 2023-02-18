@@ -16,9 +16,7 @@ public class CalculatorService: PCalculatorService {
         // 2: 演算子を認識中
         var state = 0
         for c: Character in rawExpression {
-            print("c = " + String(c))
             if c.isNumber || c == "." {
-                print(String(c) + " is num")
                 // state 2 ならパース失敗
                 // それ以外ならtokenに突っ込む
                 // stateを1にする
@@ -34,46 +32,37 @@ public class CalculatorService: PCalculatorService {
                 // state2 => tokenと合わせて変換
                 // 変換できなかったらtokenに入れてstate2にする
                 if(state == 1) { //トークンに数字が入っていたらここで吐き出し
-                    print("state = 1")
                     let number = Fraction.parse(token) ?? RealNumber.parse(token)
                     if let number {
                         tokenList.append(number)
-                        print(token + "(state 1)\n")
                         token = ""
                         state = 0
                     }else {
                         return nil
                     }
                 }
-                if(state == 0) {
-                    print("state = 0")
+                if(state == 0) { //一文字の状態でチェック
                     token += String(c)
                     let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorChara {
                         tokenList.append(operatorChara)
-                        print(token + "(state 0)\n")
                         token = ""
                         state = 0
                     }else {
-                        //token += String(c)
                         state = 2
                     }
-                }else if(state == 2) {
-                    print(String(token) + " ←state = 2")
+                }else if(state == 2) { //複数文字の状態でチェック
                     token += String(c)
                     let operatorWord = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorWord {
                         tokenList.append(operatorWord)
-                        print(token + "(state 2)\n")
                         token = ""
                         state = 0
-                    }else {
-                        //
                     }
                 }
             }
         }
-        if(token != "") { //残っていたら末尾のトークンを吐き出し
+        if(token != "") { //残っていたら末尾のトークンを吐き出し(出来なかったらnilを返す)
             let temp = NativeBinaryOperator.parse(token)
                 ?? NativeUnaryOperator.parse(token)
                 ?? Bracket.parse(token)
@@ -81,13 +70,7 @@ public class CalculatorService: PCalculatorService {
                 return nil
             }
             tokenList.append(temp)
-            print(token + "(last)\n\n")
         }
-
-        for token in tokenList {
-            print(tokenList)
-        }
-        print(tokenList)
 
         return tokenList
     }
