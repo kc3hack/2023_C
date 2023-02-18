@@ -10,21 +10,14 @@ import CalculatorCore
 
 struct DisplayView: View {
     let get_expr_closure: ()->String
+    let set_expr: (_: String)->Void
     let get_expr_pointer_closure: ()->Int
-    let get_userDefaultsService: ()->PUserDefaultsService
+    let get_calc_results: ()->[String]
     let font_size: CGFloat = 36
     @State var exp: String = ""
     
     var body: some View {
         ScrollView{
-            /*
-             let userDefaultsService = get_userDefaultsService()
-            if(userDefaultsService.count>0){
-                userDefaultsService.forEach{
-                    Text(userDefaultsService.getString(forKey: $0.key))
-                }
-            }
-             */
             VStack{
                 let expr = get_expr_closure()
                 let expr_pointer = get_expr_pointer_closure()
@@ -39,6 +32,20 @@ struct DisplayView: View {
                     }
                 }.padding(.all,20)
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            let calc_results: [String] = get_calc_results()
+            if(calc_results.count>0){
+                ForEach(0..<calc_results.count,id: \.self){
+                    ridx in
+                    //逆順に呼び出すためにこのように書いてる
+                    let results_index = calc_results.count - 1 - ridx
+                    let calc_result = calc_results[results_index];
+                    Button(action: {()->Void in
+                        set_expr(calc_result.components(separatedBy: "=")[0])
+                    }){
+                        Text(calc_result)
+                    }
+                }
+            }
         }
     }
 }
