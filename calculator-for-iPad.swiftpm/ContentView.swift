@@ -51,9 +51,6 @@ struct ContentView: View {
         return calc_results
     }
     
-    /*func result_keys()->{
-    }*/
-    
     func onckick(push_char: String)->Void{
         let before_pointer = String(expr.prefix(expr_pointer))
         let after_pointer = String(expr.suffix(expr.unicodeScalars.count - expr_pointer))
@@ -79,9 +76,13 @@ struct ContentView: View {
         
         // =が押されたら式を評価するけど、ちょっと記憶をどうするかを考える
         if(push_char=="="){
-            call()
-            expr = ""
-            expr_pointer = 0
+            if(call()){
+                expr = ""
+                expr_pointer = 0
+            }
+            else{
+                //エラー処理
+            }
         }
         else if(push_char=="AC"){
             expr = ""
@@ -106,13 +107,15 @@ struct ContentView: View {
         }
     }
     
-    func call()->Void{
-        let calc_result: Number = calculatorService.calculate(rawExpression: expr.replacingOccurrences(of: "÷", with: "/"))
-        let value_expr: String = expr+"="+calc_result.toDisplayString()
-        //print(calc_result.toDisplayString())
-        //let result_key = String(date.timeIntervalSince1970)
+    func call()->Bool{
+        let calc_result: Number = calculatorService.calculate(rawExpression: expr.replacingOccurrences(of: "÷", with: "/").replacingOccurrences(of: "×", with: "*"))
+        let calc_result_string = calc_result.toDisplayString()
+        let value_expr: String = expr+"="+calc_result_string
+        if(calc_result_string==""){
+            return false
+        }
+        
         calc_results.append(value_expr)
-        //userDefaultsService.set(value: value_expr, forKey: result_key)
-        //Expression
+        return true
     }
 }
