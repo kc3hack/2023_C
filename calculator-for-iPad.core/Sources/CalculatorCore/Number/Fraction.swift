@@ -46,7 +46,7 @@ internal struct Fraction: Number {
         return (numerator / tempNum, denominator / tempNum)
     }
 
-    private func lcm(x: Int, y: Int) -> (lcm: Int?, xMultiply: Int, yMultiply: Int) {
+    internal func lcm(x: Int, y: Int) -> (lcm: Int?, xMultiply: Int, yMultiply: Int) {
         if x == Int.min || y == Int.min {
             return (nil, 0, 0)
         }
@@ -63,7 +63,7 @@ internal struct Fraction: Number {
         }
 
         temp = xabs / tempX
-        let (lcm,  isOverflow) = temp.multiply(by: tempY)
+        let (lcm,  isOverflow) = temp.multiply(by: yabs)
         if isOverflow {
             return (nil, 0, 0)
         } else {
@@ -87,7 +87,7 @@ internal struct Fraction: Number {
             return toReal().add(left: left)
         }
 
-        let (lcm, xMultiply, yMultiply) = lcm(x: denominator, y: leftFrac.denominator)
+        let (lcm, xMultiply, yMultiply) = lcm(x: leftFrac.denominator, y: denominator)
         guard let lcm else {
             return NanValue()
         }
