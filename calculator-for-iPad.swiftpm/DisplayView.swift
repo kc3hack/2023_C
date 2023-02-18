@@ -43,7 +43,7 @@ struct DisplayView: View {
                     Text("    "+calculatorService.calculate(rawExpression: replacing_symbols(expr)).toDisplayString()).font(.system(size: font_size*3/4)).foregroundColor(Color.gray)
                     Spacer()
                 }
-            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
             ScrollView{
                 let calc_results: [String] = get_calc_results()
                 if(calc_results.count>0){
@@ -78,6 +78,6 @@ struct DisplayView: View {
                     }
                 }
             }
-        }//.frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
 }

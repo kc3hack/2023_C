@@ -13,8 +13,9 @@ struct OtherKeys: View {
     // keyとactionの対応させたもの
     // ContentViewも変更
     private let key_array = [
-        ["()","e","π","^","√"],
-        ["mod","abs","ln","log"],
+        ["()","e","π",],
+        ["mod","^","√"],
+        ["abs","ln","log"],
         ["sin","cos","tan"],
         ["sin⁻¹","cos⁻¹","tan⁻¹"],
     ]
@@ -37,11 +38,9 @@ struct OtherKeys: View {
                                 .font(.system(size: font_size))
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color(red:0.8, green:0.8, blue:0.8))
-                            .foregroundColor(Color.black)
+                        .background(Color(red:0.8, green:0.9, blue:0.95))
+                        .foregroundColor(Color.black)
                             .cornerRadius(10)
-                            .shadow(radius: 2)
                     }
                 }
                 
