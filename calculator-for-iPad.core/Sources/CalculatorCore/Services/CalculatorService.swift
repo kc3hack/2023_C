@@ -23,7 +23,7 @@ public class CalculatorService: PCalculatorService {
                 if(state == 2) {
                     return nil
                 }else {
-                    token += String(c)
+                    token.append(c)
                     state = 1
                 }
             }else { //数字と小数点以外が来たら
@@ -42,7 +42,7 @@ public class CalculatorService: PCalculatorService {
                     }
                 }
                 if(state == 0) { //一文字の状態でチェック
-                    token += String(c)
+                    token.append(c)
                     let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorChara {
                         tokenList.append(operatorChara)
@@ -52,7 +52,7 @@ public class CalculatorService: PCalculatorService {
                         state = 2
                     }
                 }else if(state == 2) { //複数文字の状態でチェック
-                    token += String(c)
+                    token.append(c)
                     let operatorWord = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token)
                     if let operatorWord {
                         tokenList.append(operatorWord)
