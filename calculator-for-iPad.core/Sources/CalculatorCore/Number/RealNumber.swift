@@ -20,16 +20,37 @@ public struct RealNumber: Number{
     }
 
     public func add(left: Number) -> Number {
-        return RealNumber(val: left.toReal().value + value )
+        if left is NanValue {
+            return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self
+        } else {
+            return RealNumber(val: left.toReal().value + value )
+        }
     }
 
     public func substract(left: Number) -> Number {
+        if left is NanValue {
+            return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self.negate()
+        }
         return RealNumber(val: left.toReal().value - value )
     }
 
     public func multiply(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
+        } else if isZero || left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
+        } else if left.isOne {
+            return self
         } else if let leftConst = left as? Constant {
             return leftConst.multiply(right: self)
         } else {
@@ -38,8 +59,12 @@ public struct RealNumber: Number{
     }
 
     public func divide(left: Number) -> Number {
-        if left is NanValue {
+        if left is NanValue || isZero {
             return NanValue()
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
         } else if let leftConst = left as? Constant {
             return leftConst.divide(right: self)
         } else {
@@ -66,6 +91,12 @@ public struct RealNumber: Number{
     public func pow(left: Number) -> Number {
         if left is NanValue {
             return NanValue()
+        } else if isZero || left.isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
         } else if let leftConst = left as? Constant, isInteger {
             return leftConst.pow(right: NSDecimalNumber(decimal: value).intValue)
         }
@@ -125,6 +156,11 @@ public struct RealNumber: Number{
     }
 
     public func sqrt() -> Number {
+        if isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if isZero {
+            return Fraction.zero
+        }
         var dec: Decimal     
         dec = self.value
 

@@ -50,6 +50,10 @@ public struct Constant: Number{
     public func add(left: Number) -> Number {
         if left is NanValue{
             return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self
         }
         guard let leftConst: Constant = left as? Constant else {
             return toNumber().add(left: left)
@@ -65,6 +69,10 @@ public struct Constant: Number{
     public func substract(left: Number) -> Number {
         if left is NanValue{
             return NanValue()
+        } else if isZero {
+            return left
+        } else if left.isZero {
+            return self.negate()
         }
         guard let leftConst: Constant = left as? Constant else {
             return toNumber().substract(left: left)
@@ -80,6 +88,12 @@ public struct Constant: Number{
     public func multiply(left: Number) -> Number {
         if left is NanValue{
             return NanValue()
+        } else if isZero || left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
+        } else if left.isOne {
+            return self
         }
         guard let leftConst: Constant = left as? Constant else {
             return Constant(base: self, coefficient.multiply(left: left), exponents)
@@ -95,6 +109,12 @@ public struct Constant: Number{
     public func multiply(right: Number) -> Number {
         if right is NanValue{
             return NanValue()
+        } else if isZero || right.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return right
+        } else if right.isOne {
+            return self
         }
         guard let rightConst: Constant = right as? Constant else {
             return Constant(base: self, right.multiply(left: coefficient), exponents)
@@ -108,8 +128,12 @@ public struct Constant: Number{
     }
 
     public func divide(left: Number) -> Number {
-        if left is NanValue{
+        if left is NanValue || isZero {
             return NanValue()
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
         }
         guard let leftConst: Constant = left as? Constant else {
             return Constant(base: self, coefficient.divide(left: left), exponents)
@@ -123,8 +147,12 @@ public struct Constant: Number{
     }
 
     public func divide(right: Number) -> Number {
-        if right is NanValue{
+        if right is NanValue || right.isZero {
             return NanValue()
+        } else if isZero {
+            return Fraction.zero
+        } else if right.isOne {
+            return self
         }
         guard let rightConst: Constant = right as? Constant else {
             return Constant(base: self, right.divide(left: coefficient), exponents)
@@ -150,16 +178,27 @@ public struct Constant: Number{
     }
 
     public func pow(left: Number) -> Number {
-        if left is NanValue{
+        if left is NanValue {
             return NanValue()
-        } else if exponents == 0 {
-            return coefficient.pow(left: left)
+        } else if isZero || left.isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if left.isZero {
+            return Fraction.zero
+        } else if isOne {
+            return left
         }
 
         return toNumber().pow(left: left)
     }
 
     public func pow(right: Int) -> Number {
+        if right == 0 || isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if isZero {
+            return Fraction.zero
+        } else if right == 1 {
+            return self
+        }
         let rightFrac = Fraction(numerator: right, denominator: 1)
         let coef: Number
         if let rightFrac {
@@ -179,6 +218,11 @@ public struct Constant: Number{
     }
 
     public func sqrt() -> Number {
+        if isOne {
+            return Fraction(numerator: 1, denominator: 1)!
+        } else if isZero {
+            return Fraction.zero
+        }
         return toReal().sqrt()
     }
 
