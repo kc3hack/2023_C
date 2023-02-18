@@ -206,7 +206,7 @@ public struct Constant: Number{
         } else {
             return NanValue()
         }
-        return Constant(base: self, coef, exponents + right)
+        return Constant(base: self, coef, exponents * right)
     }
 
     public func negate() -> Number {
@@ -292,14 +292,18 @@ public struct Constant: Number{
             return coefficient.toDisplayString()
         } else if exponents == 1 {
             var result = coefficient.toDisplayString()
-            if let c = coefficient as? Constant, c.exponents != 0 {
+            if coefficient.isOne {
+                result = ""
+            } else if let c = coefficient as? Constant, c.exponents != 0 {
                 result.append(" ")
             }
             result.append(identifier)
             return result
         } else {
             var result = coefficient.toDisplayString()
-            if let c = coefficient as? Constant, c.exponents != 0 {
+            if coefficient.isOne {
+                result = ""
+            } else if let c = coefficient as? Constant, c.exponents != 0 {
                 result.append(" ")
             }
             result.append(identifier)

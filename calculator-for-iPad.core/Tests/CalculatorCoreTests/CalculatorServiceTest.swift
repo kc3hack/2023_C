@@ -13,6 +13,9 @@ public final class CalculatorServiceTest: XCTestCase {
             ("abs(4)", "4"),
             ("4mod3", "1"),
             ("3^2", "9"),
+            ("e+e", "2e"),
+            ("e^2", "e^2"),
+            ("e^2+e^2", "2e^2")
         ]
         
         do {

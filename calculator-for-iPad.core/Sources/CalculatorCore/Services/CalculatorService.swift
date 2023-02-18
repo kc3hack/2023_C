@@ -51,7 +51,11 @@ public class CalculatorService: PCalculatorService {
                 }
                 if(state == 0) { //一文字の状態でチェック
                     token.append(c)
-                    let operatorChara = NativeBinaryOperator.parse(token) ?? NativeUnaryOperator.parse(token) ?? Bracket.parse(token)
+                    // eとπは数字として判定されないのでこっちで判定する
+                    let operatorChara = Constant.parse(token)
+                            ?? NativeBinaryOperator.parse(token)
+                            ?? NativeUnaryOperator.parse(token)
+                            ?? Bracket.parse(token)
                     if let operatorChara {
                         tokenList.append(operatorChara)
                         token = ""
@@ -79,7 +83,8 @@ public class CalculatorService: PCalculatorService {
                     return nil
                 }
             }else { //文字
-                let temp = NativeBinaryOperator.parse(token)
+                let temp = Constant.parse(token)
+                    ?? NativeBinaryOperator.parse(token)
                     ?? NativeUnaryOperator.parse(token)
                     ?? Bracket.parse(token)
                 guard let temp else { //最後の文字が不正なものならnilを返して終了
