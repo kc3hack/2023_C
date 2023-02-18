@@ -18,13 +18,13 @@ struct ControllerView: View {
                 {
                     OtherKeys(onclick_closure: onclick_closure)
                     MainKeys(onclick_closure: onclick_closure)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             }
             else{
                 HStack{
                     OtherKeys(onclick_closure: onclick_closure)
                     MainKeys(onclick_closure: onclick_closure)
-                }.frame(maxWidth: .infinity, maxHeight: 360)
+                }
             }
         }
     }

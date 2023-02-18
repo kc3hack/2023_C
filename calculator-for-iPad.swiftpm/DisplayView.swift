@@ -14,6 +14,7 @@ struct DisplayView: View {
     let get_expr_pointer_closure: ()->Int
     let get_calc_results: ()->[String]
     let reset_calc_results: ()->Void
+    let replacing_symbols: (_:String)->String
     let font_size: CGFloat = 48
     @State var exp: String = ""
     
@@ -25,9 +26,8 @@ struct DisplayView: View {
                 Text("↻RESET ").font(.system(size: font_size*2/3)).foregroundColor(Color.red)
             }
             VStack{
-                let expr = get_expr_closure()
-                let temp_result = expr.replacingOccurrences(of: "÷", with: "/").replacingOccurrences(of: "×", with: "*")
-                let expr_pointer = get_expr_pointer_closure()
+                let expr: String = get_expr_closure()
+                let expr_pointer: Int = get_expr_pointer_closure()
                 ScrollView (.horizontal) {
                     ZStack(alignment: .leading){
                         Text(" ").font(.system(size: 12,design: .monospaced))+Text(expr).font(.system(size: font_size, design: .monospaced))+Text("|").font(.system(size: font_size)).foregroundColor(Color.clear)
@@ -40,7 +40,7 @@ struct DisplayView: View {
                     }.padding(.all,20)
                 }
                 HStack{
-                    Text("    "+calculatorService.calculate(rawExpression: temp_result).toDisplayString()).font(.system(size: font_size*3/4)).foregroundColor(Color.gray)
+                    Text("    "+calculatorService.calculate(rawExpression: replacing_symbols(expr)).toDisplayString()).font(.system(size: font_size*3/4)).foregroundColor(Color.gray)
                     Spacer()
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -78,6 +78,6 @@ struct DisplayView: View {
                     }
                 }
             }
-        }
+        }//.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

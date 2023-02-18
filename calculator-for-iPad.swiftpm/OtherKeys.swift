@@ -14,13 +14,14 @@ struct OtherKeys: View {
     // ContentViewも変更
     private let key_array = [
         ["()","e","π","^","√"],
-        ["sin","cos","tan"],
         ["mod","abs","ln","log"],
-        ["arcsin","arccos","arctan"],
+        ["sin","cos","tan"],
+        ["sin⁻¹","cos⁻¹","tan⁻¹"],
     ]
     
     var body: some View {
-        ScrollView() {
+        //ScrollView() {
+        VStack{
             ForEach((0..<key_array.count),id: \.self){
                 index_r in
                 let main_key_array_row = key_array[index_r]
@@ -45,7 +46,7 @@ struct OtherKeys: View {
                 }
                 
             }
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        }//.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func onckick(push_char: String)->Void{

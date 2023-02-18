@@ -44,7 +44,7 @@ struct MainKeys: View {
                     }
                 }
             }
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        }//.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func onckick(push_char: String)->Void{
