@@ -266,7 +266,7 @@ public struct Constant: Number{
 
     public func ln() -> Number {
         if identifier == "e" {
-            return coefficient.ln().add(Fraction(numerator: exponents, denominator: 1) ?? NanValue())
+            return coefficient.ln().add(left: Fraction(numerator: exponents, denominator: 1) ?? NanValue())
         }
         return toNumber().ln()
     }
