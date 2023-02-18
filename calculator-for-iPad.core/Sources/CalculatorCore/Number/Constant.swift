@@ -291,9 +291,21 @@ public struct Constant: Number{
         } else if exponents == 0 {
             return coefficient.toDisplayString()
         } else if exponents == 1 {
-            return "\(coefficient.toDisplayString()) \(identifier)"
+            var result = coefficient.toDisplayString()
+            if let c = coefficient as? Constant, c.exponents != 0 {
+                result.append(" ")
+            }
+            result.append(identifier)
+            return result
         } else {
-            return "\(coefficient.toDisplayString()) \(identifier)^\(exponents)"
+            var result = coefficient.toDisplayString()
+            if let c = coefficient as? Constant, c.exponents != 0 {
+                result.append(" ")
+            }
+            result.append(identifier)
+            result.append("^")
+            result.append(String(exponents))
+            return result
         }
     }
 
