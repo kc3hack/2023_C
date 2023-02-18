@@ -44,6 +44,8 @@ public final class FractionTest: XCTestCase {
     public func testParse() throws {
         let arguments: [(String?, String)] = [
             ("3", "3"),
+            ("2", "2"),
+            ("4", "4"),
             ("1/2", "0.5"),
             ("6/5", "1.2")
         ]
