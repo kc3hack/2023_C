@@ -8,19 +8,19 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "calculator-for-iPad",
+    name: "りんご電卓",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "calculator-for-iPad",
+            name: "りんご電卓",
             targets: ["AppModule"],
             bundleIdentifier: "com.KC3-2023-C.calculator-for-iPad",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .pencil),
-            accentColor: .presetColor(.cyan),
+            appIcon: .placeholder(icon: .calculator),
+            accentColor: .presetColor(.red),
             supportedDeviceFamilies: [
                 .pad,
                 .phone
@@ -31,23 +31,18 @@ let package = Package(
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ]
-        ),
-        
+        )
     ],
-
-    dependencies : [
-        .package(path: "../calculator-for-iPad.core")
+    dependencies: [
+        .package(path: "/Users/norihito/Desktop/University/KC3/KC3_2023_W/2023_C/calculator-for-iPad.core")
     ],
     targets: [
-            .executableTarget(
-                name: "AppModule",
-                dependencies: [
-                    .product(
-                        name: "CalculatorCore",
-                        package: "calculator-for-iPad.core"
-                    )
-                ],
-                path: "."
-            )
-        ]
+        .executableTarget(
+            name: "AppModule",
+            dependencies: [
+                .product(name: "CalculatorCore", package: "calculator-for-iPad.core")
+            ],
+            path: "."
+        )
+    ]
 )
