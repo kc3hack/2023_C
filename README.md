@@ -11,11 +11,22 @@
 Calculator for iPad
 
 ## プロダクト説明
+iPadに最適化された電卓です
 
-iPadに最適化された電卓です。
+### きっかけ
 
+iPadにある多くの電卓はUIが使いにくい<br>
+独自の定数を定義したい<br>
+カーソルを上手く移動させたい
+
+
+## UI
+![UI](img/UI.png)
+![UI](img/UI1.png)
 ## 使用技術
 
 - Swift
   - SwiftUI
+
+
 
