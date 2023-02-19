@@ -8,7 +8,7 @@
 
 ## プロダクト名
 
-Calculator for iPad
+りんご電卓
 
 ## プロダクト説明
 iPadに最適化された電卓です
