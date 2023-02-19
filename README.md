@@ -18,4 +18,4 @@ iPadに最適化された電卓です。
 
 - Swift
   - SwiftUI
-  - Swinject
+
