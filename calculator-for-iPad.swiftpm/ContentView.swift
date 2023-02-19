@@ -5,7 +5,7 @@ struct ContentView: View {
     @State private var expr = ""
     @State private var expr_pointer: Int = 0
     @State private var calc_results: [String] = []
-    @State private var is_main_mode = true
+    
     private let date: Date = Date()
     private let calculatorService: PCalculatorService = CalculatorService()
     private let userDefaultsService: PUserDefaultsService = UserDefaultsService()
@@ -20,26 +20,11 @@ struct ContentView: View {
                     ControllerView(onclick_closure: onckick)
                 }.padding()
             }
-            else if(geometry.size.width < 400){
-                VStack{
-                    DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols)
-                    Toggle(isOn: $is_main_mode) {
-                        Text(is_main_mode ? "Func" : "Num").font(.system(size:24))
-                    }.toggleStyle(.button)
-                    if(is_main_mode){
-                        OtherKeys(onclick_closure: onckick)
-                    }
-                    else{
-                        MainKeys(onclick_closure: onckick)
-                    }
-                }.padding()
-            }
             else{
                 VStack{
                     DisplayView(get_expr_closure: get_expr,set_expr: set_expr,  get_expr_pointer_closure: get_expr_pointer, get_calc_results: get_calc_results, reset_calc_results: reset_calc_results, replacing_symbols: replacing_symbols)
                     ControllerView(onclick_closure: onckick)
                 }.padding()
-                
             }
         }
     }
