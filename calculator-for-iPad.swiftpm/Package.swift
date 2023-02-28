@@ -34,7 +34,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "/Users/norihito/Desktop/University/KC3/KC3_2023_W/2023_C/calculator-for-iPad.core")
+        .package(path: "../calculator-for-iPad.core")
     ],
     targets: [
         .executableTarget(
